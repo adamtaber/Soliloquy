@@ -16,7 +16,7 @@ services:
     ports:
       - 5433:${DB_PORT}
     volumes:
-      - ./postgres-dev-data:/data/db
+      - ./postgres-dev-data:/var/lib/postgresql/data
       - ./postgres/dev/postgres-init.sql:/docker-entrypoint-initdb.d/init.sql
     environment:
       - POSTGRES_USER=${DB_USER_DEV}
@@ -24,4 +24,4 @@ services:
       - POSTGRES_DB=${DB_NAME_DEV}
 
 volumes:
-  postgres-dev-data: {}
+  postgres-dev-data:

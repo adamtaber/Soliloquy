@@ -15,7 +15,8 @@
     "noFallthroughCasesInSwitch": true,
     "moduleDetection": "force",
     // "isolatedModules": true,
-    "declaration": true
+    "declaration": true,
+    // "typeRoots": ["./node_modules/@types", "./environment.d.ts"]
   },
   "exclude": ["node_modules", "./dist"]
 }

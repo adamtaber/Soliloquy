@@ -5,10 +5,13 @@ CREATE TABLE users (
   displayname VARCHAR ( 50 ) NOT NULL,
   username VARCHAR ( 25 ) UNIQUE NOT NULL,
   email VARCHAR ( 255 ) UNIQUE NOT NULL,
-  password VARCHAR ( 50 ) NOT NULL,
+  password VARCHAR ( 255 ) NOT NULL,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (user_id)
 );
+
+CREATE UNIQUE INDEX email_case_insensitive ON users(LOWER(email));
+CREATE UNIQUE INDEX username_case_insensitive ON users(LOWER(username));
 
 CREATE TABLE user_followers (
   user_id uuid NOT NULL,
@@ -77,3 +80,6 @@ CREATE TABLE bookmarks (
   CONSTRAINT only_post_or_column
     CHECK ((post_id IS NULL) != (comment_id IS NULL))
 );
+
+INSERT INTO users(displayname, username, email, password, created_on)
+VALUES ('root', 'root', 'root@root.root', 'password', '2021-06-22 19:10:25-07')

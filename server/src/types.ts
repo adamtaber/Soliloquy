@@ -1,3 +1,4 @@
+
 export interface userObject {
   displayname: string,
   username: string,
@@ -5,6 +6,6 @@ export interface userObject {
   password: string
 }
 
-export type test = {
-  test: string
+export interface jwtPayload {
+  user_id?: string
 }
