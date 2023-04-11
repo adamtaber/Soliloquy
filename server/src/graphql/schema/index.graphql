@@ -1,0 +1,65 @@
+type User {
+  userId: ID!,
+  displayname: String!,
+  username: String!,
+  email: String!,
+  password: String!,
+  createdOn: String!
+}
+
+type Post {
+  postId: ID!,
+  userId: ID!,
+  content: String!,
+  createdOn: String!
+}
+
+type Comment {
+  commentId: ID!,
+  userId: ID!,
+  postId: ID,
+  parentCommentId: ID,
+  content: String!,
+  createdOn: String!
+}
+
+type Like {
+  likeId: ID!,
+  userId: ID!,
+  postId: ID,
+  commentId: ID,
+  createdOn: String!
+}
+
+type Bookmark {
+  bookmarkId: ID!,
+  userId: ID!,
+  postId: ID,
+  commentId: ID,
+  createdOn: String!
+}
+
+type Query {
+  allUsers: [User]!
+  findUser(userId: String!): User
+  currentUser: User
+}
+
+type Mutation {
+  createUser(
+    displayname: String!, 
+    username: String!, 
+    email: String!, 
+    password: String!
+  ): User!
+  updateUser(
+    displayname: String!,
+    username: String!
+  ): User!
+  deleteUser: Boolean!
+  login(
+    username: String!
+    password: String!
+  ): Boolean!
+  logout: Boolean!
+}

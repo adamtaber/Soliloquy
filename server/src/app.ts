@@ -2,20 +2,15 @@ import express from 'express'
 import http from 'http'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+import resolvers from './graphql/resolvers'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
-import { PORT } from './config'
-import { connectToDB } from './db/config'
-import { resolvers } from './graphql-test/resolvers'
-// import { typeDefs } from './graphql-test/schema'
-import { readFileSync } from 'fs'
-import { checkToken, isProduction } from './utils'
-const typeDefs = readFileSync('./src/graphql-test/schema.graphql', { encoding: 'utf-8' })
+import { PORT, isProduction } from './config'
+import { typeDefs, checkToken } from './utils'
 
 const app = express()
 const httpServer = http.createServer(app)
-connectToDB()
 
 const server = new ApolloServer({
   typeDefs,
@@ -36,11 +31,10 @@ const startServer = async () => {
     express.json(),
     expressMiddleware(server, {
       context: async ({ req, res }: any) => { 
-        const userId = checkToken(req)
-        
+        const authorizedId = checkToken(req)
         return {
           res,
-          userId
+          authorizedId
         }
       }
     })

@@ -7,5 +7,5 @@ export interface userObject {
 }
 
 export interface jwtPayload {
-  user_id?: string
+  userId?: string
 }

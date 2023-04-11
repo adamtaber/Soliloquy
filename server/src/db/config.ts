@@ -6,15 +6,8 @@ export const pool = new Pool({
   user: DB_USER,
   database: DB_DATABASE,
   password: DB_PASSWORD,
-  port: DB_PORT
+  port: DB_PORT,
+  max: process.env.NODE_ENV === 'test' ? 1 : 10
 })
-
-export const connectToDB = async () => {
-  try {
-    await pool.connect()
-  } catch (err) {
-    console.log(err)
-  }
-}
 
 

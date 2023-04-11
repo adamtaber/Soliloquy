@@ -16,37 +16,39 @@ export type Scalars = {
 
 export type Bookmark = {
   __typename?: 'Bookmark';
-  bookmark_id: Scalars['ID'];
-  comment_id?: Maybe<Scalars['ID']>;
-  created_on: Scalars['String'];
-  post_id?: Maybe<Scalars['ID']>;
-  user_id: Scalars['ID'];
+  bookmarkId: Scalars['ID'];
+  commentId?: Maybe<Scalars['ID']>;
+  createdOn: Scalars['String'];
+  postId?: Maybe<Scalars['ID']>;
+  userId: Scalars['ID'];
 };
 
 export type Comment = {
   __typename?: 'Comment';
-  comment_id: Scalars['ID'];
+  commentId: Scalars['ID'];
   content: Scalars['String'];
-  created_on: Scalars['String'];
-  parent_comment_id?: Maybe<Scalars['ID']>;
-  post_id?: Maybe<Scalars['ID']>;
-  user_id: Scalars['ID'];
+  createdOn: Scalars['String'];
+  parentCommentId?: Maybe<Scalars['ID']>;
+  postId?: Maybe<Scalars['ID']>;
+  userId: Scalars['ID'];
 };
 
 export type Like = {
   __typename?: 'Like';
-  comment_id?: Maybe<Scalars['ID']>;
-  created_on: Scalars['String'];
-  like_id: Scalars['ID'];
-  post_id?: Maybe<Scalars['ID']>;
-  user_id: Scalars['ID'];
+  commentId?: Maybe<Scalars['ID']>;
+  createdOn: Scalars['String'];
+  likeId: Scalars['ID'];
+  postId?: Maybe<Scalars['ID']>;
+  userId: Scalars['ID'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createUser?: Maybe<User>;
-  login?: Maybe<Scalars['Boolean']>;
-  logout?: Maybe<Scalars['Boolean']>;
+  createUser: User;
+  deleteUser: Scalars['Boolean'];
+  login: Scalars['Boolean'];
+  logout: Scalars['Boolean'];
+  updateUser: User;
 };
 
 
@@ -63,12 +65,18 @@ export type MutationLoginArgs = {
   username: Scalars['String'];
 };
 
+
+export type MutationUpdateUserArgs = {
+  displayname: Scalars['String'];
+  username: Scalars['String'];
+};
+
 export type Post = {
   __typename?: 'Post';
   content: Scalars['String'];
-  created_on: Scalars['String'];
-  post_id: Scalars['ID'];
-  user_id: Scalars['ID'];
+  createdOn: Scalars['String'];
+  postId: Scalars['ID'];
+  userId: Scalars['ID'];
 };
 
 export type Query = {
@@ -80,16 +88,16 @@ export type Query = {
 
 
 export type QueryFindUserArgs = {
-  user_id: Scalars['String'];
+  userId: Scalars['String'];
 };
 
 export type User = {
   __typename?: 'User';
-  created_on: Scalars['String'];
+  createdOn: Scalars['String'];
   displayname: Scalars['String'];
   email: Scalars['String'];
   password: Scalars['String'];
-  user_id: Scalars['ID'];
+  userId: Scalars['ID'];
   username: Scalars['String'];
 };
 
@@ -191,59 +199,61 @@ export type ResolversParentTypes = ResolversObject<{
 }>;
 
 export type BookmarkResolvers<ContextType = any, ParentType extends ResolversParentTypes['Bookmark'] = ResolversParentTypes['Bookmark']> = ResolversObject<{
-  bookmark_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  comment_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  created_on?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  post_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  bookmarkId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  commentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  postId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = ResolversObject<{
-  comment_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  commentId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  created_on?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  parent_comment_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  post_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  parentCommentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  postId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type LikeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']> = ResolversObject<{
-  comment_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  created_on?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  like_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  post_id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  commentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  likeId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  postId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'displayname' | 'email' | 'password' | 'username'>>;
-  login?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
-  logout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'displayname' | 'email' | 'password' | 'username'>>;
+  deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  login?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
+  logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'displayname' | 'username'>>;
 }>;
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = ResolversObject<{
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  created_on?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  post_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   allUsers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
-  findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'user_id'>>;
+  findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'userId'>>;
 }>;
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
-  created_on?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   displayname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  user_id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   username?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
