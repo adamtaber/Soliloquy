@@ -1,4 +1,4 @@
-import { User } from "../../../resolvers-types"
+import { User } from "../graphql-types"
 
 export const isUser = (input: any): input is User => {
   const user = (input.userId !== undefined) &&

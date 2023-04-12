@@ -24,4 +24,4 @@ services:
       - POSTGRES_DB=${DB_NAME_DEV}
 
 volumes:
-  postgres-dev-data:
+  postgres-dev-data: {}

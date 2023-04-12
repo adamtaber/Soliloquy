@@ -3,9 +3,9 @@ import jwt from 'jsonwebtoken'
 import humps from 'humps'
 import { JWT_SECRET } from "../../../config"
 import { pool } from "../../../db/config"
-import { MutationResolvers } from "../../../resolvers-types"
 import { isUser } from "./types"
 import { isProduction } from '../../../config'
+import { MutationResolvers } from '../graphql-types'
 
 const userMutations: MutationResolvers = {
   createUser: async (_root, args) => {
@@ -110,6 +110,23 @@ const userMutations: MutationResolvers = {
     authorizedId = null
     res.clearCookie("id")
     return true
+  },
+  followUser: async (_root, args, { authorizedId }) => {
+    const { followUserId } = args
+
+    if (!authorizedId) {
+      throw new Error('not authorized')
+    }
+
+    const query = 
+      `INSERT INTO user_followers (user_id, follower_id)
+       VALUES ($1, $2)
+       RETURNING *`
+    const values = [followUserId, authorizedId]
+
+    await pool.query(query, values)
+
+    return 'Follow Successful!'
   }
 }
 

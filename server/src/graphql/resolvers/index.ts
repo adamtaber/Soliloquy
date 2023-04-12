@@ -1,4 +1,4 @@
-import { Resolvers } from "../../resolvers-types";
+import { Resolvers } from "./graphql-types";
 import { userQueries, userMutations } from "./user";
 
 const resolvers: Resolvers = {

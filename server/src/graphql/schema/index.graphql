@@ -42,6 +42,8 @@ type Bookmark {
 type Query {
   allUsers: [User]!
   findUser(userId: String!): User
+  getFollowers(userId: String!): [User]!
+  getFollowing(userId: String!): [User]!
   currentUser: User
 }
 
@@ -62,4 +64,7 @@ type Mutation {
     password: String!
   ): Boolean!
   logout: Boolean!
+  followUser(
+    followUserId: String!
+  ): String!
 }
