@@ -39,3 +39,27 @@ export const CREATE_USER = `
     }
   }
 `
+
+export const UPDATE_USER = `
+  mutation updateUser(
+    $username: String!,
+    $displayname: String!
+  ){
+    updateUser(
+      username: $username,
+      displayname: $displayname
+    ){
+      username,
+      displayname,
+      userId,
+      email,
+      password
+    }
+  }
+`
+
+export const DELETE_USER = `
+  mutation deleteUser {
+    deleteUser
+  }
+`

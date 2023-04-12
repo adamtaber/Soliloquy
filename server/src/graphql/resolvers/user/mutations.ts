@@ -63,9 +63,7 @@ const userMutations: MutationResolvers = {
        WHERE user_id = $1`
     const values = [authorizedId]
 
-    const deleteMutation = await pool.query(query, values)
-
-    console.log(deleteMutation)
+    await pool.query(query, values)
     
     authorizedId = null
     res.clearCookie('id')
