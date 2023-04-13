@@ -97,3 +97,13 @@ export const FOLLOW_USER = `
     )
   }
 `
+
+export const UNFOLLOW_USER = `
+  mutation unfollowUser(
+    $userId: String!
+  ){
+    unfollowUser(
+      userId: $userId
+    )
+  }
+`

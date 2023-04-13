@@ -45,6 +45,10 @@ type Query {
   getFollowers(userId: String!): [User]!
   getFollowing(userId: String!): [User]!
   currentUser: User
+  getUserPosts(
+    userId: String!
+  ): [Post]!
+  getFeedPosts: [Post]!
 }
 
 type Mutation {
@@ -67,4 +71,13 @@ type Mutation {
   followUser(
     followUserId: String!
   ): String!
+  unfollowUser(
+    userId: String!
+  ): Boolean!
+  createPost(
+    content: String!,
+  ): Post!
+  deletePost(
+    postId: String!
+  ): Boolean!
 }

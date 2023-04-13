@@ -23,21 +23,13 @@ CREATE TABLE user_followers (
     CHECK (user_id != follower_id)
 );
 
-CREATE TABLE user_following (
-  user_id uuid NOT NULL,
-  following_id uuid NOT NULL,
-  PRIMARY KEY (user_id, following_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  FOREIGN KEY (following_id) REFERENCES users (user_id)
-);
-
 CREATE TABLE posts (
   post_id uuid DEFAULT uuid_generate_v4 (),
   user_id uuid NOT NULL,
   content VARCHAR (500) NOT NULL,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (post_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id)
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
 CREATE TABLE comments (
@@ -48,10 +40,10 @@ CREATE TABLE comments (
   content VARCHAR (250) NOT NULL,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (comment_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  FOREIGN KEY (post_id) REFERENCES posts (post_id),
-  FOREIGN KEY (parent_comment_id) REFERENCES comments (comment_id),
-  CONSTRAINT only_post_or_column
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  FOREIGN KEY (post_id) REFERENCES posts (post_id) ON DELETE CASCADE,
+  FOREIGN KEY (parent_comment_id) REFERENCES comments (comment_id) ON DELETE CASCADE,
+  CONSTRAINT only_post_or_comment
     CHECK ((post_id IS NULL) != (parent_comment_id IS NULL))
 );
 
@@ -62,9 +54,9 @@ CREATE TABLE likes (
   comment_id uuid,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (like_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  FOREIGN KEY (post_id) REFERENCES posts (post_id),
-  FOREIGN KEY (comment_id) REFERENCES comments (comment_id),
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  FOREIGN KEY (post_id) REFERENCES posts (post_id) ON DELETE CASCADE,
+  FOREIGN KEY (comment_id) REFERENCES comments (comment_id) ON DELETE CASCADE,
   CONSTRAINT only_post_or_column
     CHECK ((post_id IS NULL) != (comment_id IS NULL))
 );
@@ -76,9 +68,9 @@ CREATE TABLE bookmarks (
   comment_id uuid,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (bookmark_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  FOREIGN KEY (post_id) REFERENCES posts (post_id),
-  FOREIGN KEY (comment_id) REFERENCES comments (comment_id),
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  FOREIGN KEY (post_id) REFERENCES posts (post_id) ON DELETE CASCADE,
+  FOREIGN KEY (comment_id) REFERENCES comments (comment_id) ON DELETE CASCADE,
   CONSTRAINT only_post_or_column
     CHECK ((post_id IS NULL) != (comment_id IS NULL))
 );

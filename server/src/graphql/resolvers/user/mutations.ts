@@ -126,6 +126,22 @@ const userMutations: MutationResolvers = {
     await pool.query(query, values)
 
     return 'Follow Successful!'
+  },
+  unfollowUser: async(_root, args, { authorizedId }) => {
+    const { userId } = args
+
+    if (!authorizedId) {
+      throw new Error('not authorized')
+    }
+
+    const query =
+      `DELETE FROM user_followers
+       WHERE user_id = $1 AND follower_id = $2`
+    const values = [userId, authorizedId]
+
+    await pool.query(query, values)
+
+    return true
   }
 }
 

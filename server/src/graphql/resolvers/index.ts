@@ -1,12 +1,15 @@
 import { Resolvers } from "./graphql-types";
+import { postMutations, postQueries } from "./post";
 import { userQueries, userMutations } from "./user";
 
 const resolvers: Resolvers = {
   Query: {
-    ...userQueries
+    ...userQueries,
+    ...postQueries
   },
   Mutation: {
-    ...userMutations
+    ...userMutations,
+    ...postMutations
   }
 }
 

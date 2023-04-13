@@ -1,33 +1,15 @@
 import assert from "assert"
 import { pool } from "../../../../db/config"
-import { CREATE_USER, DELETE_USER, FOLLOW_USER, UPDATE_USER } from "./requests"
+import { CREATE_USER, DELETE_USER, FOLLOW_USER, UNFOLLOW_USER, UPDATE_USER } from "./requests"
 import { createTestServer } from "../../../../utils"
-
-const user = {
-  username: 'test',
-  displayname: 'test',
-  password: 'test',
-  email: 'test@test'
-}
-
-const user2 = {
-  username: 'test2',
-  displayname: 'test2',
-  password: 'test',
-  email: 'test2@test'
-}
+import { getUserId, seedNames, seedUsers } from './helper'
 
 describe('User Mutations', () => {
   const testServer = createTestServer()
 
   beforeEach(async () => {
-    // await pool.query('START TRANSACTION')
     await pool.query('DELETE FROM users')
-  })
-
-  afterEach(async () => {
-    // await pool.query('ROLLBACK')
-    // await pool.query('DELETE FROM users')
+    await seedUsers()
   })
 
   afterAll(async () => {
@@ -36,10 +18,10 @@ describe('User Mutations', () => {
 
   it('creates a user', async () => {
     const user = {
-      username: 'test',
-      displayname: 'test',
-      password: 'test',
-      email: 'test@test'
+      username: 'user',
+      displayname: 'user',
+      password: 'user',
+      email: 'user@user'
     }
 
     const initialUsersQuery = await pool.query('SELECT * FROM users')
@@ -59,17 +41,19 @@ describe('User Mutations', () => {
   })
 
   it("doesn't create a user with duplicate info", async () => {
-    await testServer.executeOperation({
-      query: CREATE_USER,
-      variables: user
-    })
+    const duplicateUser = {
+      username: 'test1',
+      displayname: 'test1',
+      password: 'test',
+      email: 'test@test'
+    }
 
     const initialUsersQuery = await pool.query('SELECT * FROM users')
     const initialUsers = initialUsersQuery.rows.length
 
     await testServer.executeOperation({
       query: CREATE_USER,
-      variables: user
+      variables: duplicateUser
     })    
     
     const newUsersQuery = await pool.query('SELECT * FROM users')
@@ -78,14 +62,8 @@ describe('User Mutations', () => {
     expect(newUsers).toBe(initialUsers)
   })
 
-  it('creates then updates a user', async () => {
-    await testServer.executeOperation({
-      query: CREATE_USER,
-      variables: user
-    })
-
-    const newUser = await pool.query("SELECT user_id FROM users WHERE displayname = 'test'")
-    const id = newUser.rows[0].user_id
+  it('updates a user', async () => {
+    const id = await getUserId(seedNames[0])
 
     const response = await testServer.executeOperation(
       {
@@ -105,20 +83,14 @@ describe('User Mutations', () => {
     assert(response.body.kind === 'single')
     expect(updatedUser.username).toBe('update')
     expect(updatedUser.displayname).toBe('update')
-    expect(updatedUser.email).toBe('test@test')
+    expect(updatedUser.email).toBe('test1@test')
   })
 
-  it('creates then deletes a user', async () => {
-    await testServer.executeOperation({
-      query: CREATE_USER,
-      variables: user
-    })
-
-    const newUser = await pool.query("SELECT user_id FROM users WHERE username = 'test'")
-    const id = newUser.rows[0].user_id
-
+  it('deletes a user', async () => {
     const initialUsersQuery = await pool.query("SELECT * FROM users")
     const initialUsersCount = initialUsersQuery.rows.length
+
+    const id = await getUserId(seedNames[0])
 
     await testServer.executeOperation(
       {
@@ -134,6 +106,7 @@ describe('User Mutations', () => {
     const newUsersQuery = await pool.query("SELECT * FROM users")
     const newUsersCount = newUsersQuery.rows.length
 
+
     expect(newUsersCount).toEqual(initialUsersCount - 1)
   })
 
@@ -141,30 +114,17 @@ describe('User Mutations', () => {
     const followerQuery = await pool.query('SELECT * FROM user_followers')
     const followers = followerQuery.rows
 
-    await testServer.executeOperation({
-      query: CREATE_USER,
-      variables: user
-    })
-
-    await testServer.executeOperation({
-      query: CREATE_USER,
-      variables: user2
-    })
-
-    const userIdQuery = await pool.query("SELECT user_id FROM users WHERE username = 'test'")
-    const userId = userIdQuery.rows[0].user_id
-    
-    const user2IdQuery = await pool.query("SELECT user_id FROM users WHERE username = 'test2'")
-    const user2Id = user2IdQuery.rows[0].user_id
+    const id = await getUserId(seedNames[0])
+    const id2 = await getUserId(seedNames[1])
 
     await testServer.executeOperation(
       {
         query: FOLLOW_USER,
-        variables: {followUserId: user2Id}
+        variables: {followUserId: id2}
       },
       {
         contextValue: {
-          authorizedId: userId
+          authorizedId: id
         }
       }
     )
@@ -173,7 +133,38 @@ describe('User Mutations', () => {
     const newFollowers = newFollowerQuery.rows
 
     expect(newFollowers.length).toEqual(followers.length + 1)
-    expect(newFollowers[0].user_id).toBe(user2Id)
-    expect(newFollowers[0].follower_id).toBe(userId)
+    expect(newFollowers[0].user_id).toBe(id2)
+    expect(newFollowers[0].follower_id).toBe(id)
+  })
+
+  it('unfollows a user', async () => {
+    const id = await getUserId(seedNames[0])
+    const id2 = await getUserId(seedNames[1])
+
+    const followQuery =
+      `INSERT INTO user_followers (user_id, follower_id)
+       VALUES ($1, $2)`
+    const values = [id, id2]
+    await pool.query(followQuery, values)
+
+    const followerQuery = await pool.query('SELECT * FROM user_followers')
+    const followers = followerQuery.rows
+
+    await testServer.executeOperation(
+      {
+        query: UNFOLLOW_USER,
+        variables: {userId: id}
+      },
+      {
+        contextValue: {
+          authorizedId: id2
+        }
+      }
+    )
+
+    const newFollowerQuery = await pool.query('SELECT * FROM user_followers')
+    const newFollowers = newFollowerQuery.rows
+
+    expect(newFollowers.length).toEqual(followers.length - 1)
   })
 })
