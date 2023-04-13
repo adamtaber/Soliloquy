@@ -30,24 +30,17 @@ const userQueries: QueryResolvers = {
   },
   getFollowers: async (_root, args ) => {
     const { userId } = args
-    console.log(userId)
+
     const query = 
-      `SELECT username, u.user_id, displayname, email, password
+      `SELECT u.user_id, username, displayname, email, password
        FROM users u
        JOIN user_followers f
        ON u.user_id = f.follower_id
        WHERE f.user_id = $1`
-
     const values = [userId]
 
     const followerQuery = await pool.query(query, values)
     const followers = humps.camelizeKeys(followerQuery.rows)
-
-    console.log(followers)
-
-    const test = 
-      await pool.query(('SELECT * FROM user_followers WHERE user_id = $1'), [userId])
-    console.log(test.rows)
 
     if (!isUserArray(followers)) {
       throw new Error('Followers query invalid')
@@ -62,7 +55,7 @@ const userQueries: QueryResolvers = {
       `SELECT username, u.user_id, displayname, email, password
        FROM users u
        JOIN user_followers f
-       ON u.user_id = f.follower_id
+       ON u.user_id = f.user_id
        WHERE f.follower_id = $1`
     const values = [userId]
 

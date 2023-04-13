@@ -17,8 +17,10 @@ CREATE TABLE user_followers (
   user_id uuid NOT NULL,
   follower_id uuid NOT NULL,
   PRIMARY KEY (user_id, follower_id),
-  FOREIGN KEY (user_id) REFERENCES users (user_id),
-  FOREIGN KEY (follower_id) REFERENCES users (user_id)
+  FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  FOREIGN KEY (follower_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  CONSTRAINT user_and_follower_different
+    CHECK (user_id != follower_id)
 );
 
 CREATE TABLE user_following (

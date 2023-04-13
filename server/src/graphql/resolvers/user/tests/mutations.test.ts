@@ -1,6 +1,6 @@
 import assert from "assert"
 import { pool } from "../../../../db/config"
-import { CREATE_USER, DELETE_USER, UPDATE_USER } from "./requests"
+import { CREATE_USER, DELETE_USER, FOLLOW_USER, UPDATE_USER } from "./requests"
 import { createTestServer } from "../../../../utils"
 
 const user = {
@@ -10,16 +10,24 @@ const user = {
   email: 'test@test'
 }
 
+const user2 = {
+  username: 'test2',
+  displayname: 'test2',
+  password: 'test',
+  email: 'test2@test'
+}
+
 describe('User Mutations', () => {
   const testServer = createTestServer()
 
   beforeEach(async () => {
     // await pool.query('START TRANSACTION')
+    await pool.query('DELETE FROM users')
   })
 
   afterEach(async () => {
     // await pool.query('ROLLBACK')
-    await pool.query('DELETE FROM users')
+    // await pool.query('DELETE FROM users')
   })
 
   afterAll(async () => {
@@ -106,7 +114,7 @@ describe('User Mutations', () => {
       variables: user
     })
 
-    const newUser = await pool.query("SELECT user_id FROM users WHERE displayname = 'test'")
+    const newUser = await pool.query("SELECT user_id FROM users WHERE username = 'test'")
     const id = newUser.rows[0].user_id
 
     const initialUsersQuery = await pool.query("SELECT * FROM users")
@@ -127,5 +135,45 @@ describe('User Mutations', () => {
     const newUsersCount = newUsersQuery.rows.length
 
     expect(newUsersCount).toEqual(initialUsersCount - 1)
+  })
+
+  it('follows a user', async () => {
+    const followerQuery = await pool.query('SELECT * FROM user_followers')
+    const followers = followerQuery.rows
+
+    await testServer.executeOperation({
+      query: CREATE_USER,
+      variables: user
+    })
+
+    await testServer.executeOperation({
+      query: CREATE_USER,
+      variables: user2
+    })
+
+    const userIdQuery = await pool.query("SELECT user_id FROM users WHERE username = 'test'")
+    const userId = userIdQuery.rows[0].user_id
+    
+    const user2IdQuery = await pool.query("SELECT user_id FROM users WHERE username = 'test2'")
+    const user2Id = user2IdQuery.rows[0].user_id
+
+    await testServer.executeOperation(
+      {
+        query: FOLLOW_USER,
+        variables: {followUserId: user2Id}
+      },
+      {
+        contextValue: {
+          authorizedId: userId
+        }
+      }
+    )
+
+    const newFollowerQuery = await pool.query('SELECT * FROM user_followers')
+    const newFollowers = newFollowerQuery.rows
+
+    expect(newFollowers.length).toEqual(followers.length + 1)
+    expect(newFollowers[0].user_id).toBe(user2Id)
+    expect(newFollowers[0].follower_id).toBe(userId)
   })
 })

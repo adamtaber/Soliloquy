@@ -120,8 +120,7 @@ const userMutations: MutationResolvers = {
 
     const query = 
       `INSERT INTO user_followers (user_id, follower_id)
-       VALUES ($1, $2)
-       RETURNING *`
+       VALUES ($1, $2)`
     const values = [followUserId, authorizedId]
 
     await pool.query(query, values)

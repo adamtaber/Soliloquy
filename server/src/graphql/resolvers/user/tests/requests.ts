@@ -18,6 +18,30 @@ export const GET_USER = `
   }
 `
 
+export const GET_FOLLOWERS = `
+  query getFollowers(
+    $userId: String!
+  ){
+    getFollowers(
+      userId: $userId
+    ){
+      username
+    }
+  }
+`
+
+export const GET_FOLLOWING = `
+  query getFollowing(
+    $userId: String!
+  ){
+    getFollowing(
+      userId: $userId
+    ){
+      username
+    }
+  }
+`
+
 export const CREATE_USER = `
   mutation createUser(
     $username: String!, 
@@ -61,5 +85,15 @@ export const UPDATE_USER = `
 export const DELETE_USER = `
   mutation deleteUser {
     deleteUser
+  }
+`
+
+export const FOLLOW_USER = `
+  mutation followUser(
+    $followUserId: String!
+  ){
+    followUser(
+      followUserId: $followUserId
+    )
   }
 `
