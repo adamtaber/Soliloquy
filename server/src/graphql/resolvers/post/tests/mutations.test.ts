@@ -1,7 +1,8 @@
 import { pool } from "../../../../db/config"
 import { createTestServer } from "../../../../utils"
 import { getUserId, seedNames, seedUsers } from "../../user/tests/helper"
-import { CREATE_POST } from './requests'
+import { countUserPosts, getFirstPostId, seedPosts } from './helper'
+import { CREATE_POST, DELETE_POST } from './requests'
 import assert from 'assert'
 
 describe('Post Mutations', () => {
@@ -44,5 +45,31 @@ describe('Post Mutations', () => {
     const newPosts = newPostQuery.rows
 
     expect(newPosts.length).toEqual(posts.length + 1)
+  })
+
+  it('deletes a post', async () => {
+    const id = await getUserId(seedNames[0])
+
+    await seedPosts(id)
+
+    const initialPosts = await countUserPosts(id)
+
+    const postId = await getFirstPostId(id)
+
+    await testServer.executeOperation(
+      {
+        query: DELETE_POST,
+        variables: {postId}
+      },
+      {
+        contextValue: {
+          authorizedId: id
+        }
+      }
+    )
+
+    const finalPosts = await countUserPosts(id)
+
+    expect(finalPosts).toEqual(initialPosts - 1)
   })
 })
