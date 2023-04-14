@@ -1,4 +1,5 @@
-schema: "./src/graphql/schema/index.graphql"
+# schema: "./src/graphql/schema/index.graphql"
+schema: "./src/graphql/schema/**.graphql"
 generates:
   ./src/graphql/resolvers/graphql-types.ts:
     plugins:

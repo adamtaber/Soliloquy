@@ -1,0 +1,23 @@
+type Comment {
+  commentId: ID!,
+  userId: ID!,
+  postId: ID,
+  parentCommentId: ID,
+  content: String!,
+  createdOn: String!
+}
+
+type Query {
+  getPostComments(postId: String!): [Comment]!
+  getSubComments(commentId: String!): [Comment]!
+}
+
+type Mutation {
+  createComment(
+    parentId: String!,
+    content: String!
+  ): Comment!
+  deleteComment(
+    commentId: String!
+  ): Boolean!
+}

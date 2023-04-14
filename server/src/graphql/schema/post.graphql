@@ -1,0 +1,22 @@
+type Post {
+  postId: ID!,
+  userId: ID!,
+  content: String!,
+  createdOn: String!
+}
+
+type Query {
+  getUserPosts(
+    userId: String!
+  ): [Post]!
+  getFeedPosts: [Post]!
+}
+
+type Mutation {
+  createPost(
+    content: String!,
+  ): Post!
+  deletePost(
+    postId: String!
+  ): Boolean!
+}
