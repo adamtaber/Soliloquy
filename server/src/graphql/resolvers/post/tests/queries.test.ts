@@ -2,8 +2,8 @@ import assert from "assert"
 import { pool } from "../../../../db/config"
 import { createTestServer } from "../../../../utils"
 import { getUserId, seedNames, seedUsers } from "../../user/tests/helper"
-import { seedPosts, userPosts } from "./helper"
-import { GET_USER_POSTS } from "./requests"
+import { feedPosts, followUser, seedFollowPosts, seedPosts, userPosts } from "./helper"
+import { GET_FEED_POSTS, GET_USER_POSTS } from "./requests"
 
 describe('Post Queries', () => {
   const testServer = createTestServer()
@@ -32,5 +32,26 @@ describe('Post Queries', () => {
 
     assert(response.body.kind === 'single')
     expect(response.body.singleResult.data?.getUserPosts).toEqual(userPosts)
+  })
+
+  it('gets all feed posts', async () => {
+    const id = await getUserId(seedNames[0])
+    const followedId = await getUserId(seedNames[1])
+    await followUser(id, followedId)
+    await seedFollowPosts(followedId)
+
+    const response = await testServer.executeOperation(
+      {
+        query: GET_FEED_POSTS,
+      },
+      {
+        contextValue: {
+          authorizedId: id
+        }
+      }
+    )
+
+    assert(response.body.kind === 'single')
+    expect(response.body.singleResult.data?.getFeedPosts).toEqual(feedPosts)
   })
 })

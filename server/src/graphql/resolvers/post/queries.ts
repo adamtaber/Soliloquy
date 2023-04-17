@@ -44,7 +44,6 @@ const postQueries: QueryResolvers = {
     const postsQuery = await pool.query(query2, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
-    console.log(posts)
     if (!isPostArray(posts)) {
       throw new Error('value not array of posts')
     }

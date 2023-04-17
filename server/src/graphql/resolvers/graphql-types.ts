@@ -42,7 +42,8 @@ export type Mutation = {
 
 export type MutationCreateCommentArgs = {
   content: Scalars['String'];
-  parentId: Scalars['String'];
+  parentCommentId?: InputMaybe<Scalars['String']>;
+  postId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -103,17 +104,22 @@ export type Query = {
   allUsers: Array<Maybe<User>>;
   currentUser?: Maybe<User>;
   findUser?: Maybe<User>;
+  getComments: Array<Maybe<Comment>>;
   getFeedPosts: Array<Maybe<Post>>;
   getFollowers: Array<Maybe<User>>;
   getFollowing: Array<Maybe<User>>;
-  getPostComments: Array<Maybe<Comment>>;
-  getSubComments: Array<Maybe<Comment>>;
   getUserPosts: Array<Maybe<Post>>;
 };
 
 
 export type QueryFindUserArgs = {
   userId: Scalars['String'];
+};
+
+
+export type QueryGetCommentsArgs = {
+  parentCommentId?: InputMaybe<Scalars['String']>;
+  postId?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -124,16 +130,6 @@ export type QueryGetFollowersArgs = {
 
 export type QueryGetFollowingArgs = {
   userId: Scalars['String'];
-};
-
-
-export type QueryGetPostCommentsArgs = {
-  postId: Scalars['String'];
-};
-
-
-export type QueryGetSubCommentsArgs = {
-  commentId: Scalars['String'];
 };
 
 
@@ -255,7 +251,7 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
 }>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
-  createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'parentId'>>;
+  createComment?: Resolver<ResolversTypes['Comment'], ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content'>>;
   createPost?: Resolver<ResolversTypes['Post'], ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'content'>>;
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'displayname' | 'email' | 'password' | 'username'>>;
   deleteComment?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeleteCommentArgs, 'commentId'>>;
@@ -280,11 +276,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   allUsers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'userId'>>;
+  getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, Partial<QueryGetCommentsArgs>>;
   getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
   getFollowers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'userId'>>;
   getFollowing?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowingArgs, 'userId'>>;
-  getPostComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetPostCommentsArgs, 'postId'>>;
-  getSubComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetSubCommentsArgs, 'commentId'>>;
   getUserPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetUserPostsArgs, 'userId'>>;
 }>;
 

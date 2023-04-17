@@ -8,13 +8,16 @@ type Comment {
 }
 
 type Query {
-  getPostComments(postId: String!): [Comment]!
-  getSubComments(commentId: String!): [Comment]!
+  getComments(
+    postId: String,
+    parentCommentId: String
+  ): [Comment]!
 }
 
 type Mutation {
   createComment(
-    parentId: String!,
+    postId: String,
+    parentCommentId: String,
     content: String!
   ): Comment!
   deleteComment(

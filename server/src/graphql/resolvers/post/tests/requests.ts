@@ -31,3 +31,11 @@ export const GET_USER_POSTS = `
     }
   }
 `
+
+export const GET_FEED_POSTS = `
+  query getFeedPosts{
+    getFeedPosts{
+      content
+    }
+  }
+`
