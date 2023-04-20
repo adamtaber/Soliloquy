@@ -1,19 +1,22 @@
 import { useQuery } from "@apollo/client"
 import { currentUser } from "../graphql/users/queries"
-import Loader from "../pages/loader"
-import { Navigate, useNavigate } from "react-router-dom"
+import { Navigate } from "react-router-dom"
+import MainApp from "./MainApp"
 
-//add type for props
-const Authenticate = ({children}: any) => {
+
+const Authenticate = () => {
   const { loading, data, error } = useQuery(currentUser)
 
-  if(loading) {
-    console.log('loading...')
-  }
+  if(loading) return null
+  if(error) console.log(error)
 
   return (
     <>
-      {data ? children : <Navigate to='/login' replace />}
+      { data && data.currentUser 
+        ? <MainApp userData={data.currentUser} /> 
+        : <Navigate to='/login' replace />
+      } 
+
     </>
   )
 }

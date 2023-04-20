@@ -13,8 +13,9 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  fragment UserFields on User {\n    displayname\n    username\n  }\n": types.UserFieldsFragmentDoc,
+    "\n  fragment UserFields on User {\n    displayname\n    username\n    userId\n  }\n": types.UserFieldsFragmentDoc,
     "\n  mutation login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n": types.LoginDocument,
+    "\n  mutation logout{\n    logout\n  }\n": types.LogoutDocument,
     "\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n": types.CurrentUserDocument,
 };
 
@@ -35,11 +36,15 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment UserFields on User {\n    displayname\n    username\n  }\n"): (typeof documents)["\n  fragment UserFields on User {\n    displayname\n    username\n  }\n"];
+export function gql(source: "\n  fragment UserFields on User {\n    displayname\n    username\n    userId\n  }\n"): (typeof documents)["\n  fragment UserFields on User {\n    displayname\n    username\n    userId\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n"): (typeof documents)["\n  mutation login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation logout{\n    logout\n  }\n"): (typeof documents)["\n  mutation logout{\n    logout\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
