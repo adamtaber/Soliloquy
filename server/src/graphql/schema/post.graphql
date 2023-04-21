@@ -6,6 +6,9 @@ type Post {
 }
 
 type Query {
+  getPost(
+    postId: String!
+  ): Post
   getUserPosts(
     userId: String!
   ): [Post]!

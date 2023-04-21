@@ -14,6 +14,24 @@ const userQueries: QueryResolvers = {
 
     return users
   },
+  currentUser: async (_root, _args, { authorizedId }) => {
+    console.log('TEST TEST TEST')
+    if(!authorizedId) {
+      throw new Error('user is not authorized')
+    }
+
+    const query = 'SELECT * FROM users WHERE user_id = $1'
+    const values = [authorizedId]
+
+    const userQuery = await pool.query(query, values)
+    const user = humps.camelizeKeys(userQuery.rows[0])
+
+    if(!isUser(user)) {
+      throw new Error('Response does not match user type')
+    }
+
+    return user
+  },
   findUser: async (_root, args) => {
     const { userId } = args
     const query = 'SELECT * FROM users WHERE user_id = $1'

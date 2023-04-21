@@ -2,8 +2,27 @@ import { pool } from "../../../db/config"
 import { QueryResolvers } from "../graphql-types"
 import humps from 'humps'
 import { isPostArray } from "./types"
+import { isPost } from "./types"
 
 const postQueries: QueryResolvers = {
+  getPost: async(_root, args) => {
+    const { postId } = args
+
+    const query =
+      `SELECT *
+       FROM posts
+       WHERE post_id = $1`
+    const values = [postId]
+
+    const postQuery = await pool.query(query, values)
+    const post = humps.camelizeKeys(postQuery.rows[0])
+
+    if(!isPost(post)) {
+      throw new Error('value is not a post')
+    }
+
+    return post
+  },
   getUserPosts: async(_root, args) => {
     const { userId } = args
 

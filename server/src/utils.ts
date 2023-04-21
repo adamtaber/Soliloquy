@@ -14,6 +14,7 @@ export const createTestServer = () => {
 
 export const checkToken = (req: any) => {
   try {
+    console.log(req.cookies.id)
     if (req.cookies.id) {
       const verification = 
         jwt.verify(req.cookies.id, JWT_SECRET as string) as jwtPayload

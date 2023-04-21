@@ -108,6 +108,7 @@ export type Query = {
   getFeedPosts: Array<Maybe<Post>>;
   getFollowers: Array<Maybe<User>>;
   getFollowing: Array<Maybe<User>>;
+  getPost?: Maybe<Post>;
   getUserPosts: Array<Maybe<Post>>;
 };
 
@@ -130,6 +131,11 @@ export type QueryGetFollowersArgs = {
 
 export type QueryGetFollowingArgs = {
   userId: Scalars['String'];
+};
+
+
+export type QueryGetPostArgs = {
+  postId: Scalars['String'];
 };
 
 
@@ -280,6 +286,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
   getFollowers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'userId'>>;
   getFollowing?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowingArgs, 'userId'>>;
+  getPost?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostArgs, 'postId'>>;
   getUserPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetUserPostsArgs, 'userId'>>;
 }>;
 

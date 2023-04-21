@@ -26,7 +26,7 @@ const startServer = async () => {
     '/',
     cookieParser(),
     cors({
-      origin: isProduction() ? false : 'https://sandbox.embed.apollographql.com',
+      origin: isProduction() ? false : ['https://sandbox.embed.apollographql.com', 'http://localhost:5173'],
       credentials: true
     }),
     express.json(),
