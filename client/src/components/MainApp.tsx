@@ -5,7 +5,7 @@ import NavBar from "./NavBar"
 
 const MainApp = (props: { userData: FragmentType<typeof UserFragment> }) => {
   const user = useFragment(UserFragment, props.userData)
-
+  
   return (
     <>
       <NavBar userId={user.userId}/>

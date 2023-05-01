@@ -6,8 +6,8 @@ import { GetServerSideProps, GetServerSidePropsContext, GetServerSidePropsResult
 import { useRouter } from 'next/router'
 
 const Post = () => {
-  const router = useRouter()
-  const { id } = router.query
+  // const router = useRouter()
+  // const { id } = router.query
 
   //check if id corresponds to a valid post
   //if no: redirect to 404
@@ -15,16 +15,25 @@ const Post = () => {
 
   return (
     <>
-      <p>PostId: {id}</p>
+      <p>PostId: test</p>
     </>
   )
 }
 
 export const getServerSideProps: GetServerSideProps = async (context: GetServerSidePropsContext) => {
-  const apolloClient = initializeApollo()
+  const cookie = context.req.cookies.id
+  const client = initializeApollo()
 
-  const loggedIn = await apolloClient.query({
-    query: currentUser
+  console.log('TEST TEST TEST TEST TEST')
+
+  const loggedIn = await client.query({
+    query: currentUser,
+    context: {
+      headers: {
+        cookie: context.req.cookies,
+        authorization: 'Bearer 1234093j1lkj4349'
+      }
+    }
   })
 
   if (!loggedIn) {
@@ -47,7 +56,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  const postContent = await apolloClient.query({
+  const postContent = await client.query({
     query: GET_POST,
     variables: {postId: id}
   })
@@ -61,7 +70,7 @@ export const getServerSideProps: GetServerSideProps = async (context: GetServerS
     }
   }
 
-  return addApolloState(apolloClient, {
+  return addApolloState(client, {
     props: {postContent}
   })
 }

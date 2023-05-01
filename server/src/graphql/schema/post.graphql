@@ -1,8 +1,10 @@
+scalar Date
+
 type Post {
   postId: ID!,
   userId: ID!,
   content: String!,
-  createdOn: String!
+  createdOn: Date!
 }
 
 type Query {

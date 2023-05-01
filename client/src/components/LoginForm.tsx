@@ -2,7 +2,7 @@ import { useMutation } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { LOG_IN } from "../graphql/users/mutations"
-import { currentUser } from "../graphql/users/queries"
+import { CURRENT_USER } from "../graphql/users/queries"
 import { useEffect } from "react"
 
 type Inputs = {
@@ -16,7 +16,7 @@ const LoginForm = () => {
 
   const [login, { data, loading, error }] = useMutation(LOG_IN, {
     refetchQueries: [
-      { query: currentUser }
+      { query: CURRENT_USER }
     ],
     awaitRefetchQueries: true
   })

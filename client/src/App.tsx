@@ -3,7 +3,7 @@ import Home from "./pages/home"
 import Login from "./pages/login"
 import User from "./pages/user"
 import Post from "./pages/post"
-import Root from "./pages/root"
+import Root from "./components/Root"
 import Authenticate from "./components/Authenticate"
 
 const App = () => {

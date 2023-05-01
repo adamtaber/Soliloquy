@@ -1,11 +1,11 @@
 import { useQuery } from "@apollo/client"
-import { currentUser } from "../graphql/users/queries"
+import { CURRENT_USER } from "../graphql/users/queries"
 import { Navigate } from "react-router-dom"
 import MainApp from "./MainApp"
 
 
 const Authenticate = () => {
-  const { loading, data, error } = useQuery(currentUser)
+  const { loading, data, error } = useQuery(CURRENT_USER)
 
   if(loading) return null
   if(error) console.log(error)

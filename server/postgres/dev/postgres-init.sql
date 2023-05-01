@@ -1,5 +1,7 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+SET timezone = ''
+
 CREATE TABLE users (
   user_id uuid DEFAULT uuid_generate_v4 (),
   displayname VARCHAR ( 50 ) NOT NULL,
