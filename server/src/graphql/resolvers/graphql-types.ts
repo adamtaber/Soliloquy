@@ -34,6 +34,9 @@ export type Mutation = {
   deletePost: Scalars['Boolean'];
   deleteUser: Scalars['Boolean'];
   followUser: Scalars['String'];
+  generateFollowers?: Maybe<Scalars['Boolean']>;
+  generatePosts?: Maybe<Scalars['Boolean']>;
+  generateUsers: Array<Maybe<User>>;
   login: Scalars['Boolean'];
   logout: Scalars['Boolean'];
   unfollowUser: Scalars['Boolean'];
@@ -76,6 +79,11 @@ export type MutationFollowUserArgs = {
 };
 
 
+export type MutationGenerateUsersArgs = {
+  quantity: Scalars['Int'];
+};
+
+
 export type MutationLoginArgs = {
   password: Scalars['String'];
   username: Scalars['String'];
@@ -96,6 +104,7 @@ export type Post = {
   __typename?: 'Post';
   content: Scalars['String'];
   createdOn: Scalars['Date'];
+  displayname?: Maybe<Scalars['String']>;
   postId: Scalars['ID'];
   userId: Scalars['ID'];
 };
@@ -229,6 +238,7 @@ export type ResolversTypes = ResolversObject<{
   Comment: ResolverTypeWrapper<Comment>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
@@ -242,6 +252,7 @@ export type ResolversParentTypes = ResolversObject<{
   Comment: Comment;
   Date: Scalars['Date'];
   ID: Scalars['ID'];
+  Int: Scalars['Int'];
   Mutation: {};
   Post: Post;
   Query: {};
@@ -271,6 +282,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deletePost?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationDeletePostArgs, 'postId'>>;
   deleteUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   followUser?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<MutationFollowUserArgs, 'followUserId'>>;
+  generateFollowers?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  generatePosts?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  generateUsers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<MutationGenerateUsersArgs, 'quantity'>>;
   login?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'password' | 'username'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   unfollowUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUnfollowUserArgs, 'userId'>>;
@@ -280,6 +294,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = ResolversObject<{
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdOn?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
+  displayname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

@@ -8,3 +8,12 @@ export const GET_USER_POSTS = gql(`
     }
   }
 `)
+
+export const GET_FEED_POSTS = gql(`
+  query getFeedPosts {
+    getFeedPosts {
+      ...PostFields
+      displayname
+    }
+  }
+`)

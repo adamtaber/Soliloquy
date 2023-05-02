@@ -56,9 +56,11 @@ const postQueries: QueryResolvers = {
        WHERE f.follower_id = $1`
 
     const query2 = 
-      `SELECT *
-       FROM posts
-       WHERE user_id IN (${query1}) OR user_id = $1`
+      `SELECT p.post_id, p.user_id, p.content, p.created_on, u.displayname
+       FROM posts p
+       JOIN users u
+       ON u.user_id = p.user_id
+       WHERE p.user_id IN (${query1}) OR p.user_id = $1`
     
     const values = [authorizedId]
 
@@ -68,6 +70,8 @@ const postQueries: QueryResolvers = {
     if (!isPostArray(posts)) {
       throw new Error('value not array of posts')
     }
+
+    console.log(posts)
 
     return posts
   }

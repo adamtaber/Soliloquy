@@ -16,7 +16,6 @@ const userQueries: QueryResolvers = {
   },
   currentUser: async (_root, _args, { authorizedId }) => {
     if(!authorizedId) {
-      console.log('cookie is not working for some reason')
       throw new Error('user is not authorized')
     }
 

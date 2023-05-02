@@ -1,9 +1,9 @@
-import { Navigate, useNavigate, useParams } from "react-router-dom"
+import { Navigate, useParams } from "react-router-dom"
 import { FIND_USER } from "../graphql/users/queries"
 import { useQuery } from "@apollo/client"
 import { isUser } from "../graphql/users/types"
 import { GET_USER_POSTS } from "../graphql/posts/queries"
-import { isPost, isPostArray } from "../graphql/posts/types"
+import { isPostArray } from "../graphql/posts/types"
 
 
 const User = () => {
@@ -11,11 +11,7 @@ const User = () => {
 
   if(typeof(userId) !== 'string') {
     console.log('invalid parameter')
-    return (
-      <>
-        <Navigate to='/'/>
-      </>
-    )
+    return <Navigate to='/'/>
   }
 
   const userQuery = useQuery(FIND_USER, {
@@ -32,20 +28,12 @@ const User = () => {
 
   if(!userQuery.data || !isUser(userQuery.data.findUser)) {
     console.log('missing user data')
-    return (
-      <>
-        <Navigate to='/' />
-      </>
-    )
+    return <Navigate to='/' />
   }
 
   if(!postsQuery.data || !isPostArray(postsQuery.data.getUserPosts)) {
     console.log('missing post data')
-    return (
-      <>
-        <Navigate to='/' />
-      </>
-    )
+    return <Navigate to='/' />
   }
 
   const userData = userQuery.data.findUser

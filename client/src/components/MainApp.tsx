@@ -8,7 +8,7 @@ const MainApp = (props: { userData: FragmentType<typeof UserFragment> }) => {
   
   return (
     <>
-      <NavBar userId={user.userId}/>
+      <NavBar userId={user.userId} displayname={user.displayname}/>
       <Outlet />
     </>
   )

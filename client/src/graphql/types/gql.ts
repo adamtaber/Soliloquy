@@ -15,6 +15,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
 const documents = {
     "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n": types.PostFieldsFragmentDoc,
     "\n  query getUserPosts($userId: String!) {\n    getUserPosts(userId: $userId) {\n      ...PostFields\n    }\n  }\n": types.GetUserPostsDocument,
+    "\n  query getFeedPosts {\n    getFeedPosts {\n      ...PostFields\n      displayname\n    }\n  }\n": types.GetFeedPostsDocument,
     "\n  fragment UserFields on User {\n    displayname\n    username\n    userId\n    email\n  }\n": types.UserFieldsFragmentDoc,
     "\n  mutation login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n": types.LoginDocument,
     "\n  mutation logout{\n    logout\n  }\n": types.LogoutDocument,
@@ -44,6 +45,10 @@ export function gql(source: "\n  fragment PostFields on Post {\n    postId\n    
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query getUserPosts($userId: String!) {\n    getUserPosts(userId: $userId) {\n      ...PostFields\n    }\n  }\n"): (typeof documents)["\n  query getUserPosts($userId: String!) {\n    getUserPosts(userId: $userId) {\n      ...PostFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getFeedPosts {\n    getFeedPosts {\n      ...PostFields\n      displayname\n    }\n  }\n"): (typeof documents)["\n  query getFeedPosts {\n    getFeedPosts {\n      ...PostFields\n      displayname\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

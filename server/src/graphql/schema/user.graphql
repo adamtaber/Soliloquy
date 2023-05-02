@@ -38,4 +38,8 @@ type Mutation {
   unfollowUser(
     userId: String!
   ): Boolean!
+  generateUsers(
+    quantity: Int!
+  ): [User]!
+  generateFollowers: Boolean
 }

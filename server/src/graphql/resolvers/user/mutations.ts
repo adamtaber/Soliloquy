@@ -6,6 +6,7 @@ import { pool } from "../../../db/config"
 import { isUser } from "./types"
 import { isProduction } from '../../../config'
 import { MutationResolvers } from '../graphql-types'
+import { faker } from '@faker-js/faker'
 
 const userMutations: MutationResolvers = {
   createUser: async (_root, args) => {
@@ -118,12 +119,31 @@ const userMutations: MutationResolvers = {
       throw new Error('not authorized')
     }
 
-    const query = 
+    if(followUserId === authorizedId) {
+      throw new Error('cannot follow yourself')
+    }
+
+    const checkFollow =
+      `SELECT user_id
+       FROM user_followers
+       WHERE user_id = $1 AND follower_id = $2`
+    const values1 = [followUserId, authorizedId]
+    const checkQuery = await pool.query(checkFollow, values1)
+
+    if(!Array.isArray(checkQuery)) {
+      throw new Error('invalid query response')
+    }
+    
+    if(checkQuery.length > 0) {
+      throw new Error('you are already following this user')
+    }
+
+    const followQuery = 
       `INSERT INTO user_followers (user_id, follower_id)
        VALUES ($1, $2)`
-    const values = [followUserId, authorizedId]
+    const values2 = [followUserId, authorizedId]
 
-    await pool.query(query, values)
+    await pool.query(followQuery, values2)
 
     return 'Follow Successful!'
   },
@@ -140,6 +160,65 @@ const userMutations: MutationResolvers = {
     const values = [userId, authorizedId]
 
     await pool.query(query, values)
+
+    return true
+  },
+  generateUsers: async (_root, args) => {
+    const { quantity } = args
+    const users = []
+
+    for (let i = 0; i < quantity; i++) {
+      const displayname = faker.name.fullName()
+      const username = `${faker.word.adjective({ length: { min: 3, max: 12 }})}${faker.word.noun({ length: { min: 3, max: 13 }})}`
+      const email = faker.internet.email()
+      const password = 'password'
+      const hash = await argon2.hash(password)
+      const createdOn = new Date()
+
+      const query = 
+      `INSERT INTO users (displayname, username, 
+         email, password, created_on) 
+       VALUES ($1, $2, $3, $4, $5) 
+       RETURNING *`
+      const values = [displayname, username, email, hash, createdOn]
+      const userMutation = await pool.query(query, values)
+
+      const user = humps.camelizeKeys(userMutation.rows[0])
+      
+      if (!isUser(user)) {
+        throw 'did not retrieve user'
+      }
+
+      users.push(user)
+    }
+
+    return users
+  },
+  generateFollowers: async() => {
+    const query = 
+      `SELECT user_id
+       FROM users`
+    const userQuery = await pool.query(query)
+    const users = humps.camelizeKeys(userQuery.rows)
+
+    if(!Array.isArray(users)) {
+      throw new Error('not a user array')
+    }
+
+    const quantity = users.length
+
+    for (let i = 0; i < quantity; i++) {
+      const userId = users[i].userId
+      users.forEach(async user => {
+        if(userId !== user.userId) {
+          const followQuery = 
+          `INSERT INTO user_followers (user_id, follower_id)
+          VALUES ($1, $2)`
+          const values2 = [user.userId, userId]
+          await pool.query(followQuery, values2)
+        }
+      })
+    }
 
     return true
   }
