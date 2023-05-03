@@ -1,6 +1,6 @@
 import { useApolloClient, useMutation } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
-import { LOG_OUT } from "../graphql/users/mutations"
+import { LOG_OUT } from "../../graphql/users/mutations"
 import { useEffect } from "react"
 
 const LogOut = () => {

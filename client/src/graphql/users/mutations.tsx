@@ -11,3 +11,15 @@ export const LOG_OUT = gql(`
     logout
   }
 `)
+
+export const FOLLOW_USER = gql(`
+  mutation followUser($followUserId: String!) {
+    followUser(followUserId: $followUserId)
+  }
+`)
+
+export const UNFOLLOW_USER = gql(`
+  mutation unfollowUser($userId: String!) {
+    unfollowUser(userId: $userId)
+  }
+`)

@@ -15,3 +15,19 @@ export const FIND_USER = gql(`
     }
   }
 `)
+
+export const GET_FOLLOWERS = gql(`
+  query getFollowers($userId: String!) {
+    getFollowers(userId: $userId) {
+      ...UserFields
+    }
+  }
+`)
+
+export const GET_FOLLOWING = gql(`
+  query getFollowing($userId: String!) {
+    getFollowing(userId: $userId) {
+      ...UserFields
+    }
+  }
+`)

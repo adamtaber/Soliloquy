@@ -17,3 +17,11 @@ export const GET_FEED_POSTS = gql(`
     }
   }
 `)
+
+export const GET_POST = gql(`
+  query getPost($postId: String!) {
+    getPost(postId: $postId) {
+      ...PostFields
+    }
+  }
+`)

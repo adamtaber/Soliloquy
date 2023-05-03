@@ -1,8 +1,8 @@
 import { useMutation } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
-import { LOG_IN } from "../graphql/users/mutations"
-import { CURRENT_USER } from "../graphql/users/queries"
+import { LOG_IN } from "../../graphql/users/mutations"
+import { CURRENT_USER } from "../../graphql/users/queries"
 import { useEffect } from "react"
 
 type Inputs = {

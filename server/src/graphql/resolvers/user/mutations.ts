@@ -130,11 +130,11 @@ const userMutations: MutationResolvers = {
     const values1 = [followUserId, authorizedId]
     const checkQuery = await pool.query(checkFollow, values1)
 
-    if(!Array.isArray(checkQuery)) {
+    if(!Array.isArray(checkQuery.rows)) {
       throw new Error('invalid query response')
     }
     
-    if(checkQuery.length > 0) {
+    if(checkQuery.rows.length > 0) {
       throw new Error('you are already following this user')
     }
 

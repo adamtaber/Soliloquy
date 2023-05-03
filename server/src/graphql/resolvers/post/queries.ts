@@ -39,8 +39,6 @@ const postQueries: QueryResolvers = {
       throw new Error('value not array of posts')
     }
 
-    console.log(posts)
-
     return posts
   },
   getFeedPosts: async(_root, _args, { authorizedId }) => {
@@ -70,8 +68,6 @@ const postQueries: QueryResolvers = {
     if (!isPostArray(posts)) {
       throw new Error('value not array of posts')
     }
-
-    console.log(posts)
 
     return posts
   }

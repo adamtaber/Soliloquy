@@ -7,6 +7,8 @@ const commentMutations: MutationResolvers = {
   createComment: async (_root, args, {authorizedId }) => {
     const { postId, parentCommentId, content } = args
 
+    console.log('this worked')
+
     if (!authorizedId) {
       throw new Error('user not authorized')
     }

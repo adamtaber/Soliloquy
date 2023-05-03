@@ -13,14 +13,24 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  fragment CommentFields on Comment {\n    postId\n    userId\n    commentId\n    parentCommentId\n    content\n    createdOn\n  }\n": types.CommentFieldsFragmentDoc,
+    "\n  mutation createComment($postId: String!, $parentCommentId: String, $content: String!) {\n    createComment(postId: $postId, parentCommentId: $parentCommentId, content: $content) {\n      ...CommentFields\n    }\n  }\n": types.CreateCommentDocument,
+    "\n  mutation deleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n": types.DeleteCommentDocument,
+    "\n  query getComments($postId: String!) {\n    getComments(postId: $postId) {\n      ...CommentFields\n    }\n  }\n": types.GetCommentsDocument,
+    "\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n": types.GetChildCommentsDocument,
     "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n": types.PostFieldsFragmentDoc,
     "\n  query getUserPosts($userId: String!) {\n    getUserPosts(userId: $userId) {\n      ...PostFields\n    }\n  }\n": types.GetUserPostsDocument,
     "\n  query getFeedPosts {\n    getFeedPosts {\n      ...PostFields\n      displayname\n    }\n  }\n": types.GetFeedPostsDocument,
+    "\n  query getPost($postId: String!) {\n    getPost(postId: $postId) {\n      ...PostFields\n    }\n  }\n": types.GetPostDocument,
     "\n  fragment UserFields on User {\n    displayname\n    username\n    userId\n    email\n  }\n": types.UserFieldsFragmentDoc,
     "\n  mutation login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n": types.LoginDocument,
     "\n  mutation logout{\n    logout\n  }\n": types.LogoutDocument,
+    "\n  mutation followUser($followUserId: String!) {\n    followUser(followUserId: $followUserId)\n  }\n": types.FollowUserDocument,
+    "\n  mutation unfollowUser($userId: String!) {\n    unfollowUser(userId: $userId)\n  }\n": types.UnfollowUserDocument,
     "\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.FindUserDocument,
+    "\n  query getFollowers($userId: String!) {\n    getFollowers(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowersDocument,
+    "\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowingDocument,
 };
 
 /**
@@ -40,6 +50,26 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  fragment CommentFields on Comment {\n    postId\n    userId\n    commentId\n    parentCommentId\n    content\n    createdOn\n  }\n"): (typeof documents)["\n  fragment CommentFields on Comment {\n    postId\n    userId\n    commentId\n    parentCommentId\n    content\n    createdOn\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation createComment($postId: String!, $parentCommentId: String, $content: String!) {\n    createComment(postId: $postId, parentCommentId: $parentCommentId, content: $content) {\n      ...CommentFields\n    }\n  }\n"): (typeof documents)["\n  mutation createComment($postId: String!, $parentCommentId: String, $content: String!) {\n    createComment(postId: $postId, parentCommentId: $parentCommentId, content: $content) {\n      ...CommentFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation deleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n"): (typeof documents)["\n  mutation deleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getComments($postId: String!) {\n    getComments(postId: $postId) {\n      ...CommentFields\n    }\n  }\n"): (typeof documents)["\n  query getComments($postId: String!) {\n    getComments(postId: $postId) {\n      ...CommentFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n"): (typeof documents)["\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n"): (typeof documents)["\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -49,6 +79,10 @@ export function gql(source: "\n  query getUserPosts($userId: String!) {\n    get
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query getFeedPosts {\n    getFeedPosts {\n      ...PostFields\n      displayname\n    }\n  }\n"): (typeof documents)["\n  query getFeedPosts {\n    getFeedPosts {\n      ...PostFields\n      displayname\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getPost($postId: String!) {\n    getPost(postId: $postId) {\n      ...PostFields\n    }\n  }\n"): (typeof documents)["\n  query getPost($postId: String!) {\n    getPost(postId: $postId) {\n      ...PostFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -64,11 +98,27 @@ export function gql(source: "\n  mutation logout{\n    logout\n  }\n"): (typeof 
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  mutation followUser($followUserId: String!) {\n    followUser(followUserId: $followUserId)\n  }\n"): (typeof documents)["\n  mutation followUser($followUserId: String!) {\n    followUser(followUserId: $followUserId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation unfollowUser($userId: String!) {\n    unfollowUser(userId: $userId)\n  }\n"): (typeof documents)["\n  mutation unfollowUser($userId: String!) {\n    unfollowUser(userId: $userId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getFollowers($userId: String!) {\n    getFollowers(userId: $userId) {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query getFollowers($userId: String!) {\n    getFollowers(userId: $userId) {\n      ...UserFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

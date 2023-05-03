@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client"
-import { CURRENT_USER } from "../graphql/users/queries"
+import { CURRENT_USER } from "../../graphql/users/queries"
 import { Navigate } from "react-router-dom"
 import MainApp from "./MainApp"
 

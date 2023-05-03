@@ -21,7 +21,7 @@ export type Comment = {
   content: Scalars['String'];
   createdOn: Scalars['String'];
   parentCommentId?: Maybe<Scalars['ID']>;
-  postId?: Maybe<Scalars['ID']>;
+  postId: Scalars['ID'];
   userId: Scalars['ID'];
 };
 
@@ -114,6 +114,7 @@ export type Query = {
   allUsers: Array<Maybe<User>>;
   currentUser?: Maybe<User>;
   findUser?: Maybe<User>;
+  getChildComments: Array<Maybe<Comment>>;
   getComments: Array<Maybe<Comment>>;
   getFeedPosts: Array<Maybe<Post>>;
   getFollowers: Array<Maybe<User>>;
@@ -128,9 +129,14 @@ export type QueryFindUserArgs = {
 };
 
 
+export type QueryGetChildCommentsArgs = {
+  parentCommentId: Scalars['String'];
+  postId: Scalars['String'];
+};
+
+
 export type QueryGetCommentsArgs = {
-  parentCommentId?: InputMaybe<Scalars['String']>;
-  postId?: InputMaybe<Scalars['String']>;
+  postId: Scalars['String'];
 };
 
 
@@ -265,7 +271,7 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   parentCommentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
-  postId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -304,7 +310,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   allUsers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType>;
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'userId'>>;
-  getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, Partial<QueryGetCommentsArgs>>;
+  getChildComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetChildCommentsArgs, 'parentCommentId' | 'postId'>>;
+  getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'postId'>>;
   getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
   getFollowers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'userId'>>;
   getFollowing?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowingArgs, 'userId'>>;

@@ -12,7 +12,7 @@ const commentQueries: QueryResolvers = {
 
     const query = 
       `SELECT * FROM comments
-       WHERE post_id = $1`
+       WHERE post_id = $1 AND parent_comment_id IS NULL`
     const values = [postId]
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)
@@ -22,6 +22,22 @@ const commentQueries: QueryResolvers = {
     }
 
     return comments
+  },
+  getChildComments: async (_root, args) => {
+    const { postId, parentCommentId } = args
+
+    const query = 
+      `SELECT * FROM comments
+      WHERE post_id = $1 AND parent_comment_id = $2`
+    const values = [postId, parentCommentId]
+    const commentQuery = await pool.query(query, values)
+    const comments = humps.camelizeKeys(commentQuery.rows)
+
+  if(!isCommentArray(comments)) {
+    throw new Error('return value not comment array')
+  }
+
+  return comments
   }
 }
 
