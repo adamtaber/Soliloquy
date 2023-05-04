@@ -29,7 +29,8 @@ const postQueries: QueryResolvers = {
     const query = 
       `SELECT *
        FROM posts
-       WHERE user_id = $1`
+       WHERE user_id = $1
+       ORDER BY created_on DESC`
     const values = [userId]
 
     const postsQuery = await pool.query(query, values)
@@ -58,7 +59,8 @@ const postQueries: QueryResolvers = {
        FROM posts p
        JOIN users u
        ON u.user_id = p.user_id
-       WHERE p.user_id IN (${query1}) OR p.user_id = $1`
+       WHERE p.user_id IN (${query1}) OR p.user_id = $1
+       ORDER BY created_on DESC`
     
     const values = [authorizedId]
 

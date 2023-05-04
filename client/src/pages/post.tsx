@@ -1,8 +1,9 @@
-import { useQuery } from "@apollo/client"
 import { Navigate, useParams } from "react-router-dom"
-import { GET_POST } from "../graphql/posts/queries"
-import { isPost } from "../graphql/posts/types"
 import PostCommentList from "../components/Post/PostCommentList"
+import PostContent from "../components/Post/PostContent"
+import { useQuery } from "@apollo/client"
+import { CURRENT_USER } from "../graphql/users/queries"
+import { isUser } from "../graphql/users/types"
 
 const Post = () => {
   const { postId } = useParams()
@@ -12,25 +13,20 @@ const Post = () => {
     return <Navigate to='/'/>
   }
 
-  const {loading, error, data} = useQuery(GET_POST, {
-    variables: { postId }
-  })
+  const {loading, error, data} = useQuery(CURRENT_USER)
 
   if(loading) return null
   if(error) console.log(error)
 
-  if(!data || !isPost(data.getPost)) {
-    console.log('invalid post')
+  if(!data || !isUser(data.currentUser)) {
     return <Navigate to='/' />
   }
 
-  const postData = data.getPost
-  const createDate = new Date(postData.createdOn)
+  const currentUser = data.currentUser
 
   return (
     <div>
-      <p>{postData.content}</p>
-      <p>{createDate.toLocaleDateString()}</p>
+      <PostContent postId={postId} currentUser={currentUser}/>
       <p>Comments</p>
       <PostCommentList postId={postId}/>
     </div>

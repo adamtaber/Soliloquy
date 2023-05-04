@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client"
 import { GET_FEED_POSTS } from "../graphql/posts/queries"
 import { isPostArray } from "../graphql/posts/types"
 import { Link } from "react-router-dom"
+import PostForm from "../components/Post/PostForm"
 
 const Home = () => {
   const postsQuery = useQuery(GET_FEED_POSTS)
@@ -25,6 +26,7 @@ const Home = () => {
   return (
     <div>
       <p>HOME</p>
+      <PostForm />
       {postsData.map((post) => {
         return (
           <p key={post.postId}>

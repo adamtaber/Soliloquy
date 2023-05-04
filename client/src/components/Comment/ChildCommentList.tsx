@@ -4,6 +4,9 @@ import { isCommentArray } from "../../graphql/comments/types"
 import { useState } from "react"
 import ChildComment from "./ChildComment"
 
+//If current comment is on the edge, then when clicking on a child commenst
+//move that child comment to the far left (reddit style)
+
 const ChildCommentList = (props: { commentId: string, postId: string }) => {
   const [showComments, setShowComments] = useState(false)
   const {commentId, postId} = props

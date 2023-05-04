@@ -1,7 +1,7 @@
 import { useMutation } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_COMMENT } from "../../graphql/comments/mutations"
-import { GET_COMMENTS } from "../../graphql/comments/queries"
+import { GET_CHILD_COMMENTS } from "../../graphql/comments/queries"
 
 type Inputs = {
   content: string
@@ -12,7 +12,7 @@ const ChildCommentForm = (props: {postId: string, parentCommentId: string}) => {
   const { register, handleSubmit } = useForm<Inputs>()
 
   const [comment, { data, loading, error }] = useMutation(CREATE_COMMENT, {
-    refetchQueries: [ GET_COMMENTS ]
+    refetchQueries: [ GET_CHILD_COMMENTS ]
   })
 
   if (loading) console.log('loading...')
