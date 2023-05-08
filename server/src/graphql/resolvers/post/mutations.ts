@@ -3,6 +3,7 @@ import humps from 'humps'
 import { isPost } from "./types"
 import { MutationResolvers } from "../graphql-types"
 import { faker } from "@faker-js/faker"
+import { GraphQLError } from "graphql"
 
 const postMutations: MutationResolvers = {
   createPost: async(_root, args, { authorizedId }) => {
@@ -18,7 +19,11 @@ const postMutations: MutationResolvers = {
     const post = humps.camelizeKeys(postMutation.rows[0])
 
     if(!isPost(post)) {
-      throw new Error('Returned value is not of type "Post"')
+      throw new GraphQLError('Query response is not of type Post', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
     return post
   },
@@ -26,7 +31,11 @@ const postMutations: MutationResolvers = {
     const { postId } = args
 
     if (!authorizedId) {
-      throw new Error('User is not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query = 
@@ -45,7 +54,11 @@ const postMutations: MutationResolvers = {
     const users = humps.camelizeKeys(userQuery.rows)
 
     if(!Array.isArray(users)) {
-      throw new Error('not a user array')
+      throw new GraphQLError('Query response is not of type Array', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     users.forEach(async (user) => {

@@ -19,7 +19,7 @@ type Query {
 
 type Mutation {
   createComment(
-    postId: String,
+    postId: String!,
     parentCommentId: String,
     content: String!
   ): Comment!

@@ -2,13 +2,11 @@ import { pool } from "../../../db/config"
 import { QueryResolvers } from "../graphql-types"
 import humps from 'humps'
 import { isCommentArray } from "./types"
+import { GraphQLError } from "graphql"
 
 const commentQueries: QueryResolvers = {
   getComments: async (_root, args) => {
     const { postId } = args
-
-    // const parentType = postId ? 'post_id' : 'parent_comment_id'
-    // const parentId = postId || parentCommentId
 
     const query = 
       `SELECT * FROM comments
@@ -18,7 +16,11 @@ const commentQueries: QueryResolvers = {
     const comments = humps.camelizeKeys(commentQuery.rows)
 
     if(!isCommentArray(comments)) {
-      throw new Error('return value not comment array')
+      throw new GraphQLError('Query response is not of type CommentArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return comments
@@ -34,7 +36,11 @@ const commentQueries: QueryResolvers = {
     const comments = humps.camelizeKeys(commentQuery.rows)
 
   if(!isCommentArray(comments)) {
-    throw new Error('return value not comment array')
+    throw new GraphQLError('Query response is not of type CommentArray', {
+      extensions: {
+        code: 'INVALID_TYPE'
+      }
+    })
   }
 
   return comments

@@ -21,7 +21,11 @@ const userQueries: QueryResolvers = {
   },
   currentUser: async (_root, _args, { authorizedId }) => {
     if(!authorizedId) {
-      throw new Error('user is not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query = 'SELECT * FROM users WHERE user_id = $1'

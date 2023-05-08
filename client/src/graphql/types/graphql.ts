@@ -48,7 +48,7 @@ export type Mutation = {
 export type MutationCreateCommentArgs = {
   content: Scalars['String'];
   parentCommentId?: InputMaybe<Scalars['String']>;
-  postId?: InputMaybe<Scalars['String']>;
+  postId: Scalars['String'];
 };
 
 

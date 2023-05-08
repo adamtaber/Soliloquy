@@ -3,6 +3,7 @@ import { QueryResolvers } from "../graphql-types"
 import humps from 'humps'
 import { isPostArray } from "./types"
 import { isPost } from "./types"
+import { GraphQLError } from "graphql"
 
 const postQueries: QueryResolvers = {
   getPost: async(_root, args) => {
@@ -18,7 +19,11 @@ const postQueries: QueryResolvers = {
     const post = humps.camelizeKeys(postQuery.rows[0])
 
     if(!isPost(post)) {
-      throw new Error('value is not a post')
+      throw new GraphQLError('Query response is not of type Post', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return post
@@ -37,14 +42,22 @@ const postQueries: QueryResolvers = {
     const posts = humps.camelizeKeys(postsQuery.rows)
 
     if (!isPostArray(posts)) {
-      throw new Error('value not array of posts')
+      throw new GraphQLError('Query response is not of type PostArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return posts
   },
   getFeedPosts: async(_root, _args, { authorizedId }) => {
     if (!authorizedId) {
-      throw new Error('user not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query1 = 
@@ -68,7 +81,11 @@ const postQueries: QueryResolvers = {
     const posts = humps.camelizeKeys(postsQuery.rows)
 
     if (!isPostArray(posts)) {
-      throw new Error('value not array of posts')
+      throw new GraphQLError('Query response is not of type PostArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return posts

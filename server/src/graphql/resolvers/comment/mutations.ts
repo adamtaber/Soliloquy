@@ -2,19 +2,18 @@ import { pool } from "../../../db/config"
 import { MutationResolvers } from "../graphql-types"
 import humps from 'humps'
 import { isComment } from "./types"
+import { GraphQLError } from "graphql"
 
 const commentMutations: MutationResolvers = {
   createComment: async (_root, args, {authorizedId }) => {
     const { postId, parentCommentId, content } = args
 
-    console.log('this worked')
-
     if (!authorizedId) {
-      throw new Error('user not authorized')
-    }
-
-    if (!postId) {
-      throw new Error('missing args')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const createdOn = new Date()
@@ -29,7 +28,11 @@ const commentMutations: MutationResolvers = {
     const comment = humps.camelizeKeys(commentMutation.rows[0])
 
     if(!isComment(comment)) {
-      throw new Error('return value not of type comment')
+      throw new GraphQLError('Query response is not of type Comment', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return comment
@@ -38,7 +41,11 @@ const commentMutations: MutationResolvers = {
     const { commentId } = args
 
     if (!authorizedId) {
-      throw new Error('user not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query = 
