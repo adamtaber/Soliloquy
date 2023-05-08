@@ -2,6 +2,7 @@ import { pool } from "../../../db/config"
 import humps from 'humps'
 import { isUser, isUserArray } from "./types"
 import { QueryResolvers } from "../graphql-types"
+import { GraphQLError } from "graphql"
 
 const userQueries: QueryResolvers = {
   allUsers: async () => {
@@ -9,7 +10,11 @@ const userQueries: QueryResolvers = {
     const users = humps.camelizeKeys(usersQuery.rows)
     
     if(!isUserArray(users)) {
-      throw new Error('Users query invalid')
+      throw new GraphQLError('Query response is not of type UserArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return users
@@ -26,7 +31,11 @@ const userQueries: QueryResolvers = {
     const user = humps.camelizeKeys(userQuery.rows[0])
 
     if(!isUser(user)) {
-      throw new Error('Response does not match user type')
+      throw new GraphQLError('Query response is not of type User', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return user
@@ -40,7 +49,11 @@ const userQueries: QueryResolvers = {
     const user = humps.camelizeKeys(userQuery.rows[0])
 
     if(!isUser(user)) {
-      throw new Error('User query invalid')
+      throw new GraphQLError('Query response is not of type User', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return user
@@ -60,7 +73,11 @@ const userQueries: QueryResolvers = {
     const followers = humps.camelizeKeys(followerQuery.rows)
 
     if (!isUserArray(followers)) {
-      throw new Error('Followers query invalid')
+      throw new GraphQLError('Query response is not of type UserArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return followers
@@ -80,7 +97,11 @@ const userQueries: QueryResolvers = {
     const following = humps.camelizeKeys(followingQuery.rows)
 
     if (!isUserArray(following)) {
-      throw new Error('Followers query invalid')
+      throw new GraphQLError('Query response is not of type UserArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return following

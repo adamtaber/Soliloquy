@@ -1,11 +1,14 @@
 import { useQuery } from "@apollo/client"
 import { GET_FOLLOWERS, GET_FOLLOWING } from "../../graphql/users/queries"
 import { isUserArray } from "../../graphql/users/types"
-import { Navigate } from "react-router-dom"
+import { Link, Navigate } from "react-router-dom"
 import FollowButton from "./FollowButton"
+import { useState } from "react"
 
 const UserFollows = (props: { userId: string } ) => {
   const { userId } = props
+  const [showFollowers, setShowFollowers] = useState(false)
+  const [showFollowing, setShowFollowing] = useState(false)
 
   const followersQuery = useQuery(GET_FOLLOWERS, {
     variables: { userId }
@@ -36,8 +39,26 @@ const UserFollows = (props: { userId: string } ) => {
   return (
     <>
       <FollowButton userId={userId} followers={followersData}/>
-      <p>followers: {followersData.length}</p>
-      <p>following: {followingData.length}</p>
+      <p onClick={() => setShowFollowers(!showFollowers)}>
+        followers: {followersData.length}
+      </p>
+      {showFollowers && followersData.map(user => {
+        return (
+          <p key={user.userId}>
+            <Link to={`/users/${user.userId}`}>{user.displayname}</Link>
+          </p>
+        )
+      })}
+      <p onClick={() => setShowFollowing(!showFollowing)}>
+        following: {followingData.length}
+      </p>
+      {showFollowing && followingData.map(user => {
+        return (
+          <p key={user.userId}>
+            <Link to={`/users/${user.userId}`}>{user.displayname}</Link>
+          </p>
+        )
+      })}
     </>
   )
 }

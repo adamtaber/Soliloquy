@@ -56,9 +56,9 @@ const userMutations: MutationResolvers = {
     const user = humps.camelizeKeys(userMutation.rows[0])
     
     if (!isUser(user)) {
-      throw new GraphQLError('Incorrect type for server response', {
+      throw new GraphQLError('Query response is not of type User', {
         extensions: {
-          code: 'INCORRECT_TYPE'
+          code: 'INVALID_TYPE'
         }
       })
     }
@@ -69,7 +69,11 @@ const userMutations: MutationResolvers = {
     const { displayname, username } = args
 
     if (!authorizedId) {
-      throw new Error('not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query = 
@@ -84,14 +88,22 @@ const userMutations: MutationResolvers = {
     const user = humps.camelizeKeys(updateMutation.rows[0])
 
     if (!isUser(user)) {
-      throw 'did not retrieve user'
+      throw new GraphQLError('Query response is not of type User', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     return user
   },
   deleteUser: async (_root, _args, { res, authorizedId }) => {
     if (!authorizedId) {
-      throw new Error('not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query =
@@ -125,7 +137,7 @@ const userMutations: MutationResolvers = {
     if (!user || !isUser(user)) {
       throw new GraphQLError('User not found', {
         extensions: {
-          code: 'INVALID_USER'
+          code: 'BAD_USER_INPUT'
         }
       })
     }
@@ -135,12 +147,11 @@ const userMutations: MutationResolvers = {
     if (!passIsValid) {
       throw new GraphQLError('Password not valid', {
         extensions: {
-          code: 'INVALID_PASSWORD'
+          code: 'BAD_USER_INPUT'
         }
       })
     }
 
-    // const token = await jwt.sign({userId: user.userId}, JWT_SECRET as string)
     const token = jwt.sign({userId: user.userId}, JWT_SECRET as string)
 
     res.cookie("id", token, {
@@ -154,7 +165,11 @@ const userMutations: MutationResolvers = {
   },
   logout: async (_root, _args, { res, authorizedId }) => {
     if (!authorizedId) {
-      throw new Error('User not currently logged in')
+      throw new GraphQLError('User is not logged in', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
     authorizedId = null
     res.clearCookie("id")
@@ -164,11 +179,19 @@ const userMutations: MutationResolvers = {
     const { followUserId } = args
 
     if (!authorizedId) {
-      throw new Error('not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     if(followUserId === authorizedId) {
-      throw new Error('cannot follow yourself')
+      throw new GraphQLError('cannot follow yourself', {
+        extensions: {
+          code: 'INVALID_REQUEST'
+        }
+      })
     }
 
     const checkFollow =
@@ -179,11 +202,19 @@ const userMutations: MutationResolvers = {
     const checkQuery = await pool.query(checkFollow, values1)
 
     if(!Array.isArray(checkQuery.rows)) {
-      throw new Error('invalid query response')
+      throw new GraphQLError('Query response is not of type Array', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
     
     if(checkQuery.rows.length > 0) {
-      throw new Error('you are already following this user')
+      throw new GraphQLError('User is already following this user', {
+        extensions: {
+          code: 'INVALID_REQUEST'
+        }
+      })
     }
 
     const followQuery = 
@@ -199,7 +230,11 @@ const userMutations: MutationResolvers = {
     const { userId } = args
 
     if (!authorizedId) {
-      throw new Error('not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query =
@@ -234,7 +269,11 @@ const userMutations: MutationResolvers = {
       const user = humps.camelizeKeys(userMutation.rows[0])
       
       if (!isUser(user)) {
-        throw 'did not retrieve user'
+        throw new GraphQLError('Query response is not of type User', {
+          extensions: {
+            code: 'INVALID_TYPE'
+          }
+        })
       }
 
       users.push(user)
@@ -250,7 +289,11 @@ const userMutations: MutationResolvers = {
     const users = humps.camelizeKeys(userQuery.rows)
 
     if(!Array.isArray(users)) {
-      throw new Error('not a user array')
+      throw new GraphQLError('Query response is not of type Array', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
     }
 
     const quantity = users.length
