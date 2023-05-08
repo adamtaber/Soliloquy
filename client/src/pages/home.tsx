@@ -26,7 +26,7 @@ const Home = () => {
   return (
     <div>
       <p>HOME</p>
-      <PostForm />
+      <PostForm pageType={'home'}/>
       {postsData.map((post) => {
         return (
           <p key={post.postId}>

@@ -29,6 +29,7 @@ const documents = {
     "\n  mutation logout{\n    logout\n  }\n": types.LogoutDocument,
     "\n  mutation followUser($followUserId: String!) {\n    followUser(followUserId: $followUserId)\n  }\n": types.FollowUserDocument,
     "\n  mutation unfollowUser($userId: String!) {\n    unfollowUser(userId: $userId)\n  }\n": types.UnfollowUserDocument,
+    "\n  mutation createUser($displayname: String!, $username: String!,\n    $email: String!, $password: String!) {\n      createUser(displayname: $displayname, username: $username, \n        email: $email, password: $password) {\n          ...UserFields\n        }\n    }\n": types.CreateUserDocument,
     "\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.FindUserDocument,
     "\n  query getFollowers($userId: String!) {\n    getFollowers(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowersDocument,
@@ -113,6 +114,10 @@ export function gql(source: "\n  mutation followUser($followUserId: String!) {\n
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation unfollowUser($userId: String!) {\n    unfollowUser(userId: $userId)\n  }\n"): (typeof documents)["\n  mutation unfollowUser($userId: String!) {\n    unfollowUser(userId: $userId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation createUser($displayname: String!, $username: String!,\n    $email: String!, $password: String!) {\n      createUser(displayname: $displayname, username: $username, \n        email: $email, password: $password) {\n          ...UserFields\n        }\n    }\n"): (typeof documents)["\n  mutation createUser($displayname: String!, $username: String!,\n    $email: String!, $password: String!) {\n      createUser(displayname: $displayname, username: $username, \n        email: $email, password: $password) {\n          ...UserFields\n        }\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

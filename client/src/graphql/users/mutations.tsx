@@ -23,3 +23,13 @@ export const UNFOLLOW_USER = gql(`
     unfollowUser(userId: $userId)
   }
 `)
+
+export const CREATE_USER = gql(`
+  mutation createUser($displayname: String!, $username: String!,
+    $email: String!, $password: String!) {
+      createUser(displayname: $displayname, username: $username, 
+        email: $email, password: $password) {
+          ...UserFields
+        }
+    }
+`)

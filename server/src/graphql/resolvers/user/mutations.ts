@@ -7,12 +7,43 @@ import { isUser } from "./types"
 import { isProduction } from '../../../config'
 import { MutationResolvers } from '../graphql-types'
 import { faker } from '@faker-js/faker'
+import { GraphQLError } from 'graphql'
 
 const userMutations: MutationResolvers = {
   createUser: async (_root, args) => {
     const { displayname, username, email, password } = args
     const hash = await argon2.hash(password)
     const createdOn = new Date()
+
+    const checkUsernameQuery = 
+      `SELECT user_id
+       FROM users
+       WHERE username = $1`
+    const checkUsernameValues = [username]
+    const checkUsername = await pool.query(checkUsernameQuery, checkUsernameValues)
+
+    if (checkUsername.rows.length > 0) {
+      throw new GraphQLError('There is already an account associated with this username', {
+        extensions: {
+          code: 'INVALID_INPUT'
+        }
+      })
+    }
+
+    const checkEmailQuery = 
+    `SELECT user_id
+     FROM users
+     WHERE email = $1`
+    const checkEmailValues = [email]
+    const checkEmail = await pool.query(checkEmailQuery, checkEmailValues)
+
+    if (checkEmail.rows.length > 0) {
+      throw new GraphQLError('There is already an account associated with this email', {
+        extensions: {
+          code: 'INVALID_INPUT'
+        }
+      }) 
+    }
 
     const query = 
       `INSERT INTO users (displayname, username, 
@@ -25,7 +56,11 @@ const userMutations: MutationResolvers = {
     const user = humps.camelizeKeys(userMutation.rows[0])
     
     if (!isUser(user)) {
-      throw 'did not retrieve user'
+      throw new GraphQLError('Incorrect type for server response', {
+        extensions: {
+          code: 'INCORRECT_TYPE'
+        }
+      })
     }
 
     return user
@@ -75,7 +110,11 @@ const userMutations: MutationResolvers = {
     const { username, password } = args
 
     if (authorizedId) {
-      throw new Error('A user is already logged in')
+      throw new GraphQLError('A user is already logged in', {
+        extensions: {
+          code: 'USER_VALIDATED'
+        }
+      })
     }
 
     const query = 'SELECT * FROM users WHERE username = $1'
@@ -84,16 +123,25 @@ const userMutations: MutationResolvers = {
     const user = humps.camelizeKeys(userQuery.rows[0])
 
     if (!user || !isUser(user)) {
-      throw new Error('User not found')
+      throw new GraphQLError('User not found', {
+        extensions: {
+          code: 'INVALID_USER'
+        }
+      })
     }
 
     const passIsValid = await argon2.verify(user.password, password)
 
     if (!passIsValid) {
-      throw new Error('Password not valid')
+      throw new GraphQLError('Password not valid', {
+        extensions: {
+          code: 'INVALID_PASSWORD'
+        }
+      })
     }
 
-    const token = await jwt.sign({userId: user.userId}, JWT_SECRET as string)
+    // const token = await jwt.sign({userId: user.userId}, JWT_SECRET as string)
+    const token = jwt.sign({userId: user.userId}, JWT_SECRET as string)
 
     res.cookie("id", token, {
       httpOnly: true,

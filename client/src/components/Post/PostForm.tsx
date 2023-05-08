@@ -7,11 +7,14 @@ type Inputs = {
   content: string
 }
 
-const PostForm = () => {
+const PostForm = (props: {pageType: string}) => {
+  const { pageType } = props
   const { register, handleSubmit } = useForm<Inputs>()
 
+  const refetchPosts = pageType === 'home' ? GET_FEED_POSTS : GET_USER_POSTS
+
   const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
-    refetchQueries: [ GET_USER_POSTS, GET_FEED_POSTS ]
+    refetchQueries: [ refetchPosts ]
   })
 
   if (loading) console.log('loading...')
