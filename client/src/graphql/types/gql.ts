@@ -18,6 +18,10 @@ const documents = {
     "\n  mutation deleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n": types.DeleteCommentDocument,
     "\n  query getComments($postId: String!) {\n    getComments(postId: $postId) {\n      ...CommentFields\n    }\n  }\n": types.GetCommentsDocument,
     "\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n": types.GetChildCommentsDocument,
+    "\n  fragment MessageFields on Message {\n    messageId\n    senderId\n    senderName\n    receiverId\n    content\n    createdOn\n  }\n": types.MessageFieldsFragmentDoc,
+    "\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n": types.CreateMessageDocument,
+    "\n  query getMessages($messagePartnerId: String!) {\n    getMessages(messagePartnerId: $messagePartnerId) {\n      ...MessageFields\n    }\n  }\n": types.GetMessagesDocument,
+    "\n  query getMessagePartners {\n    getMessagePartners {\n      userId\n      username\n      displayname\n      recentMessage\n    }\n  }\n": types.GetMessagePartnersDocument,
     "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n": types.PostFieldsFragmentDoc,
     "\n  mutation createPost($content: String!) {\n    createPost(content: $content) {\n      ...PostFields\n    }\n  }\n": types.CreatePostDocument,
     "\n  mutation deletePost($postId: String!) {\n    deletePost(postId: $postId)\n  }\n": types.DeletePostDocument,
@@ -70,6 +74,22 @@ export function gql(source: "\n  query getComments($postId: String!) {\n    getC
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n"): (typeof documents)["\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  fragment MessageFields on Message {\n    messageId\n    senderId\n    senderName\n    receiverId\n    content\n    createdOn\n  }\n"): (typeof documents)["\n  fragment MessageFields on Message {\n    messageId\n    senderId\n    senderName\n    receiverId\n    content\n    createdOn\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n"): (typeof documents)["\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getMessages($messagePartnerId: String!) {\n    getMessages(messagePartnerId: $messagePartnerId) {\n      ...MessageFields\n    }\n  }\n"): (typeof documents)["\n  query getMessages($messagePartnerId: String!) {\n    getMessages(messagePartnerId: $messagePartnerId) {\n      ...MessageFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getMessagePartners {\n    getMessagePartners {\n      userId\n      username\n      displayname\n      recentMessage\n    }\n  }\n"): (typeof documents)["\n  query getMessagePartners {\n    getMessagePartners {\n      userId\n      username\n      displayname\n      recentMessage\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

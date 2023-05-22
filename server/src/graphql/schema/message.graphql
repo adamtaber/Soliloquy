@@ -1,0 +1,32 @@
+type Message {
+  messageId: ID!,
+  senderId: ID!,
+  senderName: String!,
+  receiverId: ID!,
+  content: String!,
+  createdOn: String!
+}
+
+type BasicUser {
+  userId: ID!,
+  displayname: String!,
+  username: String!,
+  recentMessage: String!
+}
+
+type Query {
+  getMessages(
+    messagePartnerId: String!
+  ): [Message]!
+  getMessagePartners: [BasicUser]!
+}
+
+type Mutation {
+  createMessage(
+    receiverId: String!,
+    content: String!
+  ): Message!
+  deleteMessage(
+    messageId: String!
+  ): Boolean!
+}

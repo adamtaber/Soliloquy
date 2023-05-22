@@ -3,12 +3,17 @@ import { GET_FOLLOWERS, GET_FOLLOWING } from "../../graphql/users/queries"
 import { isUserArray } from "../../graphql/users/types"
 import { Link, Navigate } from "react-router-dom"
 import FollowButton from "./FollowButton"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 const UserFollows = (props: { userId: string } ) => {
   const { userId } = props
   const [showFollowers, setShowFollowers] = useState(false)
   const [showFollowing, setShowFollowing] = useState(false)
+
+  useEffect(() => {
+    setShowFollowers(false)
+    setShowFollowing(false)
+  }, [userId])
 
   const followersQuery = useQuery(GET_FOLLOWERS, {
     variables: { userId }

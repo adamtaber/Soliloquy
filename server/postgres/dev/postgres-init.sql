@@ -1,7 +1,5 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-SET timezone = ''
-
 CREATE TABLE users (
   user_id uuid DEFAULT uuid_generate_v4 (),
   displayname VARCHAR ( 50 ) NOT NULL,
@@ -23,6 +21,19 @@ CREATE TABLE user_followers (
   FOREIGN KEY (follower_id) REFERENCES users (user_id) ON DELETE CASCADE,
   CONSTRAINT user_and_follower_different
     CHECK (user_id != follower_id)
+);
+
+CREATE TABLE messages (
+  message_id uuid DEFAULT uuid_generate_v4 (),
+  sender_id uuid NOT NULL,
+  receiver_id uuid NOT NULL,
+  content VARCHAR (500) NOT NULL,
+  created_on TIMESTAMP NOT NULL,
+  PRIMARY KEY (message_id),
+  FOREIGN KEY (sender_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  FOREIGN KEY (receiver_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  CONSTRAINT sender_and_receiver_different
+    CHECK (sender_id != receiver_id)
 );
 
 CREATE TABLE posts (

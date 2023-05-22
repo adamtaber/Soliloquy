@@ -30,7 +30,7 @@ const commentQueries: QueryResolvers = {
 
     const query = 
       `SELECT * FROM comments
-      WHERE post_id = $1 AND parent_comment_id = $2`
+       WHERE post_id = $1 AND parent_comment_id = $2`
     const values = [postId, parentCommentId]
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)

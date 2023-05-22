@@ -3,6 +3,7 @@ import Home from "./pages/home"
 import Login from "./pages/login"
 import User from "./pages/user"
 import Post from "./pages/post"
+import Messages from "./pages/messages"
 import Root from "./components/General/Root"
 import Authenticate from "./components/General/Authenticate"
 
@@ -15,6 +16,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="users/:userId" element={<User />} />
         <Route path="posts/:postId" element={<Post />} />
+        <Route path="messages" element={<Messages />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Route>
