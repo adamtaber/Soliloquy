@@ -3,6 +3,7 @@ import { MutationResolvers } from "../graphql-types"
 import { pool } from "../../../db/config"
 import humps from "humps"
 import { isMessage } from "./types"
+import { pubsub } from "../../../utils"
 
 const messageMutations: MutationResolvers = {
   createMessage: async (_root, args, {authorizedId}) => {
@@ -43,6 +44,8 @@ const messageMutations: MutationResolvers = {
         }
       })
     }
+
+    pubsub.publish('MESSAGE_SENT', { messageSent: message })
 
     return message
   },

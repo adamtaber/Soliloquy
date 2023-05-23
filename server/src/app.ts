@@ -7,16 +7,38 @@ import typeDefs from './graphql/schema'
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
 import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer'
+import { makeExecutableSchema } from '@graphql-tools/schema'
+import { WebSocketServer } from 'ws'
+import { useServer } from 'graphql-ws/lib/use/ws'
+import { PubSub } from 'graphql-subscriptions'
 import { PORT, isProduction } from './config'
 import { checkToken } from './utils'
 
 const app = express()
 const httpServer = http.createServer(app)
+const schema = makeExecutableSchema({ typeDefs, resolvers })
+
+const wsServer = new WebSocketServer({
+  server: httpServer,
+  path: '/'
+})
+
+const serverCleanup = useServer({ schema }, wsServer)
 
 const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  plugins: [ApolloServerPluginDrainHttpServer({ httpServer })]
+  schema,
+  plugins: [
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            await serverCleanup.dispose()
+          }
+        }
+      }
+    }
+  ]
 })
 
 const startServer = async () => {
@@ -33,9 +55,11 @@ const startServer = async () => {
     expressMiddleware(server, {
       context: async ({ req, res }: any) => { 
         const authorizedId = checkToken(req)
+        const pubsub = new PubSub()
         return {
           res,
-          authorizedId
+          authorizedId,
+          pubsub
         }
       }
     })

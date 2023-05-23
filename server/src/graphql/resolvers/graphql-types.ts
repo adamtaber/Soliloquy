@@ -197,6 +197,11 @@ export type QueryGetUserPostsArgs = {
   userId: Scalars['String'];
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  messageSent: Message;
+};
+
 export type User = {
   __typename?: 'User';
   createdOn: Scalars['String'];
@@ -289,6 +294,7 @@ export type ResolversTypes = ResolversObject<{
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
+  Subscription: ResolverTypeWrapper<{}>;
   User: ResolverTypeWrapper<User>;
 }>;
 
@@ -305,6 +311,7 @@ export type ResolversParentTypes = ResolversObject<{
   Post: Post;
   Query: {};
   String: Scalars['String'];
+  Subscription: {};
   User: User;
 }>;
 
@@ -383,6 +390,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getUserPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetUserPostsArgs, 'userId'>>;
 }>;
 
+export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+  messageSent?: SubscriptionResolver<ResolversTypes['Message'], "messageSent", ParentType, ContextType>;
+}>;
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   displayname?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -401,6 +412,7 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  Subscription?: SubscriptionResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 }>;
 

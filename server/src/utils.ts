@@ -4,6 +4,9 @@ import { jwtPayload } from './types'
 import { ApolloServer } from '@apollo/server'
 import resolvers from './graphql/resolvers'
 import typeDefs from './graphql/schema'
+import { PubSub } from 'graphql-subscriptions'
+
+export const pubsub = new PubSub()
 
 export const createTestServer = () => {
   return new ApolloServer({
