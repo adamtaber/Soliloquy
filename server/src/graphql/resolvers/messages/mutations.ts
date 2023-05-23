@@ -24,7 +24,17 @@ const messageMutations: MutationResolvers = {
        RETURNING *`
     const values = [authorizedId, receiverId, content, createdOn]
     const messageMutation = await pool.query(query, values)
-    const message = humps.camelizeKeys(messageMutation.rows[0])
+    let message = humps.camelizeKeys(messageMutation.rows[0])
+
+    const query2 = 
+      `SELECT displayname
+       FROM users
+       WHERE user_id = $1`
+    const values2 = [authorizedId]
+    const sendNameQuery = await pool.query(query2, values2)
+    const senderName = humps.camelizeKeys(sendNameQuery.rows[0])
+
+    message = {...message, senderName: senderName.displayname}
 
     if(!isMessage(message)) {
       throw new GraphQLError('Query response is not of type Message', {
