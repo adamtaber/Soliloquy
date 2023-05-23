@@ -6,8 +6,20 @@ import Post from "./pages/post"
 import Messages from "./pages/messages"
 import Root from "./components/General/Root"
 import Authenticate from "./components/General/Authenticate"
+import { useSubscription } from "@apollo/client"
+import { MESSAGE_SENT } from "./graphql/messages/subscriptions"
 
 const App = () => {
+  // useSubscription(MESSAGE_SENT, {
+  //   onData: ({ data }) => {
+  //     console.log(data)
+  //   }
+  // })
+  const {loading, error, data} = useSubscription(MESSAGE_SENT)
+  if(loading) console.log('sub loading...')
+  if(error) console.log('error: ', error)
+  if(!loading) console.log(data)
+
   const router = createBrowserRouter(
     createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -24,7 +36,9 @@ const App = () => {
   )
 
   return (
-    <RouterProvider router={router} />
+    <>
+      <RouterProvider router={router} />
+    </>
   )
 }
 
