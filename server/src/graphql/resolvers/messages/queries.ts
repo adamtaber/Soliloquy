@@ -37,8 +37,6 @@ const messageQueries: QueryResolvers = {
       })
     }
 
-    console.log(messages)
-
     return messages
   },
   getMessagePartners: async (_root, _args, {authorizedId}) => {

@@ -10,11 +10,6 @@ import { useSubscription } from "@apollo/client"
 import { MESSAGE_SENT } from "./graphql/messages/subscriptions"
 
 const App = () => {
-  // useSubscription(MESSAGE_SENT, {
-  //   onData: ({ data }) => {
-  //     console.log(data)
-  //   }
-  // })
   const {loading, error, data} = useSubscription(MESSAGE_SENT)
   if(loading) console.log('sub loading...')
   if(error) console.log('error: ', error)

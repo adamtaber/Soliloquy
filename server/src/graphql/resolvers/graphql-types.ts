@@ -199,7 +199,7 @@ export type QueryGetUserPostsArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  messageSent: Message;
+  messageSent?: Maybe<Message>;
 };
 
 export type User = {
@@ -391,7 +391,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
-  messageSent?: SubscriptionResolver<ResolversTypes['Message'], "messageSent", ParentType, ContextType>;
+  messageSent?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageSent", ParentType, ContextType>;
 }>;
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
