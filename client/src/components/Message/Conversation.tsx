@@ -5,6 +5,7 @@ import { Navigate } from "react-router-dom"
 import MessageForm from "./MessageForm"
 import { MESSAGE_SENT } from "../../graphql/messages/subscriptions"
 import { useEffect } from "react"
+import DeleteMessage from "./DeleteMessage"
 
 const Conversation = (props: {partnerId: string, receiverId: string, closeMessage: () => void}) => {
   const {partnerId, receiverId, closeMessage} = props
@@ -45,6 +46,7 @@ const Conversation = (props: {partnerId: string, receiverId: string, closeMessag
         return (
           <div key={message.messageId}>
             <p>{message.senderName}: {message.content}</p>
+            {message.senderId === receiverId && <DeleteMessage messagePartnerId={partnerId} messageId={message.messageId}/>}
           </div>
         )
       })}

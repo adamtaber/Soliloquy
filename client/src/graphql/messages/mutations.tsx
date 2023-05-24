@@ -7,3 +7,9 @@ export const CREATE_MESSAGE = gql(`
     }
   }
 `)
+
+export const DELETE_MESSAGE = gql(`
+  mutation deleteMessage($messageId: String!) {
+    deleteMessage(messageId: $messageId)
+  }
+`)

@@ -20,6 +20,7 @@ const documents = {
     "\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n": types.GetChildCommentsDocument,
     "\n  fragment MessageFields on Message {\n    messageId\n    senderId\n    senderName\n    receiverId\n    content\n    createdOn\n  }\n": types.MessageFieldsFragmentDoc,
     "\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n": types.CreateMessageDocument,
+    "\n  mutation deleteMessage($messageId: String!) {\n    deleteMessage(messageId: $messageId)\n  }\n": types.DeleteMessageDocument,
     "\n  query getMessages($messagePartnerId: String!) {\n    getMessages(messagePartnerId: $messagePartnerId) {\n      ...MessageFields\n    }\n  }\n": types.GetMessagesDocument,
     "\n  query getMessagePartners {\n    getMessagePartners {\n      userId\n      username\n      displayname\n      recentMessage\n    }\n  }\n": types.GetMessagePartnersDocument,
     "\n  subscription messageSent($receiverId: String!){\n    messageSent(receiverId: $receiverId) {\n      ...MessageFields\n    }\n  }\n": types.MessageSentDocument,
@@ -83,6 +84,10 @@ export function gql(source: "\n  fragment MessageFields on Message {\n    messag
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n"): (typeof documents)["\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation deleteMessage($messageId: String!) {\n    deleteMessage(messageId: $messageId)\n  }\n"): (typeof documents)["\n  mutation deleteMessage($messageId: String!) {\n    deleteMessage(messageId: $messageId)\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
