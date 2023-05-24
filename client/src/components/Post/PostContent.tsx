@@ -27,7 +27,8 @@ const PostContent = (params: {postId: string, currentUser: User}) => {
     <>
       <p>{postData.content}</p>
       <p>{createDate.toLocaleDateString()}</p>
-      {currentUser.userId === postData.userId && <DeletePost postId={postId}/>}
+      {currentUser.userId === postData.userId 
+      && <DeletePost postId={postId} userId={currentUser.userId}/>}
     </>
   )
 }

@@ -30,7 +30,7 @@ const User = () => {
     <>
       <UserInfo userId={userId} />
       <UserFollows userId={userId} />
-      {currentUser.userId === userId && <PostForm pageType={'user'} />}
+      {currentUser.userId === userId && <PostForm userId={userId}/>}
       <UserPosts userId={userId} />
     </>
   )
