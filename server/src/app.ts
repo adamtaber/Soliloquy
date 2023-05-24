@@ -23,7 +23,15 @@ const wsServer = new WebSocketServer({
   path: '/'
 })
 
-const serverCleanup = useServer({ schema }, wsServer)
+const serverCleanup = useServer(
+  { 
+    schema,
+    context: async (ctx, msg, args) => {
+      const pubsub = new PubSub()
+      return {ctx, msg, args, pubsub }
+    }
+  }, 
+  wsServer)
 
 const server = new ApolloServer({
   schema,
@@ -55,11 +63,9 @@ const startServer = async () => {
     expressMiddleware(server, {
       context: async ({ req, res }: any) => { 
         const authorizedId = checkToken(req)
-        const pubsub = new PubSub()
         return {
           res,
-          authorizedId,
-          pubsub
+          authorizedId
         }
       }
     })

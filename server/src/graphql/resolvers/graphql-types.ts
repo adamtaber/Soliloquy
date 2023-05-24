@@ -202,6 +202,11 @@ export type Subscription = {
   messageSent?: Maybe<Message>;
 };
 
+
+export type SubscriptionMessageSentArgs = {
+  receiverId: Scalars['String'];
+};
+
 export type User = {
   __typename?: 'User';
   createdOn: Scalars['String'];
@@ -391,7 +396,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
-  messageSent?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageSent", ParentType, ContextType>;
+  messageSent?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageSent", ParentType, ContextType, RequireFields<SubscriptionMessageSentArgs, 'receiverId'>>;
 }>;
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{

@@ -6,15 +6,32 @@ import Post from "./pages/post"
 import Messages from "./pages/messages"
 import Root from "./components/General/Root"
 import Authenticate from "./components/General/Authenticate"
-import { useSubscription } from "@apollo/client"
+import { useQuery, useSubscription } from "@apollo/client"
 import { MESSAGE_SENT } from "./graphql/messages/subscriptions"
+import { CURRENT_USER } from "./graphql/users/queries"
+import { isUser } from "./graphql/users/types"
 
-const App = () => {
-  const {loading, error, data} = useSubscription(MESSAGE_SENT)
+const MessageSubscription = (props: {receiverId: string}) => {
+  const {receiverId} = props
+  console.log(receiverId)
+  const {loading, error, data} = useSubscription(MESSAGE_SENT, {
+    variables: {receiverId}
+  })
   if(loading) console.log('sub loading...')
   if(error) console.log('error: ', error)
   if(!loading) console.log(data)
 
+  return (
+    <>
+    </>
+  )
+}
+
+const App = () => {
+  const {loading, error, data} = useQuery(CURRENT_USER)
+  if(loading) console.log('query loading...')
+  if(error) console.log(error)
+  
   const router = createBrowserRouter(
     createRoutesFromElements(
     <Route path="/" element={<Root />}>
@@ -30,8 +47,15 @@ const App = () => {
     )
   )
 
+  let currentUserId
+
+  if(data && isUser(data.currentUser)) {
+    currentUserId = data.currentUser.userId
+  }
+
   return (
     <>
+      {!loading && currentUserId && <MessageSubscription receiverId={currentUserId}/>}
       <RouterProvider router={router} />
     </>
   )
