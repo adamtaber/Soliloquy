@@ -3,18 +3,37 @@ import { GET_MESSAGES } from "../../graphql/messages/queries"
 import { isMessageArray } from "../../graphql/messages/types"
 import { Navigate } from "react-router-dom"
 import MessageForm from "./MessageForm"
+import { MESSAGE_SENT } from "../../graphql/messages/subscriptions"
+import { useEffect } from "react"
 
-const Conversation = (props: {partnerId: string, closeMessage: () => void}) => {
-  const {partnerId, closeMessage} = props
+const Conversation = (props: {partnerId: string, receiverId: string, closeMessage: () => void}) => {
+  const {partnerId, receiverId, closeMessage} = props
 
-  const {loading, error, data} = useQuery(GET_MESSAGES, {
+  const {subscribeToMore, ...result} = useQuery(GET_MESSAGES, {
     variables: {messagePartnerId: partnerId}
   })
 
-  if(loading) return null
-  if(error) console.log(error)
+  const subscribeToNewMessages = () => {
+    subscribeToMore({
+      document: MESSAGE_SENT,
+      variables: { receiverId },
+      updateQuery: (prev, { subscriptionData }) => {
+        if(!subscriptionData.data) return prev
+        const newFeedItem = subscriptionData.data.messageSent
+        return Object.assign({}, prev, {
+          getMessages: [newFeedItem, ...prev.getMessages]
+        })
+      }
+    })
+  }
 
-  if(!data || !isMessageArray(data.getMessages)) {
+  useEffect(() => {
+    subscribeToNewMessages()
+  }, [])
+
+  if(result.loading) return null
+  if(result.error) console.log(result.error)
+  if(!result.data || !isMessageArray(result.data.getMessages)) {
     return <Navigate to='/' />
   }
 
@@ -22,7 +41,7 @@ const Conversation = (props: {partnerId: string, closeMessage: () => void}) => {
     <>
       <MessageForm receiverId={partnerId}/>
       <button onClick={() => closeMessage()}>Back</button>
-      {data.getMessages.map((message) => {
+      {result.data.getMessages.map((message) => {
         return (
           <div key={message.messageId}>
             <p>{message.senderName}: {message.content}</p>
