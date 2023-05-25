@@ -7,3 +7,11 @@ export const MESSAGE_SENT = gql(`
     }
   }
 `)
+
+export const MESSAGE_DELETED = gql(`
+  subscription messageDeleted($receiverId: String!){
+    messageDeleted(receiverId: $receiverId) {
+      ...MessageFields
+    }
+  }
+`)

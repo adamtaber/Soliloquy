@@ -199,7 +199,13 @@ export type QueryGetUserPostsArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  messageDeleted?: Maybe<Message>;
   messageSent?: Maybe<Message>;
+};
+
+
+export type SubscriptionMessageDeletedArgs = {
+  receiverId: Scalars['String'];
 };
 
 
@@ -396,6 +402,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+  messageDeleted?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageDeleted", ParentType, ContextType, RequireFields<SubscriptionMessageDeletedArgs, 'receiverId'>>;
   messageSent?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageSent", ParentType, ContextType, RequireFields<SubscriptionMessageSentArgs, 'receiverId'>>;
 }>;
 

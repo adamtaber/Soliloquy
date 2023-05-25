@@ -27,8 +27,22 @@ const splitLink = split(
   httpLink
 )
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        getMessages: {
+          merge(existing, incoming) {
+            return incoming
+          }
+        }
+      }
+    }
+  }
+})
+
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link: splitLink
 })
 

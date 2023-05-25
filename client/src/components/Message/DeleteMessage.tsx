@@ -2,6 +2,8 @@ import { useMutation } from "@apollo/client"
 import { DELETE_MESSAGE } from "../../graphql/messages/mutations"
 import { GET_MESSAGES } from "../../graphql/messages/queries"
 
+//Add subscription for this so it updates for both users
+
 const DeleteMessage = (props: {messagePartnerId: string, messageId: string}) => {
   const {messagePartnerId, messageId} = props
 

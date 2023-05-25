@@ -60,11 +60,25 @@ const messageMutations: MutationResolvers = {
       })
     }
 
+    const values = [messageId]
+
+    const findQuery = 
+      `SELECT u.displayname AS sender_name, m.content, m.message_id, m.created_on, m.receiver_id, m.sender_id
+       FROM messages m
+       JOIN users u
+       ON m.sender_id = u.user_id
+       WHERE message_id = $1`
+
+    const findMessage = await pool.query(findQuery, values)
+    const message = humps.camelizeKeys(findMessage.rows[0])
+
     const query = 
       `DELETE FROM messages
        WHERE message_id = $1`
-    const values = [messageId]
+    
     await pool.query(query, values)
+
+    pubsub.publish('MESSAGE_DELETED', { messageDeleted: message})
 
     return true
   }

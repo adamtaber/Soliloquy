@@ -3,14 +3,6 @@ import { SubscriptionResolvers } from "../graphql-types"
 import { pubsub } from "../../../utils"
 
 const messageSubscriptions: SubscriptionResolvers = {
-  // messageSent: {
-  //   subscribe:
-  //     () => {
-  //       return {
-  //         [Symbol.asyncIterator]: () => pubsub.asyncIterator('MESSAGE_SENT')
-  //       }
-  //     }
-  // }
   messageSent: {
     subscribe:
       (_root, args) => {
@@ -25,6 +17,20 @@ const messageSubscriptions: SubscriptionResolvers = {
           )
         }
       }
+  },
+  messageDeleted: {
+    subscribe: (_root, args) => {
+      return {
+        [Symbol.asyncIterator]: withFilter(
+          () => pubsub.asyncIterator('MESSAGE_DELETED'),
+          (payload) => {
+            return (
+              payload.messageDeleted.receiverId === args.receiverId
+            )
+          }
+        )
+      }
+    }
   }
 }
 

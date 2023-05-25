@@ -35,4 +35,7 @@ type Subscription {
   messageSent(
     receiverId: String!
   ): Message
+  messageDeleted(
+    receiverId: String!
+  ): Message
 }

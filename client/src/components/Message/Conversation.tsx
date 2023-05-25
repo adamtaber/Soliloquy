@@ -1,11 +1,14 @@
 import { useQuery } from "@apollo/client"
 import { GET_MESSAGES } from "../../graphql/messages/queries"
-import { isMessageArray } from "../../graphql/messages/types"
+import { isMessage, isMessageArray } from "../../graphql/messages/types"
 import { Navigate } from "react-router-dom"
 import MessageForm from "./MessageForm"
-import { MESSAGE_SENT } from "../../graphql/messages/subscriptions"
+import { MESSAGE_DELETED, MESSAGE_SENT } from "../../graphql/messages/subscriptions"
 import { useEffect } from "react"
 import DeleteMessage from "./DeleteMessage"
+
+//update getMessagePartners as well for subscription so that it updates while
+//user is looking at list of message partners
 
 const Conversation = (props: {partnerId: string, receiverId: string, closeMessage: () => void}) => {
   const {partnerId, receiverId, closeMessage} = props
@@ -21,6 +24,7 @@ const Conversation = (props: {partnerId: string, receiverId: string, closeMessag
       updateQuery: (prev, { subscriptionData }) => {
         if(!subscriptionData.data) return prev
         const newFeedItem = subscriptionData.data.messageSent
+        console.log(prev.getMessages)
         return Object.assign({}, prev, {
           getMessages: [newFeedItem, ...prev.getMessages]
         })
@@ -28,8 +32,25 @@ const Conversation = (props: {partnerId: string, receiverId: string, closeMessag
     })
   }
 
+  const subscribeToDeletedMessages = () => {
+    subscribeToMore({
+      document: MESSAGE_DELETED,
+      variables: { receiverId },
+      updateQuery: (prev, {subscriptionData }) => {
+        if(!subscriptionData.data) return prev
+        const deletedItem = subscriptionData.data.messageDeleted
+        if(!isMessage(deletedItem)) return prev
+        if(!isMessageArray(prev.getMessages)) return prev
+        return Object.assign({}, prev, {
+          getMessages: prev.getMessages.filter((item) => item.messageId !== deletedItem.messageId)
+        })
+      }
+    })
+  }
+
   useEffect(() => {
     subscribeToNewMessages()
+    subscribeToDeletedMessages()
   }, [])
 
   if(result.loading) return null
