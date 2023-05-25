@@ -66,8 +66,8 @@ const Conversation = (props: {partnerId: string, receiverId: string, closeMessag
       {result.data.getMessages.map((message) => {
         return (
           <div key={message.messageId}>
-            <p>{message.senderName}: {message.content}</p>
-            {message.senderId === receiverId && <DeleteMessage messagePartnerId={partnerId} messageId={message.messageId}/>}
+            <p>{message.sender.displayname}: {message.content}</p>
+            {message.sender.userId === receiverId && <DeleteMessage messagePartnerId={partnerId} messageId={message.messageId}/>}
           </div>
         )
       })}

@@ -25,7 +25,7 @@ const messageSubscriptions: SubscriptionResolvers = {
           () => pubsub.asyncIterator('MESSAGE_DELETED'),
           (payload) => {
             return (
-              payload.messageDeleted.receiverId === args.receiverId
+              payload.messageDeleted.receiver.userId === args.receiverId
             )
           }
         )

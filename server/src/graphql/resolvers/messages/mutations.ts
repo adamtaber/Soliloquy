@@ -28,14 +28,22 @@ const messageMutations: MutationResolvers = {
     let message = humps.camelizeKeys(messageMutation.rows[0])
 
     const query2 = 
-      `SELECT displayname
+      `SELECT displayname, username, user_id, password, created_on, email
        FROM users
        WHERE user_id = $1`
     const values2 = [authorizedId]
-    const sendNameQuery = await pool.query(query2, values2)
-    const senderName = humps.camelizeKeys(sendNameQuery.rows[0])
+    const senderQuery = await pool.query(query2, values2)
+    const sender = humps.camelizeKeys(senderQuery.rows[0])
 
-    message = {...message, senderName: senderName.displayname}
+    const query3 = 
+     `SELECT displayname, username, user_id, password, created_on, email
+      FROM users
+      WHERE user_id = $1`
+    const values3 = [receiverId]
+    const receiverQuery = await pool.query(query3, values3)
+    const receiver = humps.camelizeKeys(receiverQuery.rows[0])
+
+    message = {...message, sender: {...sender}, receiver: {...receiver}}
 
     if(!isMessage(message)) {
       throw new GraphQLError('Query response is not of type Message', {
@@ -63,14 +71,49 @@ const messageMutations: MutationResolvers = {
     const values = [messageId]
 
     const findQuery = 
-      `SELECT u.displayname AS sender_name, m.content, m.message_id, m.created_on, m.receiver_id, m.sender_id
+      `SELECT m.message_id, m.content, m.created_on, 
+         r.user_id AS r_user_id, r.displayname AS r_displayname, r.username AS r_username,
+         r.password AS r_password, r.email AS r_email, r.created_on AS r_created_on,
+         s.user_id AS s_user_id, s.displayname AS s_displayname, s.username AS s_username,
+         s.password AS s_password, s.email AS s_email, s.created_on AS s_created_on
        FROM messages m
-       JOIN users u
-       ON m.sender_id = u.user_id
+       JOIN users r
+       ON m.receiver_id = r.user_id
+       JOIN users s
+       ON m.sender_id = s.user_id
        WHERE message_id = $1`
+
+    // const findQuery = 
+    //   `SELECT m.content, m.message_id, m.created_on, m.receiver_id, m.sender_id
+    //    FROM messages m
+    //    JOIN users u
+    //    ON m.sender_id = u.user_id
+    //    WHERE message_id = $1`
 
     const findMessage = await pool.query(findQuery, values)
     const message = humps.camelizeKeys(findMessage.rows[0])
+
+    const newMessage = {
+        messageId: message.messageId,
+        content: message.content,
+        createdOn: message.createdOn,
+        receiver: {
+          userId: message.rUserId,
+          displayname: message.rDisplayname,
+          username: message.rUsername,
+          password: message.rPassword,
+          email: message.rEmail,
+          createdOn: message.rCreatedOn
+        },
+        sender: {
+          userId: message.sUserId,
+          displayname: message.sDisplayname,
+          username: message.sUsername,
+          password: message.sPassword,
+          email: message.sEmail,
+          createdOn: message.sCreatedOn
+        }
+      }
 
     const query = 
       `DELETE FROM messages
@@ -78,7 +121,7 @@ const messageMutations: MutationResolvers = {
     
     await pool.query(query, values)
 
-    pubsub.publish('MESSAGE_DELETED', { messageDeleted: message})
+    pubsub.publish('MESSAGE_DELETED', { messageDeleted: newMessage})
 
     return true
   }

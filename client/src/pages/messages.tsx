@@ -28,7 +28,7 @@ const Messages = () => {
     <>
       <h1>Messages</h1>
       {messageList 
-        ? <MessageList openMessage={openMessage} />
+        ? <MessageList receiverId={receiverId} openMessage={openMessage} />
         : <Conversation 
             partnerId ={partnerId} 
             receiverId={receiverId} 

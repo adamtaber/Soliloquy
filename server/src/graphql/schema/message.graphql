@@ -1,10 +1,9 @@
 type Message {
   messageId: ID!,
-  senderId: ID!,
-  senderName: String!,
-  receiverId: ID!,
   content: String!,
-  createdOn: String!
+  createdOn: String!,
+  receiver: User!,
+  sender: User!
 }
 
 type BasicUser {

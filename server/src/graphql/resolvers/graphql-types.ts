@@ -38,9 +38,8 @@ export type Message = {
   content: Scalars['String'];
   createdOn: Scalars['String'];
   messageId: Scalars['ID'];
-  receiverId: Scalars['ID'];
-  senderId: Scalars['ID'];
-  senderName: Scalars['String'];
+  receiver: User;
+  sender: User;
 };
 
 export type Mutation = {
@@ -352,9 +351,8 @@ export type MessageResolvers<ContextType = any, ParentType extends ResolversPare
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   messageId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  receiverId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  senderId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  senderName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  receiver?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

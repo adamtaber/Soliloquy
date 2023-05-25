@@ -1,10 +1,19 @@
 import { BasicUser, Message } from "../types/graphql"
+import { isUser } from "../users/types"
+
+// export const isMessage = (input: any): input is Message  => {
+//   const message = (input.content !== undefined) &&
+//                   (input.messageId !== undefined) &&
+//                   (input.senderId !== undefined) &&
+//                   (input.receiverId !== undefined) 
+//   return message
+// }
 
 export const isMessage = (input: any): input is Message  => {
   const message = (input.content !== undefined) &&
                   (input.messageId !== undefined) &&
-                  (input.senderId !== undefined) &&
-                  (input.receiverId !== undefined) 
+                  (isUser(input.sender)) &&
+                  (isUser(input.receiver))
   return message
 }
 
