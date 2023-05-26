@@ -3,10 +3,14 @@ import { GET_MESSAGE_PARTNERS } from "../../graphql/messages/queries"
 import { isBasicUserArray, isMessage } from "../../graphql/messages/types"
 import { Navigate } from "react-router-dom"
 import { useEffect } from "react"
-import { MESSAGE_SENT } from "../../graphql/messages/subscriptions"
+import { MESSAGE_DELETED, MESSAGE_SENT } from "../../graphql/messages/subscriptions"
+
+//now that user data is combined with message data there is no reason to have
+//this convoluted data type, definitely refactor
 
 const MessageList = (props: {receiverId: string, openMessage: (partnerId: string) => void}) => {
-  const {subscribeToMore, loading, error, data} = useQuery(GET_MESSAGE_PARTNERS)
+  
+  const {subscribeToMore, loading, error, data, refetch} = useQuery(GET_MESSAGE_PARTNERS)
   const {receiverId, openMessage} = props
 
   const subscribeToNewMessages = () => {
@@ -37,8 +41,23 @@ const MessageList = (props: {receiverId: string, openMessage: (partnerId: string
     })
   }
 
+  const subscribeToDeletedMessages = () => {
+    subscribeToMore({
+      document: MESSAGE_DELETED,
+      variables: { receiverId },
+      updateQuery: (prev) => {
+        refetch()
+        if(!data || !data.getMessagePartners) return prev
+        return Object.assign({}, prev, {
+          getMessagePartners: data.getMessagePartners
+        })
+      }
+    })
+  }
+
   useEffect(() => {
     subscribeToNewMessages()
+    subscribeToDeletedMessages()
   })
 
   if(loading) return null

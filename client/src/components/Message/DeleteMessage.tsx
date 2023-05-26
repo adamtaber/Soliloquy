@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client"
 import { DELETE_MESSAGE } from "../../graphql/messages/mutations"
-import { GET_MESSAGES } from "../../graphql/messages/queries"
+import { GET_MESSAGES, GET_MESSAGE_PARTNERS } from "../../graphql/messages/queries"
 
 //Add subscription for this so it updates for both users
 
@@ -9,7 +9,8 @@ const DeleteMessage = (props: {messagePartnerId: string, messageId: string}) => 
 
   const [deleteMessage, {loading, error, data}] = useMutation(DELETE_MESSAGE, {
     refetchQueries: [
-      {query: GET_MESSAGES, variables: {messagePartnerId}}
+      { query: GET_MESSAGES, variables: { messagePartnerId } },
+      { query: GET_MESSAGE_PARTNERS }
     ]
   })
 
