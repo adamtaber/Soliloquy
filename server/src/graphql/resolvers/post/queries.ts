@@ -51,7 +51,8 @@ const postQueries: QueryResolvers = {
 
     return posts
   },
-  getFeedPosts: async(_root, _args, { authorizedId }) => {
+  getFeedPosts: async(_root, args, { authorizedId }) => {
+    const {lastPostId, lastCreatedOn, limit} = args
     if (!authorizedId) {
       throw new GraphQLError('User is not authorized', {
         extensions: {
@@ -72,12 +73,27 @@ const postQueries: QueryResolvers = {
        FROM posts p
        JOIN users u
        ON u.user_id = p.user_id
-       WHERE p.user_id IN (${query1}) OR p.user_id = $1
-       ORDER BY created_on DESC`
+       WHERE (p.user_id IN (${query1}) OR p.user_id = $1)
+         AND (p.created_on, p.post_id) < ($2, $3)
+       ORDER BY p.created_on DESC, p.post_id DESC
+       LIMIT $4`
     
-    const values = [authorizedId]
+    const query3 = 
+        `SELECT p.post_id, p.user_id, p.content, p.created_on, u.displayname
+        FROM posts p
+        JOIN users u
+        ON u.user_id = p.user_id
+        WHERE (p.user_id IN (${query1}) OR p.user_id = $1)
+        ORDER BY p.created_on DESC, p.post_id DESC
+        LIMIT $2`
+    
+    const values = lastPostId && lastCreatedOn 
+      ? [authorizedId, lastCreatedOn, lastPostId, limit]
+      : [authorizedId, limit]
 
-    const postsQuery = await pool.query(query2, values)
+    const postsQuery = lastPostId && lastCreatedOn 
+      ? await pool.query(query2, values)
+      : await pool.query(query3, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
     if (!isPostArray(posts)) {

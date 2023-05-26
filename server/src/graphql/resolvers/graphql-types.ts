@@ -172,6 +172,13 @@ export type QueryGetCommentsArgs = {
 };
 
 
+export type QueryGetFeedPostsArgs = {
+  lastCreatedOn?: InputMaybe<Scalars['Date']>;
+  lastPostId?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
 export type QueryGetFollowersArgs = {
   userId: Scalars['String'];
 };
@@ -390,7 +397,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'userId'>>;
   getChildComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetChildCommentsArgs, 'parentCommentId' | 'postId'>>;
   getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'postId'>>;
-  getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType>;
+  getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetFeedPostsArgs, 'limit'>>;
   getFollowers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'userId'>>;
   getFollowing?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowingArgs, 'userId'>>;
   getMessagePartners?: Resolver<Array<Maybe<ResolversTypes['BasicUser']>>, ParentType, ContextType>;

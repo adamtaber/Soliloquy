@@ -45,6 +45,9 @@ CREATE TABLE posts (
   FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
 
+CREATE INDEX posts_pagination
+ON posts (created_on DESC, post_id DESC);
+
 CREATE TABLE comments (
   comment_id uuid DEFAULT uuid_generate_v4 (),
   user_id uuid NOT NULL,

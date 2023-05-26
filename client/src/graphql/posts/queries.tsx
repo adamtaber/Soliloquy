@@ -10,8 +10,8 @@ export const GET_USER_POSTS = gql(`
 `)
 
 export const GET_FEED_POSTS = gql(`
-  query getFeedPosts {
-    getFeedPosts {
+  query getFeedPosts($lastPostId: String, $lastCreatedOn: Date, $limit: Int!) {
+    getFeedPosts(lastPostId: $lastPostId, lastCreatedOn: $lastCreatedOn, limit: $limit) {
       ...PostFields
       displayname
     }

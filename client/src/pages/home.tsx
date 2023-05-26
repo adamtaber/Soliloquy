@@ -1,41 +1,55 @@
 import { useQuery } from "@apollo/client"
 import { GET_FEED_POSTS } from "../graphql/posts/queries"
 import { isPostArray } from "../graphql/posts/types"
-import { Link } from "react-router-dom"
 import PostForm from "../components/Post/PostForm"
+import { CURRENT_USER } from "../graphql/users/queries"
+import { isUser } from "../graphql/users/types"
+import PostFeed from "../components/Post/PostFeed"
 
 const Home = () => {
-  const postsQuery = useQuery(GET_FEED_POSTS)
+  const userQuery = useQuery(CURRENT_USER)
+  if(userQuery.loading) return null
+  if(userQuery.error) console.log(userQuery.error)
+  if(!userQuery.data?.currentUser || !isUser(userQuery.data.currentUser)) {
+    console.log('did not retrieve user')
+    return null
+  }
 
+  const userId = userQuery.data.currentUser.userId
+
+  const postsQuery = useQuery(GET_FEED_POSTS, {
+    variables: {limit: 30}
+  })
   if(postsQuery.loading) return null
   if(postsQuery.error) console.log(postsQuery.error)
-
   if(!postsQuery.data?.getFeedPosts || !isPostArray(postsQuery.data.getFeedPosts)) {
     console.log('did not retrieve posts')
     return null
   }
 
-  const postsData = postsQuery.data.getFeedPosts.map((post) => {
-    let date = new Date(post.createdOn)
-    return {
-      ...post,
-      createdOn: date.toLocaleString()
-    }
-  })
+  const postData = postsQuery.data.getFeedPosts
 
   return (
     <div>
       <p>HOME</p>
-      <PostForm pageType={'home'}/>
-      {postsData.map((post) => {
-        return (
-          <p key={post.postId}>
-            user: <Link to={`/users/${post.userId}`}>{post.displayname}</Link>
-            content: {post.content}  
-            date: {post.createdOn}
-          </p>
-        )
-      })}
+      <PostForm userId={userId}/>
+      <PostFeed 
+        postData={postData}
+        onLoadMore={(lastPostId, lastCreatedOn) => postsQuery.fetchMore({
+          variables: {
+            lastPostId,
+            lastCreatedOn
+          },
+          updateQuery: (prevRes, {fetchMoreResult}) => {
+            const newFeed = fetchMoreResult.getFeedPosts
+            const result = newFeed.length
+              ? [...prevRes.getFeedPosts, ...newFeed]
+              : prevRes.getFeedPosts
+            return {
+              getFeedPosts: result
+            }
+          }
+        })}/>
     </div>
   )
 }

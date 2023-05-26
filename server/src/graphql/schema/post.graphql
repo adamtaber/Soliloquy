@@ -15,7 +15,11 @@ type Query {
   getUserPosts(
     userId: String!
   ): [Post]!
-  getFeedPosts: [Post]!
+  getFeedPosts(
+    lastPostId: String,
+    lastCreatedOn: Date,
+    limit: Int!
+  ): [Post]!
 }
 
 type Mutation {
