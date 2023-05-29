@@ -72,7 +72,9 @@ CREATE TABLE likes (
   FOREIGN KEY (post_id) REFERENCES posts (post_id) ON DELETE CASCADE,
   FOREIGN KEY (comment_id) REFERENCES comments (comment_id) ON DELETE CASCADE,
   CONSTRAINT only_post_or_column
-    CHECK ((post_id IS NULL) != (comment_id IS NULL))
+    CHECK ((post_id IS NULL) != (comment_id IS NULL)),
+  UNIQUE (post_id, user_id),
+  UNIQUE (comment_id, user_id)
 );
 
 CREATE TABLE bookmarks (

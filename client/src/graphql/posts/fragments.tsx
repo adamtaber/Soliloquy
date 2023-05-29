@@ -6,5 +6,7 @@ export const PostFragment = gql(`
     userId
     content
     createdOn
+    likesCount
+    currentUserLike
   }
 `)

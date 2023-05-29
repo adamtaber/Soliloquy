@@ -18,6 +18,9 @@ const documents = {
     "\n  mutation deleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n": types.DeleteCommentDocument,
     "\n  query getComments($postId: String!) {\n    getComments(postId: $postId) {\n      ...CommentFields\n    }\n  }\n": types.GetCommentsDocument,
     "\n  query getChildComments($postId: String!, $parentCommentId: String!) {\n    getChildComments(postId: $postId, parentCommentId: $parentCommentId) {\n      ...CommentFields\n    }\n  }\n": types.GetChildCommentsDocument,
+    "\n  fragment LikeFields on Like {\n    likeId\n    userId\n    commentId\n    postId\n    createdOn\n  }\n": types.LikeFieldsFragmentDoc,
+    "\n  mutation likeContent($postId: String, $commentId: String) {\n    likeContent(postId: $postId, commentId: $commentId)\n  }\n": types.LikeContentDocument,
+    "\n  mutation deleteLike($postId: String, $commentId: String) {\n    deleteLike(postId: $postId, commentId: $commentId)\n  }\n": types.DeleteLikeDocument,
     "\n  fragment MessageFields on Message {\n    messageId\n    content\n    createdOn\n    sender {\n      ...UserFields\n    }\n    receiver {\n      ...UserFields\n    }\n  }\n": types.MessageFieldsFragmentDoc,
     "\n  mutation createMessage($receiverId: String!, $content: String!) {\n    createMessage(receiverId: $receiverId, content: $content) {\n      ...MessageFields\n    }\n  }\n": types.CreateMessageDocument,
     "\n  mutation deleteMessage($messageId: String!) {\n    deleteMessage(messageId: $messageId)\n  }\n": types.DeleteMessageDocument,
@@ -25,7 +28,7 @@ const documents = {
     "\n  query getMessagePartners {\n    getMessagePartners {\n      userId\n      username\n      displayname\n      recentMessage\n    }\n  }\n": types.GetMessagePartnersDocument,
     "\n  subscription messageSent($receiverId: String!){\n    messageSent(receiverId: $receiverId) {\n      ...MessageFields\n    }\n  }\n": types.MessageSentDocument,
     "\n  subscription messageDeleted($receiverId: String!){\n    messageDeleted(receiverId: $receiverId) {\n      ...MessageFields\n    }\n  }\n": types.MessageDeletedDocument,
-    "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n": types.PostFieldsFragmentDoc,
+    "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n  }\n": types.PostFieldsFragmentDoc,
     "\n  mutation createPost($content: String!) {\n    createPost(content: $content) {\n      ...PostFields\n    }\n  }\n": types.CreatePostDocument,
     "\n  mutation deletePost($postId: String!) {\n    deletePost(postId: $postId)\n  }\n": types.DeletePostDocument,
     "\n  query getUserPosts($userId: String!) {\n    getUserPosts(userId: $userId) {\n      ...PostFields\n    }\n  }\n": types.GetUserPostsDocument,
@@ -80,6 +83,18 @@ export function gql(source: "\n  query getChildComments($postId: String!, $paren
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  fragment LikeFields on Like {\n    likeId\n    userId\n    commentId\n    postId\n    createdOn\n  }\n"): (typeof documents)["\n  fragment LikeFields on Like {\n    likeId\n    userId\n    commentId\n    postId\n    createdOn\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation likeContent($postId: String, $commentId: String) {\n    likeContent(postId: $postId, commentId: $commentId)\n  }\n"): (typeof documents)["\n  mutation likeContent($postId: String, $commentId: String) {\n    likeContent(postId: $postId, commentId: $commentId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation deleteLike($postId: String, $commentId: String) {\n    deleteLike(postId: $postId, commentId: $commentId)\n  }\n"): (typeof documents)["\n  mutation deleteLike($postId: String, $commentId: String) {\n    deleteLike(postId: $postId, commentId: $commentId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  fragment MessageFields on Message {\n    messageId\n    content\n    createdOn\n    sender {\n      ...UserFields\n    }\n    receiver {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  fragment MessageFields on Message {\n    messageId\n    content\n    createdOn\n    sender {\n      ...UserFields\n    }\n    receiver {\n      ...UserFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
@@ -108,7 +123,7 @@ export function gql(source: "\n  subscription messageDeleted($receiverId: String
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n"): (typeof documents)["\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n  }\n"];
+export function gql(source: "\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n  }\n"): (typeof documents)["\n  fragment PostFields on Post {\n    postId\n    userId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

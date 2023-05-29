@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { Post } from "../../graphql/types/graphql"
 import { useRef } from "react"
+import LikeButton from "../Like/LikeButton"
 
 const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: String, lastCreatedOn: Date) => void }) => {
   const {postData, onLoadMore} = props
@@ -32,19 +33,31 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
       {feed.map((post, i) => {
         if(feed.length === i + 1) {
           return (
-            <p ref={lastPostRef} key={post.postId}>
+            <div ref={lastPostRef} key={post.postId}>
               user: <Link to={`/users/${post.userId}`}>{post.displayname}</Link>
               content: {post.content}  
               date: {post.createdOn}
-            </p>
+              <LikeButton 
+                likes={post.likesCount}
+                contentId={post.postId} 
+                contentType="post"
+                userLiked={post.currentUserLike ? true : false}
+              />
+            </div>
           )
         } 
         return (
-          <p key={post.postId}>
+          <div key={post.postId}>
             user: <Link to={`/users/${post.userId}`}>{post.displayname}</Link>
             content: {post.content}  
             date: {post.createdOn}
-          </p>
+            <LikeButton 
+                likes={post.likesCount}
+                contentId={post.postId} 
+                contentType="post"
+                userLiked={post.currentUserLike ? true : false}
+              />
+          </div>
         )
       })}
     </>

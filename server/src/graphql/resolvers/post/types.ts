@@ -6,7 +6,9 @@ import { Post } from "../graphql-types"
 export const isPost = (input: any): input is Post => {
   const post = (input.content !== undefined) &&
                (input.postId !== undefined) &&
-               (input.userId !== undefined)
+               (input.userId !== undefined) &&
+               (input.likesCount !== undefined) &&
+               (input.currentUserLike !== undefined)
   return post
 }
 

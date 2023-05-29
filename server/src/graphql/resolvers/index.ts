@@ -1,7 +1,8 @@
 import { commentMutations, commentQueries } from "./comment";
 import { dateScalar } from "./customScalars";
 import { Resolvers } from "./graphql-types";
-import { messageMutations, messageQueries, messageSubscriptions } from "./messages";
+import { likeMutations, likeQueries } from "./like";
+import { messageMutations, messageQueries, messageSubscriptions } from "./message";
 import { postMutations, postQueries } from "./post";
 import { userQueries, userMutations } from "./user";
 
@@ -11,13 +12,15 @@ const resolvers: Resolvers = {
     ...userQueries,
     ...postQueries,
     ...commentQueries,
-    ...messageQueries
+    ...messageQueries,
+    ...likeQueries
   },
   Mutation: {
     ...userMutations,
     ...postMutations,
     ...commentMutations,
-    ...messageMutations
+    ...messageMutations,
+    ...likeMutations
   },
   Subscription: {
     ...messageSubscriptions

@@ -2,10 +2,12 @@ scalar Date
 
 type Post {
   postId: ID!,
-  userId: ID!,
+  userId: ID!
   content: String!,
   createdOn: Date!,
-  displayname: String
+  displayname: String,
+  likesCount: Int!,
+  currentUserLike: String
 }
 
 type Query {

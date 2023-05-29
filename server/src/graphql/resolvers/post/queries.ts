@@ -9,9 +9,20 @@ const postQueries: QueryResolvers = {
   getPost: async(_root, args) => {
     const { postId } = args
 
+    const likesCount = 
+      `SELECT COUNT(*)
+       FROM likes l
+       WHERE l.post_id = p.post_id`
+
+    const likedByCurrentUser = 
+    `SELECT user_id
+    FROM likes l
+    WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
+
     const query =
-      `SELECT *
-       FROM posts
+      `SELECT p.*, (${likesCount}) AS likes_count,
+       (${likedByCurrentUser}) AS current_user_like
+       FROM posts p
        WHERE post_id = $1`
     const values = [postId]
 
@@ -31,9 +42,20 @@ const postQueries: QueryResolvers = {
   getUserPosts: async(_root, args) => {
     const { userId } = args
 
+    const likesCount = 
+      `SELECT COUNT(*)
+       FROM likes l
+       WHERE l.post_id = p.post_id`
+
+    const likedByCurrentUser = 
+    `SELECT user_id
+    FROM likes l
+    WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
+
     const query = 
-      `SELECT *
-       FROM posts
+      `SELECT p.*, (${likesCount}) AS likes_count, 
+       (${likedByCurrentUser}) AS current_user_like
+       FROM posts p
        WHERE user_id = $1
        ORDER BY created_on DESC`
     const values = [userId]
@@ -61,39 +83,55 @@ const postQueries: QueryResolvers = {
       })
     }
 
-    const query1 = 
+    const followedUsers = 
       `SELECT u.user_id
        FROM users u
        JOIN user_followers f
-       ON u.user_id = f.user_id
+         ON u.user_id = f.user_id
        WHERE f.follower_id = $1`
 
-    const query2 = 
-      `SELECT p.post_id, p.user_id, p.content, p.created_on, u.displayname
+    const likesCount = 
+      `SELECT COUNT(*)
+       FROM likes l
+       WHERE l.post_id = p.post_id`
+
+    const likedByCurrentUser = 
+      `SELECT user_id
+       FROM likes l
+       WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
+
+    const initialQuery = 
+      `SELECT p.post_id, p.user_id, p.content, 
+         p.created_on, u.displayname, 
+         (${likesCount}) AS likes_count,
+         (${likedByCurrentUser}) AS current_user_like
        FROM posts p
        JOIN users u
-       ON u.user_id = p.user_id
-       WHERE (p.user_id IN (${query1}) OR p.user_id = $1)
+         ON u.user_id = p.user_id
+       WHERE (p.user_id IN (${followedUsers}) OR p.user_id = $1)
+       ORDER BY p.created_on DESC, p.post_id DESC
+       LIMIT $2`
+    
+    const nextQuery = 
+      `SELECT p.post_id, p.user_id, p.content, 
+         p.created_on, u.displayname, 
+         (${likesCount}) AS likes_count,
+         (${likedByCurrentUser}) AS current_user_like
+       FROM posts p
+       JOIN users u
+         ON u.user_id = p.user_id
+       WHERE (p.user_id IN (${followedUsers}) OR p.user_id = $1)
          AND (p.created_on, p.post_id) < ($2, $3)
        ORDER BY p.created_on DESC, p.post_id DESC
        LIMIT $4`
-    
-    const query3 = 
-        `SELECT p.post_id, p.user_id, p.content, p.created_on, u.displayname
-        FROM posts p
-        JOIN users u
-        ON u.user_id = p.user_id
-        WHERE (p.user_id IN (${query1}) OR p.user_id = $1)
-        ORDER BY p.created_on DESC, p.post_id DESC
-        LIMIT $2`
     
     const values = lastPostId && lastCreatedOn 
       ? [authorizedId, lastCreatedOn, lastPostId, limit]
       : [authorizedId, limit]
 
     const postsQuery = lastPostId && lastCreatedOn 
-      ? await pool.query(query2, values)
-      : await pool.query(query3, values)
+      ? await pool.query(nextQuery, values)
+      : await pool.query(initialQuery, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
     if (!isPostArray(posts)) {
