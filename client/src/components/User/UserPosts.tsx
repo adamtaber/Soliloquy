@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client"
 import { GET_USER_POSTS } from "../../graphql/posts/queries"
 import { isPostArray } from "../../graphql/posts/types"
 import { Navigate, useNavigate } from "react-router-dom"
+import LikeButton from "../Like/LikeButton"
 
 const UserPosts = (props: { userId: string } ) => {
   const { userId } = props
@@ -36,9 +37,17 @@ const UserPosts = (props: { userId: string } ) => {
       <p>POSTS</p>
       {postsData.map((post) => {
         return (
-          <div key={post.postId} onClick={() => goToPost(post.postId)}>
-            <p>content: {post.content}</p>  
-            <p>date: {post.createdOn}</p>
+          <div key={post.postId}>
+            <div onClick={() => goToPost(post.postId)}>
+              <p>content: {post.content}</p>  
+              <p>date: {post.createdOn}</p>
+            </div>
+            <LikeButton 
+              likes={post.likesCount}
+              contentId={post.postId} 
+              contentType="post"
+              userLiked={post.currentUserLike ? true : false}
+            />
           </div>
         )
       })}

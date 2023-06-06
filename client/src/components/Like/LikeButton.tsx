@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client"
 import { DELETE_LIKE, LIKE_CONTENT } from "../../graphql/likes/mutations"
-import { GET_POST } from "../../graphql/posts/queries"
+import { GET_POST, GET_USER_POSTS } from "../../graphql/posts/queries"
 import { Post } from "../../graphql/types/graphql"
 
 const LikeButton = (props: {likes: number, contentId: string, contentType: string, userLiked: boolean }) => {
@@ -19,6 +19,14 @@ const LikeButton = (props: {likes: number, contentId: string, contentType: strin
           getFeedPosts(existingPosts = []) {
             return existingPosts.map((post: Post) => {
               if(contentType === 'post' && post.postId === contentId) {
+                let likesCount = post.likesCount + 1
+                return {...post, likesCount, currentUserLike: true}
+              } else return post
+            })
+          },
+          getUserPosts(existingPosts = []) {
+            return existingPosts.map((post: Post) => {
+              if(post.postId === contentId) {
                 let likesCount = post.likesCount + 1
                 return {...post, likesCount, currentUserLike: true}
               } else return post
@@ -42,6 +50,14 @@ const LikeButton = (props: {likes: number, contentId: string, contentType: strin
           getFeedPosts(existingPosts = []) {
             return existingPosts.map((post: Post) => {
               if(contentType === 'post' && post.postId === contentId) {
+                let likesCount = post.likesCount - 1
+                return {...post, likesCount, currentUserLike: null}
+              } else return post
+            })
+          },
+          getUserPosts(existingPosts = []) {
+            return existingPosts.map((post: Post) => {
+              if(post.postId === contentId) {
                 let likesCount = post.likesCount - 1
                 return {...post, likesCount, currentUserLike: null}
               } else return post
