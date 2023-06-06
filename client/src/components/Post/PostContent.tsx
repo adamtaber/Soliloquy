@@ -4,6 +4,7 @@ import { isPost } from "../../graphql/posts/types"
 import { Navigate } from "react-router-dom"
 import { User } from "../../graphql/types/graphql"
 import DeletePost from "./DeletePost"
+import LikeButton from "../Like/LikeButton"
 
 const PostContent = (params: {postId: string, currentUser: User}) => {
   const { postId, currentUser } = params
@@ -29,6 +30,12 @@ const PostContent = (params: {postId: string, currentUser: User}) => {
       <p>{createDate.toLocaleDateString()}</p>
       {currentUser.userId === postData.userId 
       && <DeletePost postId={postId} userId={currentUser.userId}/>}
+      <LikeButton 
+        likes={postData.likesCount}
+        contentId={postData.postId} 
+        contentType="post"
+        userLiked={postData.currentUserLike ? true : false}
+      />
     </>
   )
 }
