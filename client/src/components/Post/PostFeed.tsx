@@ -33,10 +33,16 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
       {feed.map((post, i) => {
         if(feed.length === i + 1) {
           return (
-            <div ref={lastPostRef} key={post.postId}>
-              user: <Link to={`/users/${post.userId}`}>{post.displayname}</Link>
-              content: {post.content}  
-              date: {post.createdOn}
+            <div className="home__post" ref={lastPostRef} key={post.postId}>
+              <div className="post__topRow">
+                <p className="post__username">
+                  <Link to={`/users/${post.userId}`}>
+                    {post.displayname}
+                  </Link>
+                </p>            
+                <p className="post__date">{post.createdOn}</p>
+              </div>
+              <p className="post__content">{post.content}</p>
               <LikeButton 
                 likes={post.likesCount}
                 contentId={post.postId} 
@@ -47,10 +53,16 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
           )
         } 
         return (
-          <div key={post.postId}>
-            user: <Link to={`/users/${post.userId}`}>{post.displayname}</Link>
-            content: {post.content}  
-            date: {post.createdOn}
+          <div  className="home__post" key={post.postId}>
+            <div className="post__topRow">
+              <p className="post__username">
+                <Link to={`/users/${post.userId}`}>
+                  {post.displayname}
+                </Link>
+              </p>            
+              <p className="post__date">{post.createdOn}</p>
+            </div>
+            <p className="post__content">{post.content}</p>
             <LikeButton 
                 likes={post.likesCount}
                 contentId={post.postId} 

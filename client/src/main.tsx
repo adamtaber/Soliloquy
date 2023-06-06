@@ -1,5 +1,6 @@
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import './assets/styles.css'
 import { ApolloClient, InMemoryCache, 
   ApolloProvider, createHttpLink, split } from '@apollo/client'
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'

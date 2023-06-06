@@ -30,26 +30,29 @@ const Home = () => {
   const postData = postsQuery.data.getFeedPosts
 
   return (
-    <div>
-      <p>HOME</p>
-      <PostForm userId={userId}/>
-      <PostFeed 
-        postData={postData}
-        onLoadMore={(lastPostId, lastCreatedOn) => postsQuery.fetchMore({
-          variables: {
-            lastPostId,
-            lastCreatedOn
-          },
-          updateQuery: (prevRes, {fetchMoreResult}) => {
-            const newFeed = fetchMoreResult.getFeedPosts
-            const result = newFeed.length
-              ? [...prevRes.getFeedPosts, ...newFeed]
-              : prevRes.getFeedPosts
-            return {
-              getFeedPosts: result
+    <div className="home">
+      <div className="home__postForm">
+        <PostForm userId={userId}/>
+      </div>
+      <div className="home__postFeed">
+        <PostFeed 
+          postData={postData}
+          onLoadMore={(lastPostId, lastCreatedOn) => postsQuery.fetchMore({
+            variables: {
+              lastPostId,
+              lastCreatedOn
+            },
+            updateQuery: (prevRes, {fetchMoreResult}) => {
+              const newFeed = fetchMoreResult.getFeedPosts
+              const result = newFeed.length
+                ? [...prevRes.getFeedPosts, ...newFeed]
+                : prevRes.getFeedPosts
+              return {
+                getFeedPosts: result
+              }
             }
-          }
-        })}/>
+          })}/>
+      </div>
     </div>
   )
 }

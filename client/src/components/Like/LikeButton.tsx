@@ -1,6 +1,8 @@
+import { VscHeartFilled, VscHeart } from 'react-icons/vsc'
+import { IconContext } from 'react-icons'
 import { useMutation } from "@apollo/client"
 import { DELETE_LIKE, LIKE_CONTENT } from "../../graphql/likes/mutations"
-import { GET_POST, GET_USER_POSTS } from "../../graphql/posts/queries"
+import { GET_POST } from "../../graphql/posts/queries"
 import { Post } from "../../graphql/types/graphql"
 
 const LikeButton = (props: {likes: number, contentId: string, contentType: string, userLiked: boolean }) => {
@@ -74,8 +76,22 @@ const LikeButton = (props: {likes: number, contentId: string, contentType: strin
   }
 
   return (
-    <div>
-      <button onClick={() => clickLike()}> [{likes}] {userLiked ? 'unlike' : 'like'}</button>
+    <div className='post__likes'>
+      {/* <button onClick={() => clickLike()}> [{likes}] {userLiked ? 'unlike' : 'like'}</button> */}
+      {/* <button className={userLiked ? 'dislikeButton' : 'likeButton'}  */}
+      <button className={userLiked ? 'dislikeButton' : 'likeButton'} 
+        onClick={() => clickLike()}>
+          {userLiked 
+          ? <IconContext.Provider value={{style: {display: 'block'}}}>
+              <VscHeartFilled />
+            </IconContext.Provider>
+          : <IconContext.Provider value={{style: {display: 'block'}}}>
+              <VscHeart />
+            </IconContext.Provider>
+          } 
+          <p className='likeCount'>{likes}</p>
+      </button> 
+      {/* <p className='likeCount'>{likes}</p> */}
     </div>
   )
 }
