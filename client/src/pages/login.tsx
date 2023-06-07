@@ -14,10 +14,14 @@ const Login = () => {
   if(newUser) return <NewUserForm />
 
   return (
-    <>
-      {data ? <Navigate to='/' /> : <LoginForm />}
-      <button onClick={() => setNewUser(true)}>Sign Up</button>
-    </>
+    <div className="login">
+      <div className="login__container">
+        <h1>Log In</h1>
+        {data ? <Navigate to='/' /> : <LoginForm />}
+        <p>- OR -</p>
+        <button onClick={() => setNewUser(true)}>Sign Up</button>
+      </div>
+    </div>
   )
 }
 

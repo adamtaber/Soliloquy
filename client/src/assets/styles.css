@@ -38,6 +38,8 @@ p {
   background-color: rgba(0, 0, 0, 1)
 }
 
+/* Home Page */
+
 .home__postFeed {
   display: flex;
   flex-direction: column;
@@ -100,3 +102,101 @@ p {
   color: #d3546b;
   background-color: rgba(21, 21, 21, 1);
 }
+
+/* Log In */
+
+.login, .signup {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__container, .signup__container {
+  /* background-color: rgba(21, 21, 21, 1); */
+  background-color:rgba(0, 0, 0, 1);
+  box-shadow: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.08);
+  height: 700px;
+  width: 500px;
+  padding: 30px 75px 30px 75px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.login__container h1, .signup__container h1 {
+  margin: 0;
+  text-align: center;
+  font-weight: 300;
+}
+
+.loginForm, .signupForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginForm input, .signupForm input {
+  height: 30px;
+  width: 100%;
+  padding-left: 10px;
+  font-size: 17px;
+  background-color: rgba(0, 0, 0, 1);
+  box-shadow: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.16);
+  color: rgb(255, 255, 255, .87);
+}
+
+.loginForm label, .signupForm div {
+  height: 70px;
+  position: relative;
+}
+
+.loginForm .inputType {
+  position: absolute;
+  color: rgb(255, 255, 255, .6);
+  font-size: 17px;
+  left: 10px;
+  top: 5px;
+  pointer-events: none;
+}
+
+/* .focusedInput {
+  /* transform: scale(calc(5 / 12)) translateY(-10px); */
+/* 
+} */
+
+.loginForm .inputError, .signupForm p {
+  display: inline-block;
+  margin-top: 5px;
+  color: #d3546b;
+}
+
+.loginForm .login__submit, .signupForm .signup__submit {
+  margin-bottom: 0;
+  box-shadow: none;
+  background-color: rgba(187, 134, 252, 1);
+  color:rgba(0, 0, 0, 1);
+}
+
+.loginForm .login__submit:hover, .signupForm .signup__submit:hover {
+  cursor: pointer;
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+}
+
+.login__container p {
+  align-self: center;
+}
+
+.login__container button {
+  height: 30px;
+  font-size: 17px;
+  background-color: rgba(187, 134, 252, 1);
+  color:rgba(0, 0, 0, 1);
+}
+
+.login__container button:hover {
+  cursor: pointer;
+  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+}
+
+/* Sign Up */

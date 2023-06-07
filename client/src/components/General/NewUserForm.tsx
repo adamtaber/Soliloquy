@@ -37,76 +37,88 @@ const NewUserForm = () => {
   }
 
   return (
-    <div>
-      <h1>Log In</h1>
-      <p>{formError}</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <input 
-          defaultValue="displayname" 
-          {...register('displayname', 
-          { required: true, maxLength: 50 })}
-          aria-invalid={errors.displayname ? "true" : "false"}
-        />
-        {errors.displayname?.type === 'required' 
-          && <p>displayname is required</p>
-        }
-        {errors.displayname?.type === 'maxLength' 
-          && <p>displayname is too long</p>
-        }
-        <input 
-          defaultValue="username" 
-          {...register('username',
-          { required: true, maxLength: 25 })} 
-          aria-invalid={errors.username ? "true" : "false"}
-        />
-        {errors.username?.type === 'required' 
-          && <p>username is required</p>
-        }
-        {errors.username?.type === 'maxLength' 
-          && <p>username is too long</p>
-        }
-        <input 
-          defaultValue="email" 
-          {...register('email',
-          { required: true, maxLength: 255 })} 
-          aria-invalid={errors.email ? "true" : "false"}
-        />
-        {errors.email?.type === 'required' 
-          && <p>email is required</p>
-        }
-        {errors.email?.type === 'maxLength' 
-          && <p>email is too long</p>
-        }
-        <input 
-          defaultValue="password" 
-          {...register('password',
-          { required: true, minLength: 8 })} 
-          aria-invalid={errors.password ? "true" : "false"}
-        />
-        {errors.password?.type === 'required' 
-          && <p>password is required</p>
-        }
-        {errors.password?.type === 'minLength' 
-          && <p>password is too short</p>
-        }
-        <input 
-          defaultValue="confirm password" 
-          {...register('passwordConfirm',
-          { required: true, validate:  (val: string) => {
-            if (watch('password') != val) {
-              return 'passwords do not match'
+    <div className="signup">
+      <div className="signup__container">
+        <h1>Sign Up</h1>
+        {/* <p>{formError}</p> */}
+        <form className="signupForm" onSubmit={handleSubmit(onSubmit)}>
+          <div>
+            <input 
+              defaultValue="displayname" 
+              {...register('displayname', 
+              { required: true, maxLength: 50 })}
+              aria-invalid={errors.displayname ? "true" : "false"}
+            />
+            {errors.displayname?.type === 'required' 
+              && <p>displayname is required</p>
             }
-          }})} 
-          aria-invalid={errors.password ? "true" : "false"}
-        />
-        {errors.passwordConfirm?.type === 'required' 
-          && <p>password is required</p>
-        }
-        {errors.passwordConfirm?.type === 'validate' 
-          && <p>{errors.passwordConfirm?.message}</p>
-        }
-        <input type="submit" />
-      </form>
+            {errors.displayname?.type === 'maxLength' 
+              && <p>displayname is too long</p>
+            }
+          </div>
+          <div>
+            <input 
+              defaultValue="username" 
+              {...register('username',
+              { required: true, maxLength: 25 })} 
+              aria-invalid={errors.username ? "true" : "false"}
+            />
+            {errors.username?.type === 'required' 
+              && <p>username is required</p>
+            }
+            {errors.username?.type === 'maxLength' 
+              && <p>username is too long</p>
+            }
+          </div>
+          <div>
+            <input 
+              defaultValue="email" 
+              {...register('email',
+              { required: true, maxLength: 255 })} 
+              aria-invalid={errors.email ? "true" : "false"}
+            />
+            {errors.email?.type === 'required' 
+              && <p>email is required</p>
+            }
+            {errors.email?.type === 'maxLength' 
+              && <p>email is too long</p>
+            }
+          </div>
+          <div>
+            <input 
+              defaultValue="password" 
+              {...register('password',
+              { required: true, minLength: 8 })} 
+              aria-invalid={errors.password ? "true" : "false"}
+            />
+            {errors.password?.type === 'required' 
+              && <p>password is required</p>
+            }
+            {errors.password?.type === 'minLength' 
+              && <p>password is too short</p>
+            }
+          </div>
+          <div>
+            <input 
+              defaultValue="confirm password" 
+              {...register('passwordConfirm',
+              { required: true, validate:  (val: string) => {
+                if (watch('password') != val) {
+                  return 'passwords do not match'
+                }
+              }})} 
+              aria-invalid={errors.password ? "true" : "false"}
+            />
+            {errors.passwordConfirm?.type === 'required' 
+              && <p>password is required</p>
+            }
+            {errors.passwordConfirm?.type === 'validate' 
+              && <p>{errors.passwordConfirm?.message}</p>
+            }
+          </div>
+          <input className="signup__submit" type="submit" />
+        </form>
+      </div>
     </div>
   )
 }

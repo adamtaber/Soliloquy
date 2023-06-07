@@ -6,7 +6,7 @@ import { isPost } from "./types"
 import { GraphQLError } from "graphql"
 
 const postQueries: QueryResolvers = {
-  getPost: async(_root, args) => {
+  getPost: async(_root, args, {authorizedId}) => {
     const { postId } = args
 
     const likesCount = 
@@ -17,14 +17,14 @@ const postQueries: QueryResolvers = {
     const likedByCurrentUser = 
     `SELECT user_id
     FROM likes l
-    WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
+    WHERE (l.post_id = p.post_id) AND (l.user_id = $2)`
 
     const query =
       `SELECT p.*, (${likesCount}) AS likes_count,
        (${likedByCurrentUser}) AS current_user_like
        FROM posts p
        WHERE post_id = $1`
-    const values = [postId]
+    const values = [postId, authorizedId]
 
     const postQuery = await pool.query(query, values)
     const post = humps.camelizeKeys(postQuery.rows[0])
