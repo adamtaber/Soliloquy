@@ -12,6 +12,8 @@ type Inputs = {
   passwordConfirm: string
 }
 
+//Add purple checkmarks whenever a form entry is valid
+
 //Maybe add a feature that checks if a username/email is valid
 //right after they stop typing, or even as they're typing
 

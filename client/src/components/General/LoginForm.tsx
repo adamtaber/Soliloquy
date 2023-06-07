@@ -14,6 +14,7 @@ const LoginForm = () => {
   const navigate = useNavigate()
   const { 
     register, 
+    setValue,
     handleSubmit,
     watch,
     formState: { errors }
@@ -29,7 +30,6 @@ const LoginForm = () => {
   })
 
   if (loading) console.log('loading...')
-  if (error) console.log(error)
 
   useEffect(() => {
     if (data) navigate('/')
@@ -37,6 +37,8 @@ const LoginForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     login({ variables: { username: data.username, password: data.password }})
+    setValue('username', '')
+    setValue('password', '')
   }
 
   return (
@@ -47,9 +49,10 @@ const LoginForm = () => {
             {fields.username?.length ? '' : 'username'}
           </span>
           <input type='text' {...register('username', { required: true })}/>
-          {errors.username?.type === 'required' && (
+          {errors.username?.type === 'required' && !error && (
             <span className="inputError">Username is required</span>
           )}
+          {error && !fields.username?.length && (<span className="inputError">Invalid username or password</span>)}
         </label>
         <label htmlFor="password">
         <span className="inputType">

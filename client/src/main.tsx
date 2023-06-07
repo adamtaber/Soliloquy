@@ -2,10 +2,21 @@ import ReactDOM from 'react-dom/client'
 import App from './App'
 import './assets/styles.css'
 import { ApolloClient, InMemoryCache, 
-  ApolloProvider, createHttpLink, split } from '@apollo/client'
+  ApolloProvider, createHttpLink, split, from } from '@apollo/client'
+import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import { getMainDefinition } from '@apollo/client/utilities'
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  // if (graphQLErrors)
+  //   graphQLErrors.forEach(({ message, locations, path }) => 
+  //     console.log(
+  //       `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+  //     )
+  //   )
+  // if (networkError) console.log(`[Network error]: ${networkError}`)
+})
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:3000',
@@ -44,7 +55,7 @@ const cache = new InMemoryCache({
 
 const client = new ApolloClient({
   cache,
-  link: splitLink
+  link: from([errorLink, splitLink])
 })
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
