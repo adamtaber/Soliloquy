@@ -31,7 +31,7 @@ const Home = () => {
 
   return (
     <div className="home">
-      <div className="home__postForm">
+      <div className="home__postFormContainer">
         <PostForm userId={userId}/>
       </div>
       <div className="home__postFeed">

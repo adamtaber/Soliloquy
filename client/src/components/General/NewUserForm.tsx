@@ -3,6 +3,8 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_USER } from "../../graphql/users/mutations"
 import { useState } from "react"
 import { Navigate } from "react-router-dom"
+import { IconContext } from 'react-icons'
+import { MdOutlineArrowBackIosNew } from "react-icons/md"
 
 type Inputs = {
   displayname: string,
@@ -17,7 +19,8 @@ type Inputs = {
 //Maybe add a feature that checks if a username/email is valid
 //right after they stop typing, or even as they're typing
 
-const NewUserForm = () => {
+const NewUserForm = (props: {setNewUser: (arg0: boolean) => void}) => {
+  const { setNewUser } = props
   const [formError, setFormError] = useState('')
 
   const { register, 
@@ -25,7 +28,7 @@ const NewUserForm = () => {
           formState: { errors }, 
           handleSubmit } = useForm<Inputs>()
 
-  const [login, { data, loading }] = useMutation(CREATE_USER)
+  const [login, { data, loading, error }] = useMutation(CREATE_USER)
   if (loading) console.log('loading...')
   if (data) return <Navigate to='/'/>
 
@@ -41,68 +44,81 @@ const NewUserForm = () => {
   return (
     <div className="signup">
       <div className="signup__container">
+        <button className={'backButton'} 
+          onClick={() => setNewUser(false)}>
+          <IconContext.Provider value={{style: {display: 'block'}}}>
+            <MdOutlineArrowBackIosNew />
+          </IconContext.Provider>        
+        </button> 
         <h1>Sign Up</h1>
-        {/* <p>{formError}</p> */}
+        {formError && <p>{formError}</p>}
         <form className="signupForm" onSubmit={handleSubmit(onSubmit)}>
-          <div>
+          <label>
             <input 
-              defaultValue="displayname" 
               {...register('displayname', 
               { required: true, maxLength: 50 })}
               aria-invalid={errors.displayname ? "true" : "false"}
             />
+            <span className="inputType">
+              {watch('displayname') ? '' : 'displayname'}
+            </span>
             {errors.displayname?.type === 'required' 
-              && <p>displayname is required</p>
+              && <span className="inputError">displayname is required</span>
             }
             {errors.displayname?.type === 'maxLength' 
-              && <p>displayname is too long</p>
+              && <span className="inputError">displayname is too long</span>
             }
-          </div>
-          <div>
+          </label>
+          <label>
             <input 
-              defaultValue="username" 
               {...register('username',
               { required: true, maxLength: 25 })} 
               aria-invalid={errors.username ? "true" : "false"}
             />
+            <span className="inputType">
+              {watch('username') ? '' : 'username'}
+            </span>
             {errors.username?.type === 'required' 
-              && <p>username is required</p>
+              && <span className="inputError">username is required</span>
             }
             {errors.username?.type === 'maxLength' 
-              && <p>username is too long</p>
+              && <span className="inputError">username is too long</span>
             }
-          </div>
-          <div>
+          </label>
+          <label>
             <input 
-              defaultValue="email" 
               {...register('email',
               { required: true, maxLength: 255 })} 
               aria-invalid={errors.email ? "true" : "false"}
             />
+            <span className="inputType">
+              {watch('email') ? '' : 'email'}
+            </span>
             {errors.email?.type === 'required' 
-              && <p>email is required</p>
+              && <span className="inputError">email is required</span>
             }
             {errors.email?.type === 'maxLength' 
-              && <p>email is too long</p>
+              && <span className="inputError">email is too long</span>
             }
-          </div>
-          <div>
+          </label>
+          <label>
             <input 
-              defaultValue="password" 
               {...register('password',
               { required: true, minLength: 8 })} 
               aria-invalid={errors.password ? "true" : "false"}
             />
+            <span className="inputType">
+              {watch('password') ? '' : 'password'}
+            </span>
             {errors.password?.type === 'required' 
-              && <p>password is required</p>
+              && <span className="inputError">password is required</span>
             }
             {errors.password?.type === 'minLength' 
-              && <p>password is too short</p>
+              && <span className="inputError">password is too short</span>
             }
-          </div>
-          <div>
+          </label>
+          <label>
             <input 
-              defaultValue="confirm password" 
               {...register('passwordConfirm',
               { required: true, validate:  (val: string) => {
                 if (watch('password') != val) {
@@ -111,13 +127,16 @@ const NewUserForm = () => {
               }})} 
               aria-invalid={errors.password ? "true" : "false"}
             />
+            <span className="inputType">
+              {watch('passwordConfirm') ? '' : 'confirm password'}
+            </span>
             {errors.passwordConfirm?.type === 'required' 
-              && <p>password is required</p>
+              && <span className="inputError">password is required</span>
             }
             {errors.passwordConfirm?.type === 'validate' 
-              && <p>{errors.passwordConfirm?.message}</p>
+              && <span className="inputError">{errors.passwordConfirm?.message}</span>
             }
-          </div>
+          </label>
           <input className="signup__submit" type="submit" />
         </form>
       </div>

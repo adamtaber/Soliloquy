@@ -29,14 +29,13 @@ const LoginForm = () => {
     awaitRefetchQueries: true
   })
 
-  if (loading) console.log('loading...')
-
   useEffect(() => {
     if (data) navigate('/')
   }, [data])
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     login({ variables: { username: data.username, password: data.password }})
+      .catch((err) => console.log(err))
     setValue('username', '')
     setValue('password', '')
   }
@@ -49,10 +48,15 @@ const LoginForm = () => {
             {fields.username?.length ? '' : 'username'}
           </span>
           <input type='text' {...register('username', { required: true })}/>
-          {errors.username?.type === 'required' && !error && (
+          {errors.username?.type === 'required' && (
             <span className="inputError">Username is required</span>
           )}
-          {error && !fields.username?.length && (<span className="inputError">Invalid username or password</span>)}
+          {error 
+            && !fields.username?.length 
+            && !(errors.username?.type === 'required')
+            && (<span className="inputError">
+                  Invalid username or password
+                </span>)}
         </label>
         <label htmlFor="password">
         <span className="inputType">
@@ -63,7 +67,8 @@ const LoginForm = () => {
             <span className="inputError">Password is required</span>
           )}
         </label>
-        <input className="login__submit" type="submit" />
+        {/* <input className="login__submit" type="submit" /> */}
+        <button className="login__submit" type="submit">Log In</button>
       </form>
     </div>
   )

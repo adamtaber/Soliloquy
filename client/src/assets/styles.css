@@ -6,6 +6,17 @@
   border: none;
 }
 
+:root {
+  --main-background-color: rgba(0, 0, 0, 1);
+  --main-text-color: rgb(255, 255, 255, .87);
+  --secondary-text-color: rgb(255, 255, 255, .6);
+  --contrast-text-color: rgba(0, 0, 0, 1);
+  --error-color: rgba(211, 84, 107, 1);
+  --primary-color: rgba(187, 134, 252, 1);
+  --level-one-overlay: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.08);
+  --level-two-overlay: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.16);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -34,8 +45,8 @@ p {
 
 .app {
   font-family: 'Roboto', sans-serif;
-  color: rgb(255, 255, 255, .87);
-  background-color: rgba(0, 0, 0, 1)
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
 }
 
 /* Home Page */
@@ -46,9 +57,75 @@ p {
   align-items: center;
 }
 
+.home__postFormContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.home__postForm {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  border-radius: 3px;
+  width: 650px;
+}
+
+/* alter box size as lines increas */
+.postForm__input {
+  resize: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--secondary-text-color);
+  font-size: 18px;
+  padding: 5px;
+  height: 35px;
+  width: 100%;
+  transition: height 0.5s;
+}
+
+.postForm__input:focus {
+  height: 100px;
+}
+
+.postForm__input__content {
+  height: 100px;
+  padding-bottom: 30px;
+}
+
+.postForm__charCount {
+  position: absolute;
+  right: 13px;
+  bottom: 45px;
+  color: var(--secondary-text-color);
+}
+
+.postForm__inputFiller {
+  position: absolute;
+  pointer-events: none;
+  left: 13px;
+  top: 13px;
+  font-size: 18px;
+  color: var(--secondary-text-color);
+}
+
+.postForm__submit {
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+  border-radius: 2px;
+  height: 25px;
+  font-size: 14px;
+  align-self: flex-end;
+}
+
 .home__post {
   font-size: 16px;
-  background-color: rgba(21, 21, 21, 1);
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
   width: 650px;
   margin: 5px 0px 5px;
   border-radius: 3px;
@@ -66,7 +143,7 @@ p {
 .post__username a {
   font-weight: 500;
   font-size: 17px;
-  color: rgb(255, 255, 255, .87);
+  color: var(--main-text-color);
   text-decoration: none;
 }
 .post__username a:hover {
@@ -74,7 +151,7 @@ p {
 }
 
 .post__date {
-  color: rgb(255, 255, 255, .6);
+  color: var(--secondary-text-color);
 }
 
 .post__content {
@@ -86,12 +163,13 @@ p {
   flex-direction: row;
   gap: 10px;
   font-size: 16px;
-  color: rgb(255, 255, 255, .6);
-  background-color: rgba(21, 21, 21, 1);
+  color: var(--secondary-text-color);
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
 }
 
 .likeButton:hover {
-  color: #d3546b;
+  color: var(--error-color);
 }
 
 .dislikeButton {
@@ -99,8 +177,9 @@ p {
   flex-direction: row;
   gap: 10px;
   font-size: 16px;
-  color: #d3546b;
-  background-color: rgba(21, 21, 21, 1);
+  color: var(--error-color);
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
 }
 
 /* Log In */
@@ -113,9 +192,9 @@ p {
 }
 
 .login__container, .signup__container {
-  /* background-color: rgba(21, 21, 21, 1); */
-  background-color:rgba(0, 0, 0, 1);
-  box-shadow: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.08);
+  position: relative;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
   height: 700px;
   width: 500px;
   padding: 30px 75px 30px 75px;
@@ -141,19 +220,19 @@ p {
   width: 100%;
   padding-left: 10px;
   font-size: 17px;
-  background-color: rgba(0, 0, 0, 1);
-  box-shadow: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.16);
-  color: rgb(255, 255, 255, .87);
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--main-text-color);
 }
 
-.loginForm label, .signupForm div {
+.loginForm label, .signupForm label {
   height: 70px;
   position: relative;
 }
 
-.loginForm .inputType {
+.loginForm .inputType, .signupForm .inputType {
   position: absolute;
-  color: rgb(255, 255, 255, .6);
+  color: var(--secondary-text-color);
   font-size: 17px;
   left: 10px;
   top: 5px;
@@ -165,22 +244,22 @@ p {
 /* 
 } */
 
-.loginForm .inputError, .signupForm p {
+.loginForm .inputError, .signupForm .inputError {
   display: inline-block;
   margin-top: 5px;
-  color: #d3546b;
+  color: var(--error-color);
 }
 
 .loginForm .login__submit, .signupForm .signup__submit {
   margin-bottom: 0;
   box-shadow: none;
-  background-color: rgba(187, 134, 252, 1);
-  color:rgba(0, 0, 0, 1);
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
 }
 
 .loginForm .login__submit:hover, .signupForm .signup__submit:hover {
   cursor: pointer;
-  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+  box-shadow: var(--level-two-overlay);
 }
 
 .login__container p {
@@ -190,13 +269,28 @@ p {
 .login__container button {
   height: 30px;
   font-size: 17px;
-  background-color: rgba(187, 134, 252, 1);
-  color:rgba(0, 0, 0, 1);
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
 }
 
 .login__container button:hover {
   cursor: pointer;
-  box-shadow: inset 0 0 100px 100px rgba(255, 255, 255, 0.2);
+  box-shadow: var(--level-two-overlay);
 }
 
-/* Sign Up */
+.signup__container .backButton {
+  position: absolute;
+  background-color:rgba(0, 0, 0, 1);
+  box-shadow: var(--level-one-overlay);
+  color: var(--primary-color);
+  font-size: 20px;
+  border-radius: 100px;
+  padding: 15px;
+  top: 27px;
+  left: 15px;
+}
+
+.signup__container .backButton:hover {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+}

@@ -91,7 +91,6 @@ const LikeButton = (props: {likes: number, contentId: string, contentType: strin
           } 
           <p className='likeCount'>{likes}</p>
       </button> 
-      {/* <p className='likeCount'>{likes}</p> */}
     </div>
   )
 }

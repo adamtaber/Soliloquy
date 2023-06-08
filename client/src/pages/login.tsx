@@ -11,7 +11,7 @@ const Login = () => {
 
   if(loading) return null
   
-  if(newUser) return <NewUserForm />
+  if(newUser) return <NewUserForm setNewUser={setNewUser}/>
 
   return (
     <div className="login">
