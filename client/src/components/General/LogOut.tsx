@@ -2,6 +2,8 @@ import { useApolloClient, useMutation } from "@apollo/client"
 import { useNavigate } from "react-router-dom"
 import { LOG_OUT } from "../../graphql/users/mutations"
 import { useEffect } from "react"
+import { RiLogoutBoxLine } from 'react-icons/ri'
+import { IconContext } from "react-icons"
 
 const LogOut = () => {
   const client = useApolloClient()
@@ -24,7 +26,11 @@ const LogOut = () => {
 
   return (
     <>
-      <button onClick={handleLogout}>logout</button>
+      <button className="logoutButton" onClick={handleLogout}>
+        <IconContext.Provider value={{style: {display: 'block'}}}>
+          <RiLogoutBoxLine />
+        </IconContext.Provider>
+      </button>
     </>
   )
 }

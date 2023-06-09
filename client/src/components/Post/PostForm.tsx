@@ -16,48 +16,24 @@ const PostForm = (props: {userId: string}) => {
   
   const handleChange = () => {
     if(textAreaRef.current) {
-      textAreaRef.current.style.transition = 'none'
-      const initHeight = textAreaRef.current.style.height
-      console.log(initHeight)
-      textAreaRef.current.style.height = "100px"
+      textAreaRef.current.style.height = "35px"
       const scrollHeight = textAreaRef.current.scrollHeight + "px"
-      console.log(initHeight)
-      textAreaRef.current.style.height = initHeight
-      textAreaRef.current.style.transition = 'height 0.5s'
-      console.log(textAreaRef.current.style.height, scrollHeight)
       textAreaRef.current.style.height = scrollHeight
-      // setTimeout(() => {
-      //   if(textAreaRef.current) {
-      //     const scrollHeight = textAreaRef.current.scrollHeight + "px"
-      //     textAreaRef.current.style.height = scrollHeight
-      //   }
-      // }, 0)
-    }
-  }
-
-  const handleBlur = () => {
-    console.log('test')
-    if(textAreaRef.current && !watch('content').length) {
-      // textAreaRef.current.style.height = "35px";
-      textAreaRef.current.removeAttribute('style')
     }
   }
 
   const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
     refetchQueries: [
-      {query: GET_FEED_POSTS}, 
+      {query: GET_FEED_POSTS, variables: {limit: 30}}, 
       {query: GET_USER_POSTS, variables: {userId}}
     ]
   })
 
-  if (loading) console.log('loading...')
   if (error) console.log(error)
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     createPost({ variables: {content: data.content} })
   }
-
-  const inputClass = watch('content') ? 'postForm__input__content' : ''
 
   return (
     <>
@@ -72,12 +48,10 @@ const PostForm = (props: {userId: string}) => {
             </span>
           }
           <textarea 
-            className={`postForm__input ${inputClass}`} 
+            className='postForm__input'
             {...register('content', {
-              onChange: () => handleChange(),
-              onBlur: () => handleBlur()
+              onChange: () => handleChange()
             })} 
-            // rows={1}
             ref={(e) => {
               ref(e)
               textAreaRef.current = e
