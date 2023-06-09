@@ -10,7 +10,7 @@ type Inputs = {
 
 const PostForm = (props: {userId: string}) => {
   const { userId } = props
-  const { register, handleSubmit, watch } = useForm<Inputs>()
+  const { register, handleSubmit, watch, setValue } = useForm<Inputs>()
   const { ref } = register('content')
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
   
@@ -33,6 +33,7 @@ const PostForm = (props: {userId: string}) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     createPost({ variables: {content: data.content} })
+    setValue('content', '')
   }
 
   return (
