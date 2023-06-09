@@ -9,9 +9,10 @@ const Login = () => {
   const [newUser, setNewUser] = useState(false)
   const { loading, data } = useQuery(CURRENT_USER)
 
-  if(loading) return null
+  // if(loading) return null
   
   if(newUser) return <NewUserForm setNewUser={setNewUser}/>
+
 
   return (
     <div className="login">
@@ -24,5 +25,4 @@ const Login = () => {
     </div>
   )
 }
-
 export default Login
