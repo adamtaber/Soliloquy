@@ -43,7 +43,9 @@ const documents = {
     "\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.FindUserDocument,
     "\n  query getFollowers($userId: String!) {\n    getFollowers(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowersDocument,
+    "\n  query getFollowerCount($userId: String!) {\n    getFollowerCount(userId: $userId)\n  }\n": types.GetFollowerCountDocument,
     "\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowingDocument,
+    "\n  query getFollowingCount($userId: String!) {\n    getFollowingCount(userId: $userId)\n  }\n": types.GetFollowingCountDocument,
 };
 
 /**
@@ -183,7 +185,15 @@ export function gql(source: "\n  query getFollowers($userId: String!) {\n    get
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  query getFollowerCount($userId: String!) {\n    getFollowerCount(userId: $userId)\n  }\n"): (typeof documents)["\n  query getFollowerCount($userId: String!) {\n    getFollowerCount(userId: $userId)\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getFollowingCount($userId: String!) {\n    getFollowingCount(userId: $userId)\n  }\n"): (typeof documents)["\n  query getFollowingCount($userId: String!) {\n    getFollowingCount(userId: $userId)\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};

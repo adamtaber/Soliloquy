@@ -1,34 +1,40 @@
 import { useQuery } from "@apollo/client"
-import { CURRENT_USER } from "../../graphql/users/queries"
-import { isUser } from "../../graphql/users/types"
-import { Navigate } from "react-router-dom"
+import { CURRENT_USER, GET_FOLLOWERS } from "../../graphql/users/queries"
+import { isUser, isUserArray } from "../../graphql/users/types"
 import FollowUser from "./FollowUser"
-import { User } from "../../graphql/types/graphql"
 import UnfollowUser from "./UnfollowUser"
 
-const FollowButton = (props: { userId: string, followers: Array<User> }) => {
-  const { userId, followers } = props
+const FollowButton = (props: { userId: string }) => {
+  const { userId } = props
 
   const currentUserQuery = useQuery(CURRENT_USER)
+  const followersQuery = useQuery(GET_FOLLOWERS, {
+    variables: { userId }
+  })
 
-  if(currentUserQuery.loading) return null
-  if(currentUserQuery.error) console.log(currentUserQuery.error)
-  if(!currentUserQuery.data || !isUser(currentUserQuery.data.currentUser)) {
-    return <Navigate to='/' />
-  }
+  const currentUserId = 
+    currentUserQuery.data && isUser(currentUserQuery.data.currentUser) 
+      ? currentUserQuery.data.currentUser.userId
+      : ''
+  
+  const followers =
+    followersQuery.data && isUserArray(followersQuery.data.getFollowers)
+      ? followersQuery.data.getFollowers
+      : ''
 
-  const currentUserId = currentUserQuery.data.currentUser.userId
   if(currentUserId === userId) return null
 
-  const isFollowing = followers.find(({ userId }) => userId === currentUserId)
-
+  const isFollowing = currentUserId && followers
+    ? followers.find(({ userId }) => userId === currentUserId)
+    : ''
+  
   return (
-    <>
+    <div>
       {isFollowing 
         ? <UnfollowUser userId={userId} />
         : <FollowUser userId={userId} /> 
       }
-    </>
+    </div>
   )
 }
 

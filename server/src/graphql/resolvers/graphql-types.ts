@@ -172,8 +172,10 @@ export type Query = {
   getChildComments: Array<Maybe<Comment>>;
   getComments: Array<Maybe<Comment>>;
   getFeedPosts: Array<Maybe<Post>>;
+  getFollowerCount: Scalars['Int'];
   getFollowers: Array<Maybe<User>>;
   getFollowing: Array<Maybe<User>>;
+  getFollowingCount: Scalars['Int'];
   getLikes?: Maybe<Array<Maybe<Like>>>;
   getMessagePartners: Array<Maybe<BasicUser>>;
   getMessages: Array<Maybe<Message>>;
@@ -205,12 +207,22 @@ export type QueryGetFeedPostsArgs = {
 };
 
 
+export type QueryGetFollowerCountArgs = {
+  userId: Scalars['String'];
+};
+
+
 export type QueryGetFollowersArgs = {
   userId: Scalars['String'];
 };
 
 
 export type QueryGetFollowingArgs = {
+  userId: Scalars['String'];
+};
+
+
+export type QueryGetFollowingCountArgs = {
   userId: Scalars['String'];
 };
 
@@ -439,8 +451,10 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getChildComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetChildCommentsArgs, 'parentCommentId' | 'postId'>>;
   getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'postId'>>;
   getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetFeedPostsArgs, 'limit'>>;
+  getFollowerCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryGetFollowerCountArgs, 'userId'>>;
   getFollowers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'userId'>>;
   getFollowing?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowingArgs, 'userId'>>;
+  getFollowingCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryGetFollowingCountArgs, 'userId'>>;
   getLikes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Like']>>>, ParentType, ContextType>;
   getMessagePartners?: Resolver<Array<Maybe<ResolversTypes['BasicUser']>>, ParentType, ContextType>;
   getMessages?: Resolver<Array<Maybe<ResolversTypes['Message']>>, ParentType, ContextType, RequireFields<QueryGetMessagesArgs, 'messagePartnerId'>>;

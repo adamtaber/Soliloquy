@@ -18,14 +18,22 @@ const postMutations: MutationResolvers = {
     const postMutation = await pool.query(query, values)
     const post = humps.camelizeKeys(postMutation.rows[0])
 
-    if(!isPost(post)) {
+    const newPost = {
+      ...post,
+      likesCount: 0,
+      currentUserLike: false
+    }
+
+    console.log(newPost)
+
+    if(!isPost(newPost)) {
       throw new GraphQLError('Query response is not of type Post', {
         extensions: {
           code: 'INVALID_TYPE'
         }
       })
     }
-    return post
+    return newPost
   },
   deletePost: async(_root, args, { authorizedId }) => {
     const { postId } = args

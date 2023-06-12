@@ -11,7 +11,9 @@ type Query {
   allUsers: [User]!
   findUser(userId: String!): User
   getFollowers(userId: String!): [User]!
+  getFollowerCount(userId: String!): Int!
   getFollowing(userId: String!): [User]!
+  getFollowingCount(userId: String!): Int!
   currentUser: User
 }
 

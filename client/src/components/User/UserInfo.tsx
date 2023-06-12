@@ -21,10 +21,10 @@ const UserInfo = ( props: { userId: string } ) => {
   const userData = data.findUser
 
   return (
-    <>
-      <h1>{userData.displayname}</h1>
-      <p>#{userData.username}</p>
-    </>
+    <div className="user__basicInfo">
+      <p className="user__displayName">{userData.displayname}</p>
+      <p className="user__username">#{userData.username}</p>
+    </div>
   )
 }
 

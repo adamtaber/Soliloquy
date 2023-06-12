@@ -8,15 +8,6 @@ import PostFeed from "../components/Post/PostFeed"
 
 const Home = () => {
   const userQuery = useQuery(CURRENT_USER)
-  // if(userQuery.loading) return null
-  // if(userQuery.error) console.log(userQuery.error)
-  // if(!userQuery.data?.currentUser || !isUser(userQuery.data.currentUser)) {
-  //   console.log('did not retrieve user')
-  //   return null
-  // }
-
-  // const userId = userQuery.data.currentUser.userId
-
   const userId = userQuery.data?.currentUser && isUser(userQuery.data.currentUser)
     ? userQuery.data.currentUser.userId
     : ''
@@ -24,20 +15,10 @@ const Home = () => {
   const postsQuery = useQuery(GET_FEED_POSTS, {
     variables: {limit: 30}
   })
-  // if(postsQuery.loading) return null
-  // if(postsQuery.error) console.log(postsQuery.error)
-  // if(!postsQuery.data?.getFeedPosts || !isPostArray(postsQuery.data.getFeedPosts)) {
-  //   console.log('did not retrieve posts')
-  //   return null
-  // }
-
-  // const postData = postsQuery.data.getFeedPosts
-
   const postData = 
     postsQuery.data?.getFeedPosts && isPostArray(postsQuery.data.getFeedPosts)
       ? postsQuery.data.getFeedPosts
       : ''
-    // ''
 
   return (
     <div className="home">
@@ -65,23 +46,6 @@ const Home = () => {
               }
           })}/>
         }
-        {/* <PostFeed 
-          postData={postData}
-          onLoadMore={(lastPostId, lastCreatedOn) => postsQuery.fetchMore({
-            variables: {
-              lastPostId,
-              lastCreatedOn
-            },
-            updateQuery: (prevRes, {fetchMoreResult}) => {
-              const newFeed = fetchMoreResult.getFeedPosts
-              const result = newFeed.length
-                ? [...prevRes.getFeedPosts, ...newFeed]
-                : prevRes.getFeedPosts
-              return {
-                getFeedPosts: result
-              }
-            }
-          })}/> */}
       </div>
     </div>
   )

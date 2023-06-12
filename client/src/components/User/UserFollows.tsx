@@ -1,70 +1,43 @@
 import { useQuery } from "@apollo/client"
-import { GET_FOLLOWERS, GET_FOLLOWING } from "../../graphql/users/queries"
-import { isUserArray } from "../../graphql/users/types"
-import { Link, Navigate } from "react-router-dom"
+import { GET_FOLLOWER_COUNT, GET_FOLLOWING_COUNT } from "../../graphql/users/queries"
+import { Navigate, useNavigate } from "react-router-dom"
 import FollowButton from "./FollowButton"
-import { useEffect, useState } from "react"
 
 const UserFollows = (props: { userId: string } ) => {
+  const navigate = useNavigate()
   const { userId } = props
-  const [showFollowers, setShowFollowers] = useState(false)
-  const [showFollowing, setShowFollowing] = useState(false)
+  if(typeof(userId) !== 'string') return <Navigate to='/'/>
 
-  useEffect(() => {
-    setShowFollowers(false)
-    setShowFollowing(false)
-  }, [userId])
-
-  const followersQuery = useQuery(GET_FOLLOWERS, {
+  const followerCount = useQuery(GET_FOLLOWER_COUNT, {
     variables: { userId }
   })
 
-  const followingQuery = useQuery(GET_FOLLOWING, {
+  const followingCount = useQuery(GET_FOLLOWING_COUNT, {
     variables: { userId }
   })
 
-  if(followersQuery.loading || followingQuery.loading) return null
-  if(followersQuery.error) console.log(followersQuery.error)
-  if(followingQuery.error) console.log(followingQuery.error)
+//fix follow button
 
-  if(!followersQuery.data || !isUserArray(followersQuery.data.getFollowers)) {
-    console.log('missing follower data')
-    return <Navigate to='/' />
-  }
-
-  if(!followingQuery.data || !isUserArray(followingQuery.data.getFollowing)) {
-    console.log('missing following data')
-    return <Navigate to='/' />
-  }
-
-  const followersData = followersQuery.data.getFollowers
-
-  const followingData = followingQuery.data.getFollowing
-  
   return (
-    <>
-      <FollowButton userId={userId} followers={followersData}/>
-      <p onClick={() => setShowFollowers(!showFollowers)}>
-        followers: {followersData.length}
-      </p>
-      {showFollowers && followersData.map(user => {
-        return (
-          <p key={user.userId}>
-            <Link to={`/users/${user.userId}`}>{user.displayname}</Link>
-          </p>
-        )
-      })}
-      <p onClick={() => setShowFollowing(!showFollowing)}>
-        following: {followingData.length}
-      </p>
-      {showFollowing && followingData.map(user => {
-        return (
-          <p key={user.userId}>
-            <Link to={`/users/${user.userId}`}>{user.displayname}</Link>
-          </p>
-        )
-      })}
-    </>
+    <div className="user__followerInfo">
+      {/* <FollowButton userId={userId} /> */}
+      <div className="followLink" 
+        onClick={() => navigate(`/users/${userId}/followers`)}>
+        <p>
+          <span className="followNumber">
+            {followerCount.data?.getFollowerCount}
+          </span> Followers
+        </p> 
+      </div>
+      <div className="followLink" 
+        onClick={() => navigate(`/users/${userId}/following`)}>
+        <p>
+          <span className="followNumber">
+            {followingCount.data?.getFollowingCount}
+          </span> Following
+        </p>
+      </div>
+    </div>
   )
 }
 

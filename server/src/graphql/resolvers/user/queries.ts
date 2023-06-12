@@ -86,6 +86,29 @@ const userQueries: QueryResolvers = {
 
     return followers
   },
+  getFollowerCount: async (_root, args) => {
+    const { userId } = args
+
+    const query = 
+      `SELECT COUNT(follower_id)
+       FROM user_followers
+       WHERE user_id = $1`
+    const values = [userId]
+    
+    const followerQuery = await pool.query(query, values)
+    let followerCount = humps.camelizeKeys(followerQuery.rows[0]).count
+    followerCount = Number(followerCount)
+
+    if (typeof followerCount === 'number' && !Number.isNaN(followerCount)) {
+      return followerCount
+    } else {
+      throw new GraphQLError('Query response is not of type Number', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
+  },
   getFollowing: async (_root, args) => {
     const { userId } = args
 
@@ -109,6 +132,29 @@ const userQueries: QueryResolvers = {
     }
 
     return following
+  },
+  getFollowingCount: async (_root, args) => {
+    const { userId } = args
+
+    const query = 
+      `SELECT COUNT(user_id)
+       FROM user_followers
+       WHERE follower_id = $1`
+    const values = [userId]
+    
+    const followingQuery = await pool.query(query, values)
+    let followingCount = humps.camelizeKeys(followingQuery.rows[0]).count
+    followingCount = Number(followingCount)
+
+    if (typeof followingCount === 'number' && !Number.isNaN(followingCount)) {
+      return followingCount
+    } else {
+      throw new GraphQLError('Query response is not of type Number', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
   }
 }
 

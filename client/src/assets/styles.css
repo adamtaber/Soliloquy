@@ -43,6 +43,11 @@ button {
 
 p {
   margin: 0px;
+  white-space: pre-wrap;
+}
+
+h1 {
+  margin: 0;
 }
 
 .app {
@@ -82,6 +87,7 @@ p {
   font-size: 35px;
   padding: 10px;
   border-radius: 100px;
+  transition-duration: 0.15s;
 }
 
 .logoutButton {
@@ -91,6 +97,7 @@ p {
   font-size: 35px;
   padding: 10px;
   border-radius: 100px;
+  transition-duration: 0.15s;
 }
 
 .navbarIcon:hover, .logoutButton:hover {
@@ -161,10 +168,37 @@ p {
   font-size: 14px;
   align-self: flex-end;
   cursor: pointer;
+  transition-duration: 0.1s;
 }
 
 .postForm__submit:hover {
   box-shadow: var(--level-two-overlay)
+}
+
+.likeButton {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--secondary-text-color);
+  background-color: inherit;
+  /* background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay); */
+}
+
+.likeButton:hover {
+  color: var(--error-color);
+}
+
+.dislikeButton {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--error-color);
+  background-color: inherit;
+  /* background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay); */
 }
 
 .home__post {
@@ -176,6 +210,13 @@ p {
   border-radius: 3px;
   padding: 8px;
   padding-bottom: 6px;
+  transition-duration: 0.15s;
+  transition-property: box-shadow;
+}
+
+.home__post:hover {
+  box-shadow: var(--level-two-overlay);
+  cursor: pointer;
 }
 
 .post__topRow {
@@ -201,30 +242,6 @@ p {
 
 .post__content {
   margin-bottom: 15px;
-}
-
-.likeButton {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  font-size: 16px;
-  color: var(--secondary-text-color);
-  background-color: var(--main-background-color);
-  box-shadow: var(--level-one-overlay);
-}
-
-.likeButton:hover {
-  color: var(--error-color);
-}
-
-.dislikeButton {
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  font-size: 16px;
-  color: var(--error-color);
-  background-color: var(--main-background-color);
-  box-shadow: var(--level-one-overlay);
 }
 
 /* Log In */
@@ -339,3 +356,135 @@ p {
   background-color: var(--main-background-color);
   box-shadow: var(--level-two-overlay);
 }
+
+/* user styles */
+
+.user__top {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  border-radius: 3px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.user__displayName {
+  font-weight: 300;
+  font-size: 30px;
+}
+
+.user__username{
+  color: var(--secondary-text-color);
+  font-size: 18px;
+}
+
+.user__basicInfo {
+  margin-bottom: 20px;
+}
+
+.user__followerInfo {
+  display: flex;
+  gap: 10px;
+  font-weight: 300;
+  color: var(--secondary-text-color);
+}
+
+.followNumber {
+  font-weight: 500;
+  color: var(--main-text-color);
+}
+
+.followLink:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.unfollowButton {
+  background-color: var(--secondary-text-color);
+  color: var(--contrast-text-color);
+  padding: 5px;
+  border-radius: 9999px;
+  width: 90px;
+  height: 30px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.unfollowButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.followButton {
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+  padding: 5px;
+  border-radius: 20px;
+  width: 90px;
+  height: 30px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.followButton:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+/* follow info pages */
+.followInfoSwitchContainer {
+  border-radius: 3px;
+  box-shadow: var(--level-one-overlay);
+  width: 600px;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.followInfoSwitch {
+  background-color: inherit;
+  color: var(--main-text-color);
+  font-size: 20px;
+  font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  width: 300px;
+  height: 50px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.followInfoSwitch:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.selectedInfoSwitch {
+  height: 3px;
+  width: 150px;
+  position: absolute;
+  background-color: var(--primary-color);
+  bottom: 1px;
+}
+
+.followList {
+  border-radius: 3px;
+  width: 600px;
+  box-shadow: var(--level-one-overlay);
+  margin-top: 10px;
+  font-size: 19px;
+}
+
+.followList__user {
+  padding: 10px;
+}
+
+.followList__user:hover {
+  cursor: pointer;
+  box-shadow: var(--level-one-overlay);
+}
+
+.followList__username {
+  color: var(--secondary-text-color);
+  font-weight: 400;
+}
+

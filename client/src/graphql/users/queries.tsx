@@ -24,10 +24,22 @@ export const GET_FOLLOWERS = gql(`
   }
 `)
 
+export const GET_FOLLOWER_COUNT = gql(`
+  query getFollowerCount($userId: String!) {
+    getFollowerCount(userId: $userId)
+  }
+`)
+
 export const GET_FOLLOWING = gql(`
   query getFollowing($userId: String!) {
     getFollowing(userId: $userId) {
       ...UserFields
     }
+  }
+`)
+
+export const GET_FOLLOWING_COUNT = gql(`
+  query getFollowingCount($userId: String!) {
+    getFollowingCount(userId: $userId)
   }
 `)

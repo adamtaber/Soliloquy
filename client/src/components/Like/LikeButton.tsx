@@ -83,7 +83,7 @@ const LikeButton = (props: {likes: number, contentId: string, contentType: strin
         onClick={() => clickLike()}>
           {userLiked 
           ? <IconContext.Provider value={{style: {display: 'block'}}}>
-              <VscHeartFilled />
+              <VscHeartFilled/>
             </IconContext.Provider>
           : <IconContext.Provider value={{style: {display: 'block'}}}>
               <VscHeart />

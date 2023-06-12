@@ -1,13 +1,13 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Post } from "../../graphql/types/graphql"
 import { useRef } from "react"
 import LikeButton from "../Like/LikeButton"
 
 const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: String, lastCreatedOn: Date) => void }) => {
   const {postData, onLoadMore} = props
-
+  const navigate = useNavigate()
   const observer = useRef<any>()
-  
+
   const lastPostRef = (node: any) => {
     if(observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
@@ -22,55 +22,34 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
 
   const feed = postData.map((post) => {
     let date = new Date(post.createdOn)
-    return {
-      ...post,
-      createdOn: date.toLocaleString()
-    }
+    return { ...post, createdOn: date.toLocaleString() }
   })
   
   return (
     <>
       {feed.map((post, i) => {
-        if(feed.length === i + 1) {
           return (
-            <div className="home__post" ref={lastPostRef} key={post.postId}>
-              <div className="post__topRow">
-                <p className="post__username">
-                  <Link to={`/users/${post.userId}`}>
-                    {post.displayname}
-                  </Link>
-                </p>            
-                <p className="post__date">{post.createdOn}</p>
-              </div>
-              <p className="post__content">{post.content}</p>
-              <LikeButton 
-                likes={post.likesCount}
-                contentId={post.postId} 
-                contentType="post"
-                userLiked={post.currentUserLike ? true : false}
-              />
+            <div className="home__post" 
+              onClick={() => navigate(`/posts/${post.postId}`)}
+              ref={feed.length === i + 1 ? lastPostRef : null} 
+              key={post.postId}>
+                <div className="post__topRow">
+                  <p className="post__username">
+                    <Link to={`/users/${post.userId}`}>
+                      {post.displayname}
+                    </Link>
+                  </p>            
+                  <p className="post__date">{post.createdOn}</p>
+                </div>
+                <p className="post__content">{post.content}</p>
+                <LikeButton 
+                  likes={post.likesCount}
+                  contentId={post.postId} 
+                  contentType="post"
+                  userLiked={post.currentUserLike ? true : false}
+                />
             </div>
           )
-        } 
-        return (
-          <div  className="home__post" key={post.postId}>
-            <div className="post__topRow">
-              <p className="post__username">
-                <Link to={`/users/${post.userId}`}>
-                  {post.displayname}
-                </Link>
-              </p>            
-              <p className="post__date">{post.createdOn}</p>
-            </div>
-            <p className="post__content">{post.content}</p>
-            <LikeButton 
-                likes={post.likesCount}
-                contentId={post.postId} 
-                contentType="post"
-                userLiked={post.currentUserLike ? true : false}
-              />
-          </div>
-        )
       })}
     </>
   )

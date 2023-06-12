@@ -34,13 +34,15 @@ const UserPosts = (props: { userId: string } ) => {
 
   return (
     <>
-      <p>POSTS</p>
       {postsData.map((post) => {
         return (
-          <div key={post.postId}>
+          <div className="home__post" key={post.postId}>
             <div onClick={() => goToPost(post.postId)}>
-              <p>content: {post.content}</p>  
-              <p>date: {post.createdOn}</p>
+              <div className="post__topRow">
+                {/* <p></p> */}
+                <p className="post__date">{post.createdOn}</p>
+              </div>
+              <p className="post__content">{post.content}</p>  
             </div>
             <LikeButton 
               likes={post.likesCount}

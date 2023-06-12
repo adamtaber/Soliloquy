@@ -1,18 +1,16 @@
 import { useMutation } from "@apollo/client"
 import { FOLLOW_USER } from "../../graphql/users/mutations"
-import { GET_FOLLOWERS } from "../../graphql/users/queries"
+import { GET_FOLLOWERS, GET_FOLLOWER_COUNT } from "../../graphql/users/queries"
 
 const FollowUser = (props: { userId: string }) => {
   const { userId } = props
 
   const [followUser, { data, loading, error }] = useMutation(FOLLOW_USER, {
     refetchQueries: [
-      GET_FOLLOWERS
+      GET_FOLLOWERS,
+      GET_FOLLOWER_COUNT
     ]
   })
-
-  if(loading) console.log('loading...')
-  if(error) console.log(error)
 
   const clickFollow = () => {
     followUser({ variables: {followUserId: userId }})
@@ -20,7 +18,7 @@ const FollowUser = (props: { userId: string }) => {
 
   return (
     <>
-      <button onClick={() => clickFollow()}>Follow</button>
+      <button className="followButton" onClick={() => clickFollow()}>Follow</button>
     </>
   )
 }
