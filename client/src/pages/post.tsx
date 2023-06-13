@@ -7,12 +7,7 @@ import { isUser } from "../graphql/users/types"
 
 const Post = () => {
   const { postId } = useParams()
-
-  if(typeof(postId) !== 'string') {
-    console.log('invalid parameter')
-    return <Navigate to='/'/>
-  }
-
+  if(typeof(postId) !== 'string') return <Navigate to='/'/>
   const {loading, error, data} = useQuery(CURRENT_USER)
 
   if(loading) return null

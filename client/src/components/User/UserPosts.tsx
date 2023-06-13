@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client"
 import { GET_USER_POSTS } from "../../graphql/posts/queries"
 import { isPostArray } from "../../graphql/posts/types"
-import { Navigate, useNavigate } from "react-router-dom"
+import { Link, Navigate, useNavigate } from "react-router-dom"
 import LikeButton from "../Like/LikeButton"
 
 const UserPosts = (props: { userId: string } ) => {
@@ -28,32 +28,33 @@ const UserPosts = (props: { userId: string } ) => {
     }
   })
 
-  const goToPost = (postId: string) => {
-    navigate(`/posts/${postId}`)
-  }
-
   return (
-    <>
+    <div className="home__postFeed">
       {postsData.map((post) => {
         return (
-          <div className="home__post" key={post.postId}>
-            <div onClick={() => goToPost(post.postId)}>
+          <div className="home__post" 
+            onClick={() => navigate(`/posts/${post.postId}`)}
+            key={post.postId}>
               <div className="post__topRow">
-                {/* <p></p> */}
+                  <Link className="post__username" 
+                    onClick={(e) => e.stopPropagation()}
+                    to={`/users/${post.poster.userId}`}>
+                      {post.poster.displayname}
+                  </Link>
                 <p className="post__date">{post.createdOn}</p>
               </div>
-              <p className="post__content">{post.content}</p>  
-            </div>
-            <LikeButton 
-              likes={post.likesCount}
-              contentId={post.postId} 
-              contentType="post"
-              userLiked={post.currentUserLike ? true : false}
-            />
+              <p className="post__content">{post.content}</p>
+              <LikeButton 
+                likes={post.likesCount}
+                contentId={post.postId} 
+                contentType="post"
+                userLiked={post.currentUserLike ? true : false}
+                postType="feed"
+              />
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 

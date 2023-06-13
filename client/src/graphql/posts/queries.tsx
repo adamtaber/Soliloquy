@@ -13,7 +13,6 @@ export const GET_FEED_POSTS = gql(`
   query getFeedPosts($lastPostId: String, $lastCreatedOn: Date, $limit: Int!) {
     getFeedPosts(lastPostId: $lastPostId, lastCreatedOn: $lastCreatedOn, limit: $limit) {
       ...PostFields
-      displayname
     }
   }
 `)

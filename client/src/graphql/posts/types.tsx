@@ -1,8 +1,7 @@
 import { Post } from "../types/graphql" 
 
 export const isPost = (input: any): input is Post => {
-  const post = (input.userId !== undefined) &&
-               (input.postId !== undefined) &&
+  const post = (input.postId !== undefined) &&
                (input.content !== undefined) &&
                (input.createdOn !== undefined)
   return post

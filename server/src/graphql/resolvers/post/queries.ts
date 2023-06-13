@@ -15,9 +15,9 @@ const postQueries: QueryResolvers = {
        WHERE l.post_id = p.post_id`
 
     const likedByCurrentUser = 
-    `SELECT user_id
-    FROM likes l
-    WHERE (l.post_id = p.post_id) AND (l.user_id = $2)`
+      `SELECT user_id
+       FROM likes l
+       WHERE (l.post_id = p.post_id) AND (l.user_id = $2)`
 
     const query =
       `SELECT p.*, (${likesCount}) AS likes_count,
@@ -26,10 +26,24 @@ const postQueries: QueryResolvers = {
        WHERE post_id = $1`
     const values = [postId, authorizedId]
 
+    const query2 = 
+      `SELECT u.*
+       FROM posts p
+       JOIN users u
+         ON p.user_id = u.user_id
+       WHERE p.post_id = $1`
+    const values2 = [postId]
+    
+
     const postQuery = await pool.query(query, values)
     const post = humps.camelizeKeys(postQuery.rows[0])
 
-    if(!isPost(post)) {
+    const userQuery = await pool.query(query2, values2)
+    const user = humps.camelizeKeys(userQuery.rows[0])
+
+    const totalPost = {...post, poster: {...user}}
+
+    if(!isPost(totalPost)) {
       throw new GraphQLError('Query response is not of type Post', {
         extensions: {
           code: 'INVALID_TYPE'
@@ -37,7 +51,7 @@ const postQueries: QueryResolvers = {
       })
     }
 
-    return post
+    return totalPost
   },
   getUserPosts: async(_root, args) => {
     const { userId } = args
@@ -48,9 +62,9 @@ const postQueries: QueryResolvers = {
        WHERE l.post_id = p.post_id`
 
     const likedByCurrentUser = 
-    `SELECT user_id
-    FROM likes l
-    WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
+      `SELECT user_id
+       FROM likes l
+       WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
 
     const query = 
       `SELECT p.*, (${likesCount}) AS likes_count, 
@@ -60,10 +74,31 @@ const postQueries: QueryResolvers = {
        ORDER BY created_on DESC`
     const values = [userId]
 
+    const query2 = 
+      `SELECT *
+       FROM users
+       WHERE user_id = $1`
+
+
     const postsQuery = await pool.query(query, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
-    if (!isPostArray(posts)) {
+    const userQuery = await pool.query(query2, values)
+    const user = humps.camelizeKeys(userQuery.rows[0])
+
+    if (!Array.isArray(posts)) {
+      throw new GraphQLError('Query response is not of type Array', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
+
+    const totalPosts = posts.map((post) => {
+      return {...post, poster: {...user}}
+    })
+
+    if (!isPostArray(totalPosts)) {
       throw new GraphQLError('Query response is not of type PostArray', {
         extensions: {
           code: 'INVALID_TYPE'
@@ -71,7 +106,7 @@ const postQueries: QueryResolvers = {
       })
     }
 
-    return posts
+    return totalPosts
   },
   getFeedPosts: async(_root, args, { authorizedId }) => {
     const {lastPostId, lastCreatedOn, limit} = args
@@ -101,9 +136,7 @@ const postQueries: QueryResolvers = {
        WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
 
     const initialQuery = 
-      `SELECT p.post_id, p.user_id, p.content, 
-         p.created_on, u.displayname, 
-         (${likesCount}) AS likes_count,
+      `SELECT p.*, u.*, (${likesCount}) AS likes_count,
          (${likedByCurrentUser}) AS current_user_like
        FROM posts p
        JOIN users u
@@ -113,9 +146,7 @@ const postQueries: QueryResolvers = {
        LIMIT $2`
     
     const nextQuery = 
-      `SELECT p.post_id, p.user_id, p.content, 
-         p.created_on, u.displayname, 
-         (${likesCount}) AS likes_count,
+      `SELECT p.*, u.*, (${likesCount}) AS likes_count,
          (${likedByCurrentUser}) AS current_user_like
        FROM posts p
        JOIN users u
@@ -134,7 +165,32 @@ const postQueries: QueryResolvers = {
       : await pool.query(initialQuery, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
-    if (!isPostArray(posts)) {
+    if (!Array.isArray(posts)) {
+      throw new GraphQLError('Query response is not of type Array', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
+
+    const totalPosts = posts.map((post) => {
+      return {
+        postId: post.postId,
+        content: post.content,
+        createdOn: post.createdOn,
+        likesCount: post.likesCount,
+        currentUserLike: post.currentUserLike,
+        poster: {
+          userId: post.userId,
+          displayname: post.displayname,
+          username: post.username,
+          email: post.email,
+          password: post.password
+        }
+      }
+    })
+
+    if (!isPostArray(totalPosts)) {
       throw new GraphQLError('Query response is not of type PostArray', {
         extensions: {
           code: 'INVALID_TYPE'
@@ -142,7 +198,7 @@ const postQueries: QueryResolvers = {
       })
     }
 
-    return posts
+    return totalPosts
   }
 }
 

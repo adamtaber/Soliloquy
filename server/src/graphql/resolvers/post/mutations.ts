@@ -15,16 +15,27 @@ const postMutations: MutationResolvers = {
        VALUES ($1, $2, $3)
        RETURNING *`
     const values = [authorizedId, content, createdOn]
+
+    const query2 = 
+      `SELECT *
+       FROM users
+       WHERE user_id = $1`
+    const values2 = [authorizedId]
+
     const postMutation = await pool.query(query, values)
     const post = humps.camelizeKeys(postMutation.rows[0])
+
+    const userQuery = await pool.query(query2, values2)
+    const user = humps.camelizeKeys(userQuery.rows[0])
 
     const newPost = {
       ...post,
       likesCount: 0,
-      currentUserLike: false
+      currentUserLike: false,
+      poster: {
+        ...user
+      }
     }
-
-    console.log(newPost)
 
     if(!isPost(newPost)) {
       throw new GraphQLError('Query response is not of type Post', {

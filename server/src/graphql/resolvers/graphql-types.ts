@@ -158,10 +158,9 @@ export type Post = {
   content: Scalars['String'];
   createdOn: Scalars['Date'];
   currentUserLike?: Maybe<Scalars['String']>;
-  displayname?: Maybe<Scalars['String']>;
   likesCount: Scalars['Int'];
   postId: Scalars['ID'];
-  userId: Scalars['ID'];
+  poster: User;
 };
 
 export type Query = {
@@ -437,10 +436,9 @@ export type PostResolvers<ContextType = any, ParentType extends ResolversParentT
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdOn?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   currentUserLike?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  displayname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   likesCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  poster?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

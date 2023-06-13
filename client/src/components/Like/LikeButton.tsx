@@ -5,8 +5,11 @@ import { DELETE_LIKE, LIKE_CONTENT } from "../../graphql/likes/mutations"
 import { GET_POST } from "../../graphql/posts/queries"
 import { Post } from "../../graphql/types/graphql"
 
-const LikeButton = (props: {likes: number, contentId: string, contentType: string, userLiked: boolean }) => {
-  const {likes, contentId, contentType, userLiked} = props
+const LikeButton = 
+  (props: { likes: number, contentId: string, 
+    contentType: string, userLiked: boolean, postType: string }) => {
+
+  const {likes, contentId, contentType, userLiked, postType} = props
 
   const [likeContent, likeResults] = useMutation(LIKE_CONTENT, {
     variables: (contentType === 'post' 
@@ -70,17 +73,33 @@ const LikeButton = (props: {likes: number, contentId: string, contentType: strin
     }
   })
 
-  const clickLike = () => {
-    if(!userLiked) likeContent()
-    else unlikeContent()
+  const clickLike = 
+    (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+      e.stopPropagation()
+      if(!userLiked) likeContent()
+      else unlikeContent()
   }
+
+  if (postType === 'page') return (
+    <div>
+      <button className={userLiked ? 'dislikeButtonPage' : 'likeButtonPage'} 
+        onClick={(e) => clickLike(e)}>
+          {userLiked 
+          ? <IconContext.Provider value={{style: {display: 'block'}}}>
+              <VscHeartFilled/>
+            </IconContext.Provider>
+          : <IconContext.Provider value={{style: {display: 'block'}}}>
+              <VscHeart />
+            </IconContext.Provider>
+          } 
+      </button> 
+    </div>
+  )
 
   return (
     <div className='post__likes'>
-      {/* <button onClick={() => clickLike()}> [{likes}] {userLiked ? 'unlike' : 'like'}</button> */}
-      {/* <button className={userLiked ? 'dislikeButton' : 'likeButton'}  */}
       <button className={userLiked ? 'dislikeButton' : 'likeButton'} 
-        onClick={() => clickLike()}>
+        onClick={(e) => clickLike(e)}>
           {userLiked 
           ? <IconContext.Provider value={{style: {display: 'block'}}}>
               <VscHeartFilled/>

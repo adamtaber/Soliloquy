@@ -34,11 +34,11 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
               ref={feed.length === i + 1 ? lastPostRef : null} 
               key={post.postId}>
                 <div className="post__topRow">
-                  <p className="post__username">
-                    <Link to={`/users/${post.userId}`}>
-                      {post.displayname}
+                    <Link className="post__username" 
+                      onClick={(e) => e.stopPropagation()}
+                      to={`/users/${post.poster.userId}`}>
+                        {post.poster.displayname}
                     </Link>
-                  </p>            
                   <p className="post__date">{post.createdOn}</p>
                 </div>
                 <p className="post__content">{post.content}</p>
@@ -47,6 +47,7 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
                   contentId={post.postId} 
                   contentType="post"
                   userLiked={post.currentUserLike ? true : false}
+                  postType="feed"
                 />
             </div>
           )
