@@ -1,6 +1,6 @@
 type Comment {
   commentId: ID!,
-  userId: ID!,
+  user: User!,
   postId: ID!,
   parentCommentId: ID,
   content: String!,

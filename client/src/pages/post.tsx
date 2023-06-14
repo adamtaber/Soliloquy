@@ -22,7 +22,6 @@ const Post = () => {
   return (
     <div>
       <PostContent postId={postId} currentUser={currentUser}/>
-      <p>Comments</p>
       <PostCommentList postId={postId}/>
     </div>
   )

@@ -20,7 +20,8 @@ const DeleteComment = (props: {commentId: string}) => {
 
   return (
     <>
-      <button onClick={() => onDelete()}>Delete Comment</button>
+      <button className="postOptionsButton deletePostButton" 
+        onClick={() => onDelete()}>Delete Comment</button>
     </>
   )
 }

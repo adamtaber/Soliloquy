@@ -26,13 +26,15 @@ const PostCommentList = (props: { postId: string }) => {
   return (
     <>
       <PostCommentForm postId={postId} />
-      {comments.map((comment) => {
-        return (
-          <div key={comment.commentId}>
-            <PostComment comment={comment} />
-          </div>
-        )
-      })}
+      <div className="postCommentList">
+        {comments.map((comment) => {
+          return (
+            <div key={comment.commentId}>
+              <PostComment comment={comment} />
+            </div>
+          )
+        })}
+      </div>
     </>
   )
 }

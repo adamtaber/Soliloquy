@@ -24,10 +24,27 @@ const commentMutations: MutationResolvers = {
        VALUES ($1, $2, $3, $4, $5)
        RETURNING *`
     const values = [authorizedId, postId, content, createdOn, parentCommentId]
+
+    const query2 =
+      `SELECT *
+       FROM users
+       WHERE user_id = $1`
+    const values2 = [authorizedId]
+
     const commentMutation = await pool.query(query, values)
     const comment = humps.camelizeKeys(commentMutation.rows[0])
 
-    if(!isComment(comment)) {
+    const userQuery = await pool.query(query2, values2)
+    const user = humps.camelizeKeys(userQuery.rows[0])
+
+    const newComment = {
+      ...comment,
+      user: {
+        ...user
+      }
+    }
+
+    if(!isComment(newComment)) {
       throw new GraphQLError('Query response is not of type Comment', {
         extensions: {
           code: 'INVALID_TYPE'
@@ -35,7 +52,7 @@ const commentMutations: MutationResolvers = {
       })
     }
 
-    return comment
+    return newComment
   },
   deleteComment: async (_root, args, { authorizedId }) => {
     const { commentId } = args

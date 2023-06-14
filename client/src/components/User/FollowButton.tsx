@@ -31,8 +31,8 @@ const FollowButton = (props: { userId: string }) => {
   return (
     <div>
       {isFollowing 
-        ? <UnfollowUser userId={userId} />
-        : <FollowUser userId={userId} /> 
+        ? <UnfollowUser userId={userId} currentUserId={currentUserId}/>
+        : <FollowUser userId={userId} currentUserId={currentUserId}/> 
       }
     </div>
   )

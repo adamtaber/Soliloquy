@@ -30,7 +30,7 @@ export type Comment = {
   createdOn: Scalars['String'];
   parentCommentId?: Maybe<Scalars['ID']>;
   postId: Scalars['ID'];
-  userId: Scalars['ID'];
+  user: User;
 };
 
 export type Like = {
@@ -385,7 +385,7 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
   createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   parentCommentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   postId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  userId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 

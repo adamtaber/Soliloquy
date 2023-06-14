@@ -1,12 +1,14 @@
 import { Comment } from "../types/graphql"
+import { isUser } from "../users/types"
 
 export const isComment = (input: any): input is Comment => {
-  const comment = (input.userId !== undefined) &&
+  const comment = 
                (input.commentId !== undefined) &&
                (input.content !== undefined) &&
                (input.createdOn !== undefined) &&
                (input.parentCommentId !== undefined || 
-                input.postId !== undefined)
+                input.postId !== undefined) &&
+               (isUser(input.user))
   return comment
 }
 

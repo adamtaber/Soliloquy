@@ -1,7 +1,6 @@
 import { useQuery } from "@apollo/client"
 import { GET_FOLLOWER_COUNT, GET_FOLLOWING_COUNT } from "../../graphql/users/queries"
 import { Navigate, useNavigate } from "react-router-dom"
-import FollowButton from "./FollowButton"
 
 const UserFollows = (props: { userId: string } ) => {
   const navigate = useNavigate()
@@ -16,11 +15,8 @@ const UserFollows = (props: { userId: string } ) => {
     variables: { userId }
   })
 
-//fix follow button
-
   return (
     <div className="user__followerInfo">
-      {/* <FollowButton userId={userId} /> */}
       <div className="followLink" 
         onClick={() => navigate(`/users/${userId}/followers`)}>
         <p>

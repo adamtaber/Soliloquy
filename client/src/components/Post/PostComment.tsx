@@ -6,9 +6,15 @@ import { Navigate } from "react-router-dom"
 import DeleteComment from "./DeleteComment"
 import ChildCommentList from "../Comment/ChildCommentList"
 import ChildCommentForm from "../Comment/ChildCommentForm"
+import { useState } from "react"
+import { IconContext } from "react-icons"
+import { RxDotsHorizontal } from "react-icons/rx"
+import LikeButton from "../Like/LikeButton"
 
 const PostComment = (props: { comment: Comment}) => {
   const { comment } = props
+  const [showOptionsModal, setShowOptionsModal] = useState(false)
+  const [showReplyForm, setShowReplyForm] = useState(false)
 
   const {loading, error, data} = useQuery(CURRENT_USER)
 
@@ -22,13 +28,53 @@ const PostComment = (props: { comment: Comment}) => {
   const currentUser = data.currentUser
 
   return (
-    <>
+    <div className="postComment">
+      <div className="levelIndicator"></div>
+      <div className="profilePicSub"></div>
+      <div className="commentHeader">
+        <p className="commentDisplayName">{comment.user.displayname}</p>
+        <p className="commentUsername">#{comment.user.username}</p>
+      </div>
       <p>{comment.content}</p>
-      {comment.userId === currentUser.userId
-        && <DeleteComment commentId={comment.commentId}/>}
-      <ChildCommentForm parentCommentId={comment.commentId} postId={comment.postId} />
-      <ChildCommentList commentId={comment.commentId} postId={comment.postId}/>
-    </>
+      {/* <ChildCommentList commentId={comment.commentId} postId={comment.postId}/> */}
+      <div className="comment__interactButtons">
+        {/* <LikeButton 
+          likes={postData.likesCount}
+          contentId={postData.postId} 
+          contentType="post"
+          userLiked={postData.currentUserLike ? true : false}
+          postType={'page'}
+        /> */}
+        <button className="replyButton" 
+          onClick={() => setShowReplyForm(!showReplyForm)}>
+            Reply
+        </button>
+        <button onClick={() => setShowOptionsModal(!showOptionsModal)} 
+          className="openModalButton">
+            <IconContext.Provider value={{style: {display: 'block'}}}>
+              <RxDotsHorizontal />
+            </IconContext.Provider>
+        </button>
+        {showOptionsModal && 
+          <div className="commentOptionsModal">
+            {comment.user.userId === currentUser.userId
+              && <DeleteComment commentId={comment.commentId}/>} 
+            <button className="postOptionsButton">Test</button>
+          </div>
+        }
+        {showOptionsModal &&
+          <div className="modalWrapper" 
+            onClick={() => setShowOptionsModal(false)}></div>
+        }
+      </div>
+      {showReplyForm && 
+        <div className="replyFormContainer">
+          <div className="levelIndicator commentLevelIndicator"></div>
+          <ChildCommentForm parentCommentId={comment.commentId} 
+            postId={comment.postId} />
+        </div>
+      }
+    </div>
   )
 }
 
