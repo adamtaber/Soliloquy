@@ -2,14 +2,19 @@ import { useMutation } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_COMMENT } from "../../graphql/comments/mutations"
 import { GET_CHILD_COMMENTS } from "../../graphql/comments/queries"
-import { useRef } from "react"
+import { Dispatch, SetStateAction, useRef } from "react"
 
 type Inputs = {
   content: string
 }
 
-const ChildCommentForm = (props: {postId: string, parentCommentId: string}) => {
-  const { parentCommentId, postId } = props
+interface IProps {
+  postId: string,
+  parentCommentId: string,
+  setShowReplyForm: Dispatch<SetStateAction<boolean>>;
+}
+
+const ChildCommentForm = ({postId, parentCommentId, setShowReplyForm}: IProps) => {
   const { register, handleSubmit, watch } = useForm<Inputs>()
   const { ref } = register('content')
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
@@ -31,6 +36,7 @@ const ChildCommentForm = (props: {postId: string, parentCommentId: string}) => {
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     comment({ variables: {content: data.content, postId, parentCommentId} })
+    setShowReplyForm(false)
   }
 
   return (

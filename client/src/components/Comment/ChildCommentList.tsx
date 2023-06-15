@@ -8,7 +8,7 @@ import ChildComment from "./ChildComment"
 //move that child comment to the far left (reddit style)
 
 const ChildCommentList = (props: { commentId: string, postId: string }) => {
-  const [showComments, setShowComments] = useState(false)
+  // const [showComments, setShowComments] = useState(false)
   const {commentId, postId} = props
 
   const {loading, error, data} = useQuery(GET_CHILD_COMMENTS, {
@@ -29,11 +29,12 @@ const ChildCommentList = (props: { commentId: string, postId: string }) => {
 
   return (
     <>
-      {showComments
+      {/* {showComments
         ? <button onClick={() => setShowComments(false)}>Hide Comments</button>
         : <button onClick={() => setShowComments(true)}>Show Comments</button>
-      }
-      {showComments &&
+      } */}
+      {/* {showComments && */}
+      {
        comments.map(comment => {
         return (
           <div key={comment.commentId}>

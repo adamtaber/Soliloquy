@@ -663,16 +663,50 @@ h1 {
   position: relative;
   padding-left: 50px;
   margin-bottom: 10px;
-  /* overflow: hidden; */
+  transition-duration: 0.1s;
+}
+
+.postComment.collapsedThread {
+  padding-left: 90px;
+}
+
+.postComment.collapsedThread .levelIndicator {
+  height: 0px;
+}
+
+.expandThreadButton {
+  background-color: inherit;
+  color: var(--main-text-color);
+  font-size: 20px;
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  border-radius: 9999px;
+  left: 0;
+  text-align: center;
+}
+
+.levelIndicatorContainer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  height: calc(100% - 45px);
+  width: 18px;
+  top: 45px;
+  left: 8px;
+}
+
+.levelIndicatorContainer:hover {
+  cursor: pointer;
+}
+
+.levelIndicatorContainer:hover .levelIndicator {
+  background-color: rgb(145, 145, 145, 1);
 }
 
 .levelIndicator {
-  position: absolute;
-  height: calc(100% - 45px);
-  /* height: calc(100% - 50px); */
+  height: 100%;
   width: 2px;
-  top: 45px;
-  left: 16px;
   background-color: rgb(55, 55, 55, 1);
 }
 
@@ -683,6 +717,34 @@ h1 {
   width: 35px;
   height: 35px;
   left: 0px;
+  transition-duration: 0.1s;
+}
+
+.profilePicSub.collapsedThread {
+  left: 40px;
+}
+
+.commentHeader {
+  display: flex;
+  gap: 15px;
+  height: 35px;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.commentBody.collapsedThread {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.commentDisplayName {
+  font-weight: 500;
+}
+
+.commentUsername {
+  color: var(--secondary-text-color);
+  font-weight: 300;
 }
 
 .comment__interactButtons {
@@ -708,13 +770,13 @@ h1 {
   box-shadow: var(--level-one-overlay);
 }
 
+.replyFormContainer {
+  position: relative;
+}
+
 .commentReplyForm {
   width: auto;
   margin-left: 30px;
-}
-
-.replyFormContainer {
-  position: relative;
 }
 
 .commentLevelIndicator {
@@ -723,41 +785,55 @@ h1 {
   height: 100%;
 }
 
-.commentHeader {
-  display: flex;
-  gap: 5px;
-  height: 35px;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-.commentDisplayName {
-  font-weight: 500;
-}
-
-.commentUsername {
-  color: var(--secondary-text-color);
-  font-weight: 300;
-}
-
-.commentOptionsModal {
-  position: absolute;
-  height: 50px;
-  left: 50px;
-  background-color: inherit;
-  
-  z-index: 2;
-}
-
 .commentOptionsModal {
   position: absolute;
   background-color: var(--main-background-color);
+  width: 180px;
   left: 60px;
-  top: 25px;
-  box-shadow: 0px 0px 5px var(--secondary-text-color);
+  top: 18px;
+  border-style: solid;
+  border-width: 1px;
+  border-color:rgb(55, 55, 55);
   display: flex;
   flex-direction: column;
-  border-radius: 8px;
-  /* overflow: hidden; */
   z-index: 2;
 }
+
+.childComment {
+  position: relative;
+  padding-left: 34px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  transition-duration: 0.1s;
+}
+
+.childComment.collapsedThread {
+  padding-left: 74px;
+}
+
+.expandThreadButton.childExpandButton {
+  left: -16px;
+}
+
+.childComment .levelIndicatorContainer {
+  left: -8px;
+}
+
+.childLevelIndicator {
+  height: 100%;
+  width: 2px;
+  background-color: rgb(55, 55, 55, 1);
+}
+
+.levelIndicatorContainer:hover .childLevelIndicator {
+  background-color: rgb(145, 145, 145, 1);
+}
+
+.childProfilePicSub {
+  left: -16px;
+}
+
+.childProfilePicSub.collapsedThread {
+  left: 25px;
+}
+

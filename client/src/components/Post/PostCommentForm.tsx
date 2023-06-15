@@ -39,7 +39,7 @@ const PostCommentForm = (props: {postId: string}) => {
       <form className="home__postForm" onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="content">
           {!watch('content') && 
-            <span className="postForm__inputFiller">Post something here!</span>
+            <span className="postForm__inputFiller">Write a comment!</span>
           }
           {watch('content') && 
             <span className="postForm__charCount">
