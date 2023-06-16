@@ -12,7 +12,8 @@ const CommentHeader = ({ collapseThread, comment }: IProps) => {
     <div className="commentHeaderContainer">
       <div className={`profilePicSub ${collapseThread && 
           'collapsedThread'}`}></div>
-      <div className="commentHeader">
+      <div className={`commentHeader ${collapseThread && 
+          'collapsedThread'}`}>
         <p className="commentDisplayName">{displayname}</p>
         <p className="commentUsername">#{username}</p>
       </div>

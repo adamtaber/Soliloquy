@@ -4,6 +4,7 @@ import { RxDotsHorizontal } from "react-icons/rx"
 import { Comment, User } from "../../graphql/types/graphql"
 import DeleteComment from "../Post/DeleteComment"
 import LikeButton from "../Like/LikeButton"
+import LikeCommentButton from "../Like/LikeCommentButton"
 
 interface IProps {
   setShowReplyForm: Dispatch<SetStateAction<boolean>>,
@@ -28,6 +29,7 @@ const CommentButtons =
             userLiked={ currentUserLike ? true : false }
             postType={ 'page' }
           /> */}
+          <LikeCommentButton comment={comment}/>
           <button className="replyButton" 
             onClick={() => setShowReplyForm(!showReplyForm)}>
               Reply

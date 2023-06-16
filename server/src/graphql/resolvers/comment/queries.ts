@@ -5,7 +5,7 @@ import { isCommentArray } from "./types"
 import { GraphQLError } from "graphql"
 
 const commentQueries: QueryResolvers = {
-  getComments: async (_root, args) => {
+  getComments: async (_root, args, {authorizedId}) => {
     const { postId } = args
 
     const likesCount = 
@@ -16,7 +16,7 @@ const commentQueries: QueryResolvers = {
     const likedByCurrentUser = 
       `SELECT user_id
        FROM likes l
-       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $1)`
+       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $2)`
 
     const query = 
       `SELECT *, c.created_on AS comment_created_on, 
@@ -26,7 +26,7 @@ const commentQueries: QueryResolvers = {
        JOIN users u
          ON u.user_id = c.user_id
        WHERE post_id = $1 AND parent_comment_id IS NULL`
-    const values = [postId]
+    const values = [postId, authorizedId]
 
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)
@@ -47,7 +47,7 @@ const commentQueries: QueryResolvers = {
         content: comment.content,
         createdOn: comment.commentCreatedOn,
         likesCount: comment.likesCount,
-        likedByCurrentUser: comment.likedByCurrentUser,
+        currentUserLike: comment.currentUserLike,
         user: {
           userId: comment.userId,
           username: comment.username,
@@ -69,7 +69,7 @@ const commentQueries: QueryResolvers = {
 
     return formattedComments
   },
-  getChildComments: async (_root, args) => {
+  getChildComments: async (_root, args, {authorizedId}) => {
     const { postId, parentCommentId } = args
 
     const likesCount = 
@@ -80,7 +80,7 @@ const commentQueries: QueryResolvers = {
     const likedByCurrentUser = 
       `SELECT user_id
        FROM likes l
-       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $1)`
+       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $3)`
 
     const query = 
       `SELECT *, c.created_on AS comment_created_on, 
@@ -90,7 +90,7 @@ const commentQueries: QueryResolvers = {
        JOIN users u
         ON u.user_id = c.user_id
        WHERE post_id = $1 AND parent_comment_id = $2`
-    const values = [postId, parentCommentId]
+    const values = [postId, parentCommentId, authorizedId]
 
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)

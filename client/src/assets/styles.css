@@ -663,12 +663,12 @@ h1 {
   position: relative;
   padding-left: 50px;
   margin-bottom: 10px;
-  transition-duration: 0.1s;
+  /* transition-duration: 0.1s; */
 }
 
-.postComment.collapsedThread {
+/* .postComment.collapsedThread {
   padding-left: 90px;
-}
+} */
 
 .postComment.collapsedThread .levelIndicator {
   height: 0px;
@@ -717,11 +717,15 @@ h1 {
   width: 35px;
   height: 35px;
   left: 0px;
-  transition-duration: 0.1s;
+  transition-duration: 0.15s;
 }
 
 .profilePicSub.collapsedThread {
   left: 40px;
+}
+
+.commentHeaderContainer {
+  transition: none;
 }
 
 .commentHeader {
@@ -730,6 +734,11 @@ h1 {
   height: 35px;
   align-items: center;
   margin-bottom: 5px;
+  transition: 0.15s ease;
+}
+
+.commentHeader.collapsedThread {
+  margin-left: 40px;
 }
 
 .commentBody.collapsedThread {
@@ -804,12 +813,12 @@ h1 {
   padding-left: 34px;
   margin-bottom: 10px;
   margin-top: 10px;
-  transition-duration: 0.1s;
+  /* transition-duration: 0.1s; */
 }
 
-.childComment.collapsedThread {
+/* .childComment.collapsedThread {
   padding-left: 74px;
-}
+} */
 
 .childComment .expandThreadButton {
   left: -16px;
