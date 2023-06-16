@@ -5,6 +5,8 @@ type Comment {
   parentCommentId: ID,
   content: String!,
   createdOn: String!
+  likesCount: Int!
+  currentUserLike: String
 }
 
 type Query {

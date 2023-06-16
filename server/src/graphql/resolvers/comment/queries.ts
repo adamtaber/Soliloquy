@@ -8,8 +8,20 @@ const commentQueries: QueryResolvers = {
   getComments: async (_root, args) => {
     const { postId } = args
 
+    const likesCount = 
+      `SELECT COUNT(*)
+       FROM likes l
+       WHERE l.comment_id = c.comment_id`
+    
+    const likedByCurrentUser = 
+      `SELECT user_id
+       FROM likes l
+       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $1)`
+
     const query = 
-      `SELECT *, c.created_on AS comment_created_on, u.created_on AS user_created_on
+      `SELECT *, c.created_on AS comment_created_on, 
+        u.created_on AS user_created_on, (${likesCount}) AS likes_count, 
+        (${likedByCurrentUser}) AS current_user_like
        FROM comments c
        JOIN users u
          ON u.user_id = c.user_id
@@ -34,6 +46,8 @@ const commentQueries: QueryResolvers = {
         parentCommentId: comment.parent_comment_id,
         content: comment.content,
         createdOn: comment.commentCreatedOn,
+        likesCount: comment.likesCount,
+        likedByCurrentUser: comment.likedByCurrentUser,
         user: {
           userId: comment.userId,
           username: comment.username,
@@ -58,8 +72,20 @@ const commentQueries: QueryResolvers = {
   getChildComments: async (_root, args) => {
     const { postId, parentCommentId } = args
 
+    const likesCount = 
+      `SELECT COUNT(*)
+       FROM likes l
+       WHERE l.comment_id = c.comment_id`
+    
+    const likedByCurrentUser = 
+      `SELECT user_id
+       FROM likes l
+       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $1)`
+
     const query = 
-      `SELECT *, c.created_on AS comment_created_on, u.created_on AS user_created_on
+      `SELECT *, c.created_on AS comment_created_on, 
+        u.created_on AS user_created_on, (${likesCount}) AS likes_count,
+        (${likedByCurrentUser}) AS current_user_like
        FROM comments c
        JOIN users u
         ON u.user_id = c.user_id
@@ -84,6 +110,8 @@ const commentQueries: QueryResolvers = {
         parentCommentId: comment.parent_comment_id,
         content: comment.content,
         createdOn: comment.commentCreatedOn,
+        likesCount: comment.likesCount,
+        currentUserLike: comment.currentUserLike,
         user: {
           userId: comment.userId,
           username: comment.username,

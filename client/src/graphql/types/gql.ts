@@ -13,7 +13,7 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
-    "\n  fragment CommentFields on Comment {\n    postId\n    commentId\n    parentCommentId\n    content\n    createdOn\n    user {\n      ...UserFields\n    }\n  }\n": types.CommentFieldsFragmentDoc,
+    "\n  fragment CommentFields on Comment {\n    postId\n    commentId\n    parentCommentId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n    user {\n      ...UserFields\n    }\n  }\n": types.CommentFieldsFragmentDoc,
     "\n  mutation createComment($postId: String!, $parentCommentId: String, $content: String!) {\n    createComment(postId: $postId, parentCommentId: $parentCommentId, content: $content) {\n      ...CommentFields\n    }\n  }\n": types.CreateCommentDocument,
     "\n  mutation deleteComment($commentId: String!) {\n    deleteComment(commentId: $commentId)\n  }\n": types.DeleteCommentDocument,
     "\n  query getComments($postId: String!) {\n    getComments(postId: $postId) {\n      ...CommentFields\n    }\n  }\n": types.GetCommentsDocument,
@@ -65,7 +65,7 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment CommentFields on Comment {\n    postId\n    commentId\n    parentCommentId\n    content\n    createdOn\n    user {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  fragment CommentFields on Comment {\n    postId\n    commentId\n    parentCommentId\n    content\n    createdOn\n    user {\n      ...UserFields\n    }\n  }\n"];
+export function gql(source: "\n  fragment CommentFields on Comment {\n    postId\n    commentId\n    parentCommentId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n    user {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  fragment CommentFields on Comment {\n    postId\n    commentId\n    parentCommentId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n    user {\n      ...UserFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

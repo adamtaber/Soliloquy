@@ -3,16 +3,20 @@ import { Comment } from "../../graphql/types/graphql"
 import { CURRENT_USER } from "../../graphql/users/queries"
 import { isUser } from "../../graphql/users/types"
 import { Navigate } from "react-router-dom"
-import DeleteComment from "./DeleteComment"
 import ChildCommentList from "../Comment/ChildCommentList"
-import ChildCommentForm from "../Comment/ChildCommentForm"
 import { useState } from "react"
-import { IconContext } from "react-icons"
-import { RxDotsHorizontal } from "react-icons/rx"
-import LikeButton from "../Like/LikeButton"
+import CommentLevelIndicator from "../Comment/CommentLevelIndicator"
+import ExpandThreadButton from "../Comment/ExpandThreadButton"
+import CommentHeader from "../Comment/CommentHeader"
+import CommentButtons from "../Comment/CommentButtons"
+import CommentReplyContainer from "../Comment/CommentReplyContainer"
 
-const PostComment = (props: { comment: Comment}) => {
-  const { comment } = props
+interface IProps {
+  comment: Comment,
+  initialLevel: boolean
+}
+
+const PostComment = ({ comment, initialLevel }: IProps) => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [collapseThread, setCollapseThread] = useState(false)
@@ -21,77 +25,47 @@ const PostComment = (props: { comment: Comment}) => {
 
   if(loading) return null
   if(error) console.log(error)
-
-  if(!data || !isUser(data.currentUser)) {
-    return <Navigate to='/' />
-  }
+  if(!data || !isUser(data.currentUser)) return <Navigate to='/'/>
 
   const currentUser = data.currentUser
+  const { commentId, postId } = comment
+
+  const commentClass = 
+    `${initialLevel ? 'postComment' : 'childComment'} 
+     ${collapseThread ? 'collapsedThread' : ''}`
 
   return (
-    <div className={`postComment ${collapseThread && 
-      'collapsedThread'}`}>
-      <div className="levelIndicatorContainer" 
-        onClick={() => setCollapseThread(!collapseThread)}>
-          <div className="levelIndicator"></div>
+    <div className={commentClass}>
+      <CommentLevelIndicator 
+        setCollapseThread={setCollapseThread} 
+        collapseThread={collapseThread}
+      />
+      <ExpandThreadButton 
+        setCollapseThread={setCollapseThread}
+        collapseThread={collapseThread}
+      />
+      <CommentHeader 
+        collapseThread={collapseThread} 
+        comment={comment}
+      />
+      <div className={`commentBody ${collapseThread && 'collapsedThread'}`}>
+        <p>{comment.content}</p>
+        <CommentButtons 
+          setShowReplyForm={setShowReplyForm}
+          setShowOptionsModal={setShowOptionsModal}
+          showReplyForm={showReplyForm}
+          showOptionsModal={showOptionsModal}
+          comment={comment} currentUser={currentUser} 
+        />
+        <CommentReplyContainer 
+          setShowReplyForm={setShowReplyForm}
+          showReplyForm={showReplyForm} comment={comment}
+        />
+        <ChildCommentList 
+          commentId={commentId} 
+          postId={postId}
+        />
       </div>
-      {collapseThread && 
-        <button className="expandThreadButton" 
-          onClick={() => setCollapseThread(false)}>[+]</button>
-      }
-      <div className="commentHeaderContainer">
-        <div className={`profilePicSub ${collapseThread && 
-            'collapsedThread'}`}></div>
-        <div className="commentHeader">
-          <p className="commentDisplayName">{comment.user.displayname}</p>
-          <p className="commentUsername">#{comment.user.username}</p>
-        </div>
-      </div>
-      {/* {!collapseThread && */}
-        <div className={`commentBody ${collapseThread && 'collapsedThread'}`}>
-          <p>{comment.content}</p>
-          <div className="comment__interactButtons">
-            {/* <LikeButton 
-              likes={postData.likesCount}
-              contentId={postData.postId} 
-              contentType="post"
-              userLiked={postData.currentUserLike ? true : false}
-              postType={'page'}
-            /> */}
-            <button className="replyButton" 
-              onClick={() => setShowReplyForm(!showReplyForm)}>
-                Reply
-            </button>
-            <button onClick={() => setShowOptionsModal(!showOptionsModal)} 
-              className="openModalButton">
-                <IconContext.Provider value={{style: {display: 'block'}}}>
-                  <RxDotsHorizontal />
-                </IconContext.Provider>
-            </button>
-            {showOptionsModal && 
-              <div className="commentOptionsModal">
-                {comment.user.userId === currentUser.userId
-                  && <DeleteComment commentId={comment.commentId}/>} 
-                <button className="postOptionsButton">Test</button>
-              </div>
-            }
-            {showOptionsModal &&
-              <div className="modalWrapper" 
-                onClick={() => setShowOptionsModal(false)}></div>
-            }
-          </div>
-          {showReplyForm && 
-            <div className="replyFormContainer">
-              <div className="levelIndicator commentLevelIndicator"></div>
-              <ChildCommentForm parentCommentId={comment.commentId} 
-                postId={comment.postId} 
-                setShowReplyForm={setShowReplyForm}/>
-            </div>
-          }
-          <ChildCommentList commentId={comment.commentId} 
-            postId={comment.postId}/>
-        </div>
-      {/* } */}
     </div>
   )
 }

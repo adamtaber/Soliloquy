@@ -7,6 +7,8 @@ export const PostFragment = gql(`
     parentCommentId
     content
     createdOn
+    likesCount
+    currentUserLike
     user {
       ...UserFields
     }

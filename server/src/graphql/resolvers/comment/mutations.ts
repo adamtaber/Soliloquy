@@ -39,6 +39,8 @@ const commentMutations: MutationResolvers = {
 
     const newComment = {
       ...comment,
+      likesCount: 0,
+      currentUserLike: null,
       user: {
         ...user
       }

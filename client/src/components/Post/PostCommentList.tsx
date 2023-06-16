@@ -14,14 +14,9 @@ const PostCommentList = (props: { postId: string }) => {
 
   if(loading) return null
   if(error) console.log(error)
-
-  if(!data || !isCommentArray(data.getComments)) {
-    console.log('invalid comment data')
-    return <Navigate to='/' />
-  }
+  if(!data || !isCommentArray(data.getComments)) return <Navigate to='/' />
 
   const comments = data.getComments
-  console.log(comments)
 
   return (
     <>
@@ -30,7 +25,10 @@ const PostCommentList = (props: { postId: string }) => {
         {comments.map((comment) => {
           return (
             <div key={comment.commentId}>
-              <PostComment comment={comment} />
+              <PostComment 
+                comment={comment} 
+                initialLevel={true}
+              />
             </div>
           )
         })}

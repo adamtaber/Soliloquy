@@ -11,7 +11,7 @@ type Inputs = {
 interface IProps {
   postId: string,
   parentCommentId: string,
-  setShowReplyForm: Dispatch<SetStateAction<boolean>>;
+  setShowReplyForm: Dispatch<SetStateAction<boolean>>
 }
 
 const ChildCommentForm = ({postId, parentCommentId, setShowReplyForm}: IProps) => {

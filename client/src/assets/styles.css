@@ -811,7 +811,7 @@ h1 {
   padding-left: 74px;
 }
 
-.expandThreadButton.childExpandButton {
+.childComment .expandThreadButton {
   left: -16px;
 }
 
@@ -819,21 +819,11 @@ h1 {
   left: -8px;
 }
 
-.childLevelIndicator {
-  height: 100%;
-  width: 2px;
-  background-color: rgb(55, 55, 55, 1);
-}
-
-.levelIndicatorContainer:hover .childLevelIndicator {
-  background-color: rgb(145, 145, 145, 1);
-}
-
-.childProfilePicSub {
+.childComment .profilePicSub {
   left: -16px;
 }
 
-.childProfilePicSub.collapsedThread {
+.childComment .profilePicSub.collapsedThread {
   left: 25px;
 }
 
