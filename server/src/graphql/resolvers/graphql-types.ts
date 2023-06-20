@@ -26,6 +26,7 @@ export type BasicUser = {
 export type Comment = {
   __typename?: 'Comment';
   commentId: Scalars['ID'];
+  comments: Array<Maybe<Comment>>;
   content: Scalars['String'];
   createdOn: Scalars['String'];
   currentUserLike?: Maybe<Scalars['String']>;
@@ -157,6 +158,7 @@ export type MutationUpdateUserArgs = {
 
 export type Post = {
   __typename?: 'Post';
+  comments?: Maybe<Array<Maybe<Comment>>>;
   content: Scalars['String'];
   createdOn: Scalars['Date'];
   currentUserLike?: Maybe<Scalars['String']>;
@@ -383,6 +385,7 @@ export type BasicUserResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type CommentResolvers<ContextType = any, ParentType extends ResolversParentTypes['Comment'] = ResolversParentTypes['Comment']> = ResolversObject<{
   commentId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  comments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   currentUserLike?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -437,6 +440,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 }>;
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = ResolversObject<{
+  comments?: Resolver<Maybe<Array<Maybe<ResolversTypes['Comment']>>>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdOn?: Resolver<ResolversTypes['Date'], ParentType, ContextType>;
   currentUserLike?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;

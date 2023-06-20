@@ -3,6 +3,7 @@ type Comment {
   user: User!,
   postId: ID!,
   parentCommentId: ID,
+  comments: [Comment]!,
   content: String!,
   createdOn: String!
   likesCount: Int!

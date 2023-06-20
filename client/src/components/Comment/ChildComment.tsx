@@ -19,7 +19,7 @@ const ChildComment = (props: {comment: Comment}) => {
 
   const {loading, error, data} = useQuery(CURRENT_USER)
 
-  if(loading) return null
+  // if(loading) return null
   if(error) console.log(error)
 
   if(!data || !isUser(data.currentUser)) return <Navigate to='/' />

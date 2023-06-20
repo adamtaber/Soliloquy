@@ -18,17 +18,9 @@ interface IProps {
 const CommentButtons = 
   ({ setShowReplyForm, setShowOptionsModal, showReplyForm, 
      showOptionsModal, comment, currentUser}: IProps) => {
-      const { likesCount, commentId, currentUserLike } = comment
 
       return (
         <div className="comment__interactButtons">
-          {/* <LikeButton 
-            likes={ likesCount }
-            contentId={ commentId } 
-            contentType="post"
-            userLiked={ currentUserLike ? true : false }
-            postType={ 'page' }
-          /> */}
           <LikeCommentButton comment={comment}/>
           <button className="replyButton" 
             onClick={() => setShowReplyForm(!showReplyForm)}>

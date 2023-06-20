@@ -136,7 +136,11 @@ const postQueries: QueryResolvers = {
        WHERE (l.post_id = p.post_id) AND (l.user_id = $1)`
 
     const initialQuery = 
-      `SELECT p.*, u.*, (${likesCount}) AS likes_count,
+      `SELECT 
+         *, 
+         p.created_on AS post_created_on, 
+         u.created_on AS user_created_on, 
+         (${likesCount}) AS likes_count,
          (${likedByCurrentUser}) AS current_user_like
        FROM posts p
        JOIN users u
@@ -146,7 +150,11 @@ const postQueries: QueryResolvers = {
        LIMIT $2`
     
     const nextQuery = 
-      `SELECT p.*, u.*, (${likesCount}) AS likes_count,
+      `SELECT 
+         *, 
+         p.created_on AS post_created_on,
+         u.created_on AS user_created_on,
+         (${likesCount}) AS likes_count,
          (${likedByCurrentUser}) AS current_user_like
        FROM posts p
        JOIN users u
@@ -155,7 +163,7 @@ const postQueries: QueryResolvers = {
          AND (p.created_on, p.post_id) < ($2, $3)
        ORDER BY p.created_on DESC, p.post_id DESC
        LIMIT $4`
-    
+
     const values = lastPostId && lastCreatedOn 
       ? [authorizedId, lastCreatedOn, lastPostId, limit]
       : [authorizedId, limit]
@@ -177,7 +185,7 @@ const postQueries: QueryResolvers = {
       return {
         postId: post.postId,
         content: post.content,
-        createdOn: post.createdOn,
+        createdOn: post.postCreatedOn,
         likesCount: post.likesCount,
         currentUserLike: post.currentUserLike,
         poster: {

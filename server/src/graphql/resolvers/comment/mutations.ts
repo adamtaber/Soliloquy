@@ -43,7 +43,8 @@ const commentMutations: MutationResolvers = {
       currentUserLike: null,
       user: {
         ...user
-      }
+      },
+      comments: []
     }
 
     if(!isComment(newComment)) {

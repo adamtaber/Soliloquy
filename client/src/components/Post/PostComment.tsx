@@ -10,6 +10,7 @@ import ExpandThreadButton from "../Comment/ExpandThreadButton"
 import CommentHeader from "../Comment/CommentHeader"
 import CommentButtons from "../Comment/CommentButtons"
 import CommentReplyContainer from "../Comment/CommentReplyContainer"
+import { isCommentArray } from "../../graphql/comments/types"
 
 interface IProps {
   comment: Comment,
@@ -23,16 +24,21 @@ const PostComment = ({ comment, initialLevel }: IProps) => {
 
   const {loading, error, data} = useQuery(CURRENT_USER)
 
-  if(loading) return null
+  // if(loading) return null
   if(error) console.log(error)
   if(!data || !isUser(data.currentUser)) return <Navigate to='/'/>
 
   const currentUser = data.currentUser
-  const { commentId, postId } = comment
+  const { commentId, postId, comments } = comment
 
   const commentClass = 
     `${initialLevel ? 'postComment' : 'childComment'} 
      ${collapseThread ? 'collapsedThread' : ''}`
+
+  console.log(comment)
+  console.log(comments)
+  
+  const validChildren = isCommentArray(comments)
 
   return (
     <div className={commentClass}>
@@ -61,10 +67,13 @@ const PostComment = ({ comment, initialLevel }: IProps) => {
           setShowReplyForm={setShowReplyForm}
           showReplyForm={showReplyForm} comment={comment}
         />
-        <ChildCommentList 
-          commentId={commentId} 
-          postId={postId}
-        />
+        { validChildren &&
+          <ChildCommentList
+            childComments={comments} 
+            commentId={commentId} 
+            postId={postId}
+          />
+        }
       </div>
     </div>
   )

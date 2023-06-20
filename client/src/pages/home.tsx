@@ -36,6 +36,7 @@ const Home = () => {
                 lastCreatedOn
               },
               updateQuery: (prevRes, {fetchMoreResult}) => {
+                console.log(fetchMoreResult)
                 const newFeed = fetchMoreResult.getFeedPosts
                 const result = newFeed.length
                   ? [...prevRes.getFeedPosts, ...newFeed]

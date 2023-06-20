@@ -6,7 +6,8 @@ type Post {
   content: String!,
   createdOn: Date!,
   likesCount: Int!,
-  currentUserLike: String
+  currentUserLike: String,
+  comments: [Comment]
 }
 
 type Query {

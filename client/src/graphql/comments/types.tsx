@@ -13,6 +13,7 @@ export const isComment = (input: any): input is Comment => {
 }
 
 export const isCommentArray = (input: any): input is Array<Comment> => {
+  if(!input) return false
   const initialLength = input.length
 
   const filteredArray = input.filter(isComment)
