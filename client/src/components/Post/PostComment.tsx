@@ -1,4 +1,4 @@
-import { useQuery } from "@apollo/client"
+import { useLazyQuery, useQuery } from "@apollo/client"
 import { Comment } from "../../graphql/types/graphql"
 import { CURRENT_USER } from "../../graphql/users/queries"
 import { isUser } from "../../graphql/users/types"
@@ -11,32 +11,28 @@ import CommentHeader from "../Comment/CommentHeader"
 import CommentButtons from "../Comment/CommentButtons"
 import CommentReplyContainer from "../Comment/CommentReplyContainer"
 import { isCommentArray } from "../../graphql/comments/types"
+import { GET_CHILD_COMMENTS } from "../../graphql/comments/queries"
 
 interface IProps {
   comment: Comment,
-  initialLevel: boolean
+  initialLevel: boolean,
+  commentLevel: number
 }
 
-const PostComment = ({ comment, initialLevel }: IProps) => {
+const PostComment = ({ comment, initialLevel, commentLevel }: IProps) => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [collapseThread, setCollapseThread] = useState(false)
-
-  const {loading, error, data} = useQuery(CURRENT_USER)
-
-  // if(loading) return null
-  if(error) console.log(error)
-  if(!data || !isUser(data.currentUser)) return <Navigate to='/'/>
-
-  const currentUser = data.currentUser
   const { commentId, postId, comments } = comment
 
+  const {loading, error, data} = useQuery(CURRENT_USER)
+  if(!data || !isUser(data.currentUser)) return <Navigate to='/'/>
+  const currentUser = data.currentUser
+ 
   const commentClass = 
     `${initialLevel ? 'postComment' : 'childComment'} 
      ${collapseThread ? 'collapsedThread' : ''}`
 
-  console.log(comment)
-  console.log(comments)
   
   const validChildren = isCommentArray(comments)
 
@@ -63,15 +59,17 @@ const PostComment = ({ comment, initialLevel }: IProps) => {
           showOptionsModal={showOptionsModal}
           comment={comment} currentUser={currentUser} 
         />
+        {!validChildren && <button>Show More Comments</button>}
         <CommentReplyContainer 
           setShowReplyForm={setShowReplyForm}
           showReplyForm={showReplyForm} comment={comment}
         />
         { validChildren &&
           <ChildCommentList
+            commentLevel={commentLevel + 1}
             childComments={comments} 
-            commentId={commentId} 
             postId={postId}
+            parentCommentId={commentId}
           />
         }
       </div>

@@ -28,6 +28,7 @@ const PostCommentList = (props: { postId: string }) => {
               <PostComment 
                 comment={comment} 
                 initialLevel={true}
+                commentLevel={1}
               />
             </div>
           )

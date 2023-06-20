@@ -19,16 +19,6 @@ const commentQueries: QueryResolvers = {
        FROM likes l
        WHERE (l.comment_id = c.comment_id) AND (l.user_id = $2)`
 
-    // const query = 
-    //   `SELECT *, c.created_on AS comment_created_on, 
-    //     u.created_on AS user_created_on, (${likesCount}) AS likes_count, 
-    //     (${likedByCurrentUser}) AS current_user_like
-    //    FROM comments c
-    //    JOIN users u
-    //      ON u.user_id = c.user_id
-    //    WHERE post_id = $1 AND parent_comment_id IS NULL`
-    // const values = [postId, authorizedId]
-
     const recursiveQuery = 
       `SELECT 
           *,
@@ -42,9 +32,6 @@ const commentQueries: QueryResolvers = {
         WHERE post_id = $1`
      const values = [postId, authorizedId]
 
-    // const commentQuery = await pool.query(query, values)
-    // const comments = humps.camelizeKeys(commentQuery.rows)
-
     const testQuery = await pool.query(recursiveQuery, values)
     const testComments = humps.camelizeKeys(testQuery.rows)
 
@@ -57,8 +44,6 @@ const commentQueries: QueryResolvers = {
         map.set(testComments[i].commentId, i)
         testComments[i].comments = []
       }
-
-      console.log(testComments)
 
       for (let i = 0; i < testComments.length; i++) {
         testComments[i] = {
@@ -92,15 +77,6 @@ const commentQueries: QueryResolvers = {
       }
     }
 
-  
-    // if(!Array.isArray(comments)) {
-    //   throw new GraphQLError('Query response is not of type Array', {
-    //     extensions: {
-    //       code: 'INVALID_TYPE'
-    //     }
-    //   })
-    // }
-
     if(!Array.isArray(result)) {
       throw new GraphQLError('Query response is not of type Array', {
         extensions: {
@@ -108,34 +84,6 @@ const commentQueries: QueryResolvers = {
         }
       })
     }
-
-    // const formattedComments = comments.map((comment) => {
-    //   return {
-    //     commentId: comment.commentId,
-    //     postId: comment.postId,
-    //     parentCommentId: comment.parent_comment_id,
-    //     content: comment.content,
-    //     createdOn: comment.commentCreatedOn,
-    //     likesCount: comment.likesCount,
-    //     currentUserLike: comment.currentUserLike,
-    //     user: {
-    //       userId: comment.userId,
-    //       username: comment.username,
-    //       displayname: comment.displayname,
-    //       email: comment.email,
-    //       password: comment.password,
-    //       createdOn: comment.userCreatedOn
-    //     }
-    //   }
-    // })
-
-    // if(!isCommentArray(formattedComments)) {
-    //   throw new GraphQLError('Query response is not of type CommentArray', {
-    //     extensions: {
-    //       code: 'INVALID_TYPE'
-    //     }
-    //   })
-    // }
 
     if(!isCommentArray(result)) {
       throw new GraphQLError('Query response is not of type CommentArray', {
@@ -145,10 +93,11 @@ const commentQueries: QueryResolvers = {
       })
     }
     return result
-    // return formattedComments
   },
   getChildComments: async (_root, args, {authorizedId}) => {
     const { postId, parentCommentId } = args
+    console.log(postId, authorizedId)
+
 
     const likesCount = 
       `SELECT COUNT(*)
@@ -158,17 +107,64 @@ const commentQueries: QueryResolvers = {
     const likedByCurrentUser = 
       `SELECT user_id
        FROM likes l
-       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $3)`
+       WHERE (l.comment_id = c.comment_id) AND (l.user_id = $2)`
+
+    // const query = 
+    //   `SELECT *, c.created_on AS comment_created_on, 
+    //     u.created_on AS user_created_on, (${likesCount}) AS likes_count,
+    //     (${likedByCurrentUser}) AS current_user_like
+    //    FROM comments c
+    //    JOIN users u
+    //     ON u.user_id = c.user_id
+    //    WHERE post_id = $1 AND parent_comment_id = $2`
+    // const values = [postId, parentCommentId, authorizedId]
 
     const query = 
-      `SELECT *, c.created_on AS comment_created_on, 
-        u.created_on AS user_created_on, (${likesCount}) AS likes_count,
-        (${likedByCurrentUser}) AS current_user_like
-       FROM comments c
-       JOIN users u
-        ON u.user_id = c.user_id
-       WHERE post_id = $1 AND parent_comment_id = $2`
-    const values = [postId, parentCommentId, authorizedId]
+      `WITH RECURSIVE comment_tree AS (
+        SELECT 
+          c.content,
+          c.comment_id,
+          c.parent_comment_id,
+          c.post_id,
+          u.displayname,
+          u.username,
+          u.email,
+          u.password,
+          u.user_id,
+          c.created_on AS comment_created_on,
+          u.created_on AS user_created_on,
+          (${likesCount}) AS likes_count,
+          (${likedByCurrentUser}) AS current_user_like
+        FROM comments c
+        JOIN users u
+          ON u.user_id = c.user_id
+        WHERE c.parent_comment_id = $1
+
+        UNION ALL
+
+        SELECT 
+          c.content,
+          c.comment_id,
+          c.parent_comment_id,
+          c.post_id,
+          u.displayname,
+          u.username,
+          u.email,
+          u.password,
+          u.user_id,
+          c.created_on AS comment_created_on,
+          u.created_on AS user_created_on,
+          (${likesCount}) AS likes_count,
+          (${likedByCurrentUser}) AS current_user_like
+        FROM comment_tree t
+        INNER JOIN comments c
+          ON c.parent_comment_id = t.comment_id
+        JOIN users u
+          ON u.user_id = c.user_id
+      )
+      SELECT *
+      FROM comment_tree t`
+    const values = [parentCommentId, authorizedId]
 
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)
@@ -181,36 +177,56 @@ const commentQueries: QueryResolvers = {
       })
     }
 
-    const formattedComments = comments.map((comment) => {
-      return {
-        commentId: comment.commentId,
-        postId: comment.postId,
-        parentCommentId: comment.parent_comment_id,
-        content: comment.content,
-        createdOn: comment.commentCreatedOn,
-        likesCount: comment.likesCount,
-        currentUserLike: comment.currentUserLike,
+    const result = []
+
+    const map = new Map()
+
+    for (let i = 0; i < comments.length; i++) {
+      map.set(comments[i].commentId, i)
+      comments[i].comments = []
+    }
+
+    for (let i = 0; i < comments.length; i++) {
+      comments[i] = {
+        commentId: comments[i].commentId,
+        postId: comments[i].postId,
+        parentCommentId: comments[i].parentCommentId,
+        content: comments[i].content,
+        createdOn: comments[i].commentCreatedOn,
+        likesCount: comments[i].likesCount,
+        currentUserLike: comments[i].currentUserLike,
+        comments: comments[i].comments,
         user: {
-          userId: comment.userId,
-          username: comment.username,
-          displayname: comment.displayname,
-          email: comment.email,
-          password: comment.password,
-          createdOn: comment.userCreatedOn
+          userId: comments[i].userId,
+          username: comments[i].username,
+          displayname: comments[i].displayname,
+          email: comments[i].email,
+          password: comments[i].password,
+          createdOn: comments[i].userCreatedOn
         }
       }
-    })
 
+      if (comments[i].parentCommentId !== parentCommentId) {
+        const parentIndex = map.get(comments[i].parentCommentId)
+        comments[parentIndex].comments =
+          comments[parentIndex].comments.length
+          ? [...comments[parentIndex].comments, comments[i]]
+          : [comments[i]]
+      } else {
+        result.push(comments[i])
+      }
+    }
 
-    if(!isCommentArray(formattedComments)) {
+    console.log(result)
+    if(!isCommentArray(result)) {
       throw new GraphQLError('Query response is not of type CommentArray', {
         extensions: {
           code: 'INVALID_TYPE'
         }
       })
     }
-
-    return formattedComments
+    
+    return result
   }
 }
 
