@@ -11,6 +11,9 @@ type Comment {
 }
 
 type Query {
+  getCommentParentId(
+    commentId: String!
+  ): String!
   getComments(
     postId: String!,
   ): [Comment]!

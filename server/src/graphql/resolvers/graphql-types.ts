@@ -173,6 +173,7 @@ export type Query = {
   currentUser?: Maybe<User>;
   findUser?: Maybe<User>;
   getChildComments: Array<Maybe<Comment>>;
+  getCommentParentId: Scalars['String'];
   getComments: Array<Maybe<Comment>>;
   getFeedPosts: Array<Maybe<Post>>;
   getFollowerCount: Scalars['Int'];
@@ -195,6 +196,11 @@ export type QueryFindUserArgs = {
 export type QueryGetChildCommentsArgs = {
   parentCommentId: Scalars['String'];
   postId: Scalars['String'];
+};
+
+
+export type QueryGetCommentParentIdArgs = {
+  commentId: Scalars['String'];
 };
 
 
@@ -455,6 +461,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   currentUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
   findUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryFindUserArgs, 'userId'>>;
   getChildComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetChildCommentsArgs, 'parentCommentId' | 'postId'>>;
+  getCommentParentId?: Resolver<ResolversTypes['String'], ParentType, ContextType, RequireFields<QueryGetCommentParentIdArgs, 'commentId'>>;
   getComments?: Resolver<Array<Maybe<ResolversTypes['Comment']>>, ParentType, ContextType, RequireFields<QueryGetCommentsArgs, 'postId'>>;
   getFeedPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetFeedPostsArgs, 'limit'>>;
   getFollowerCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryGetFollowerCountArgs, 'userId'>>;

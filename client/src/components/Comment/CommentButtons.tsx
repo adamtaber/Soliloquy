@@ -12,16 +12,17 @@ interface IProps {
   setShowOptionsModal: Dispatch<SetStateAction<boolean>>,
   showOptionsModal: boolean,
   comment: Comment,
-  currentUser: User
+  currentUser: User,
+  commentPageId?: string
 }
 
 const CommentButtons = 
   ({ setShowReplyForm, setShowOptionsModal, showReplyForm, 
-     showOptionsModal, comment, currentUser}: IProps) => {
+     showOptionsModal, comment, currentUser, commentPageId}: IProps) => {
 
       return (
         <div className="comment__interactButtons">
-          <LikeCommentButton comment={comment}/>
+          <LikeCommentButton comment={comment} parentCommentId={commentPageId}/>
           <button className="replyButton" 
             onClick={() => setShowReplyForm(!showReplyForm)}>
               Reply

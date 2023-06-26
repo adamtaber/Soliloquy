@@ -12,36 +12,17 @@ interface IProps {
   childComments: Array<Comment>,
   commentLevel: number,
   parentCommentId: string,
-  postId: string
+  postId: string,
+  commentPageId?: string,
+  setTestCommentId: (arg: string) => void
 }
 
 const ChildCommentList = 
-  ({childComments, commentLevel, parentCommentId, postId}: IProps) => {
-  const [showMoreComments, setShowMoreComments] = useState(false)
+  ({childComments, commentLevel, commentPageId, setTestCommentId }: IProps) => {
 
   let comments = childComments
-
-  if (commentLevel === 7) {
-    const {loading, error, data} = useQuery(GET_CHILD_COMMENTS, {
-      variables: {postId, parentCommentId}
-    })
-    if(!data?.getChildComments || !isCommentArray(data.getChildComments)) {
-      return null
-    }
-    comments = data.getChildComments
-  }
-
   if(comments.length === 0 || !comments) return null
-
-  if(commentLevel === 7 && !showMoreComments) {
-    return (
-      <>
-        <button onClick={() => setShowMoreComments(true)}>
-            show more comments
-        </button>
-      </>
-    )
-  }
+  if(commentLevel >= 10) return null
 
   return (
     <>
@@ -53,6 +34,8 @@ const ChildCommentList =
               comment={comment} 
               initialLevel={false} 
               commentLevel={commentLevel}
+              commentPageId={commentPageId}
+              setTestCommentId={setTestCommentId}
             />
           </div>
         )

@@ -6,7 +6,7 @@ import { CURRENT_USER } from "../graphql/users/queries"
 import { isUser } from "../graphql/users/types"
 
 const Post = () => {
-  const { postId } = useParams()
+  const { postId, commentId } = useParams()
   if(typeof(postId) !== 'string') return <Navigate to='/'/>
   const {loading, error, data} = useQuery(CURRENT_USER)
 
@@ -22,7 +22,7 @@ const Post = () => {
   return (
     <div>
       <PostContent postId={postId} currentUser={currentUser}/>
-      <PostCommentList postId={postId}/>
+      <PostCommentList postId={postId} commentId={commentId}/>
     </div>
   )
 }

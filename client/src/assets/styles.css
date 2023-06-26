@@ -836,3 +836,43 @@ h1 {
   left: 25px;
 }
 
+/* .extendedComments {
+  position: fixed;
+  height: 50px;
+  width: 50px;
+  top: 0px;
+  background-color: black;
+  box-shadow: var(--level-one-overlay);
+} */
+
+.continueThreadButton {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  color: var(--main-text-color);
+  border-color: var(--secondary-text-color);
+  border-style: solid;
+  border-width: 1px;
+  padding: 7px;
+  border-radius: 9999px;
+}
+
+.continueThreadButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.parentCommentsButton {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  color: var(--main-text-color);
+  border-color: var(--secondary-text-color);
+  border-style: solid;
+  border-width: 1px;
+  padding: 7px;
+  border-radius: 9999px;
+  margin-top: 5px;
+}
+
+.parentCommentsButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+

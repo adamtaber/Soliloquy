@@ -15,3 +15,9 @@ export const GET_CHILD_COMMENTS = gql(`
     }
   }
 `)
+
+export const GET_COMMENT_PARENT_ID = gql(`
+  query getCommentParentId($commentId: String!) {
+    getCommentParentId(commentId: $commentId)
+  }
+`)

@@ -46,6 +46,15 @@ export const CommentsRecursive = gql(`
             ...AltCommentFields
             comments {
               ...AltCommentFields
+              comments {
+                ...AltCommentFields
+                comments {
+                  ...AltCommentFields
+                  comments {
+                    ...AltCommentFields
+                  }
+                }
+              }
             }
           }
         }

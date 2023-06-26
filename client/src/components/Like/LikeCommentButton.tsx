@@ -1,67 +1,83 @@
 import { useMutation } from "@apollo/client"
 import { DELETE_LIKE, LIKE_CONTENT } from "../../graphql/likes/mutations"
-import { GET_CHILD_COMMENTS } from "../../graphql/comments/queries"
+import { GET_CHILD_COMMENTS, GET_COMMENTS } from "../../graphql/comments/queries"
 import { IconContext } from "react-icons"
 import { VscHeart, VscHeartFilled } from "react-icons/vsc"
 import { Comment } from "../../graphql/types/graphql"
 
 interface IProps {
-  comment: Comment
+  comment: Comment,
+  parentCommentId?: string
 }
 
-const LikeCommentButton = ({ comment }: IProps) => {
-  const { commentId, likesCount, currentUserLike } = comment
+const LikeCommentButton = ({ comment, parentCommentId }: IProps) => {
+  const { commentId, likesCount, currentUserLike, postId } = comment
 
   const [likeContent, likeResults] = useMutation(LIKE_CONTENT, {
     variables: { commentId },
-    update(cache) {
-      cache.modify({
-        fields: {
-          getChildComments(existingComments = []) {
-            return existingComments.map((comment: Comment) => {
-              if(comment.commentId === commentId) {
-                let likesCount = comment.likesCount + 1
-                return {...comment, likesCount, currentUserLike: true}
-              } else return comment
-            })
-          },
-          getComments(existingComments = []) {
-            return existingComments.map((comment: Comment) => {
-              if(comment.commentId === commentId) {
-                let likesCount = comment.likesCount + 1
-                return {...comment, likesCount, currentUserLike: true}
-              } else return comment
-            })
-          }
-        }
-      })
-    }
+    refetchQueries: [
+      {query: GET_COMMENTS, variables: {postId}},
+      {query: GET_CHILD_COMMENTS, variables: {
+        postId, 
+        parentCommentId
+      }}
+    ]
+    // update(cache) {
+    //   cache.modify({
+    //     fields: {
+    //       getChildComments(existingComments = []) {
+    //         return existingComments.map((comment: Comment) => {
+    //           if(comment.commentId === commentId) {
+    //             let likesCount = comment.likesCount + 1
+    //             return {...comment, likesCount, currentUserLike: true}
+    //           } else return comment
+    //         })
+    //       },
+    //       getComments(existingComments = []) {
+    //         return existingComments.map((comment: Comment) => {
+    //           if(comment.commentId === commentId) {
+    //             let likesCount = comment.likesCount + 1
+    //             return {...comment, likesCount, currentUserLike: true}
+    //           } else return comment
+    //         })
+    //       }
+    //     }
+    //   })
+    // }
   })
 
   const [unlikeContent, unlikeResults] = useMutation(DELETE_LIKE, {
     variables: { commentId },
-    update(cache) {
-      cache.modify({
-        fields: {
-          getChildComments(existingComments = []) {
-            return existingComments.map((comment: Comment) => {
-              if(comment.commentId === commentId) {
-                let likesCount = comment.likesCount - 1
-                return {...comment, likesCount, currentUserLike: null}
-              } else return comment
-            })
-          },
-          getComments(existingComments = []) {
-            return existingComments.map((comment: Comment) => {
-              if(comment.commentId === commentId) {
-                let likesCount = comment.likesCount - 1
-                return {...comment, likesCount, currentUserLike: null}
-              } else return comment
-            })
-          }
-        }
-      })
-    }
+    refetchQueries: [
+      {query: GET_COMMENTS, variables: {postId}},
+      {query: GET_CHILD_COMMENTS, variables: {
+        postId, 
+        parentCommentId
+      }}
+    ]
+    // update(cache) {
+    //   cache.modify({
+    //     fields: {
+    //       getChildComments(existingComments = []) {
+    //         return existingComments.map((comment: Comment) => {
+    //           console.log(comment)
+    //           if(comment.commentId === commentId) {
+    //             let likesCount = comment.likesCount - 1
+    //             return {...comment, likesCount, currentUserLike: null}
+    //           } else return comment
+    //         })
+    //       },
+    //       getComments(existingComments = []) {
+    //         return existingComments.map((comment: Comment) => {
+    //           if(comment.commentId === commentId) {
+    //             let likesCount = comment.likesCount - 1
+    //             return {...comment, likesCount, currentUserLike: null}
+    //           } else return comment
+    //         })
+    //       }
+    //     }
+    //   })
+    // }
   })
 
   const clickLike = 

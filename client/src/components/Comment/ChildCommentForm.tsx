@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_COMMENT } from "../../graphql/comments/mutations"
 import { GET_CHILD_COMMENTS, GET_COMMENTS } from "../../graphql/comments/queries"
 import { Dispatch, SetStateAction, useRef } from "react"
+import { useParams } from "react-router-dom"
 
 type Inputs = {
   content: string
@@ -11,18 +12,23 @@ type Inputs = {
 interface IProps {
   postId: string,
   parentCommentId: string,
-  setShowReplyForm: Dispatch<SetStateAction<boolean>>
+  setShowReplyForm: Dispatch<SetStateAction<boolean>>,
 }
 
-const ChildCommentForm = ({postId, parentCommentId, setShowReplyForm}: IProps) => {
+const ChildCommentForm = 
+  ({postId, parentCommentId, setShowReplyForm}: IProps) => {
+  const { commentId } = useParams()
   const { register, handleSubmit, watch } = useForm<Inputs>()
   const { ref } = register('content')
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
 
   const [comment, { data, loading, error }] = useMutation(CREATE_COMMENT, {
-    // refetchQueries: [ GET_CHILD_COMMENTS ]
     refetchQueries: [
-      {query: GET_COMMENTS, variables: {postId}}
+      {query: GET_COMMENTS, variables: {postId}},
+      {query: GET_CHILD_COMMENTS, variables: {
+        postId, 
+        parentCommentId: commentId
+      }}
     ]
   })
 
@@ -66,7 +72,6 @@ const ChildCommentForm = ({postId, parentCommentId, setShowReplyForm}: IProps) =
           />
         </label>
         <button className="postForm__submit" type='submit'>Reply</button>
-        {/* <input className="postForm__submit" type="submit" /> */}
       </form>
     </>
   )

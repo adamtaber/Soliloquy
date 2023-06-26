@@ -6,6 +6,46 @@ import { GraphQLError } from "graphql"
 import * as _ from 'lodash'
 
 const commentQueries: QueryResolvers = {
+  getCommentParentId: async (_root, args) => {
+    const {commentId} = args
+
+    // const query = 
+    //   `SELECT parent_comment_id
+    //    FROM comments
+    //    WHERE comment_id = $1`
+
+    const query =
+      `SELECT c9.comment_id
+       FROM comments c1
+       LEFT JOIN comments c2 ON c1.parent_comment_id = c2.comment_id
+       LEFT JOIN comments c3 ON c2.parent_comment_id = c3.comment_id
+       LEFT JOIN comments c4 ON c3.parent_comment_id = c4.comment_id
+       LEFT JOIN comments c5 ON c4.parent_comment_id = c5.comment_id
+       LEFT JOIN comments c6 ON c5.parent_comment_id = c6.comment_id
+       LEFT JOIN comments c7 ON c6.parent_comment_id = c7.comment_id
+       LEFT JOIN comments c8 ON c7.parent_comment_id = c8.comment_id
+       LEFT JOIN comments c9 ON c8.parent_comment_id = c9.comment_id
+       LEFT JOIN comments c10 ON c9.parent_comment_id = c10.comment_id
+       LEFT JOIN comments c11 ON c10.parent_comment_id = c11.comment_id
+       WHERE c1.comment_id = $1`
+       
+    const values = [commentId]
+
+    const parentIdQuery = await pool.query(query, values)
+    const parentId = humps.camelizeKeys(parentIdQuery.rows[0])
+
+    console.log(parentId)
+
+    if(!(typeof(parentId.commentId) === 'string')) {
+      throw new GraphQLError('Query response is not of type String', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
+
+    return parentId.commentId
+  },
   getComments: async (_root, args, {authorizedId}) => {
     const { postId } = args
 
@@ -96,8 +136,6 @@ const commentQueries: QueryResolvers = {
   },
   getChildComments: async (_root, args, {authorizedId}) => {
     const { postId, parentCommentId } = args
-    console.log(postId, authorizedId)
-
 
     const likesCount = 
       `SELECT COUNT(*)
@@ -108,16 +146,6 @@ const commentQueries: QueryResolvers = {
       `SELECT user_id
        FROM likes l
        WHERE (l.comment_id = c.comment_id) AND (l.user_id = $2)`
-
-    // const query = 
-    //   `SELECT *, c.created_on AS comment_created_on, 
-    //     u.created_on AS user_created_on, (${likesCount}) AS likes_count,
-    //     (${likedByCurrentUser}) AS current_user_like
-    //    FROM comments c
-    //    JOIN users u
-    //     ON u.user_id = c.user_id
-    //    WHERE post_id = $1 AND parent_comment_id = $2`
-    // const values = [postId, parentCommentId, authorizedId]
 
     const query = 
       `WITH RECURSIVE comment_tree AS (
@@ -138,7 +166,7 @@ const commentQueries: QueryResolvers = {
         FROM comments c
         JOIN users u
           ON u.user_id = c.user_id
-        WHERE c.parent_comment_id = $1
+        WHERE c.parent_comment_id = $1 AND c.post_id = $3
 
         UNION ALL
 
@@ -164,7 +192,7 @@ const commentQueries: QueryResolvers = {
       )
       SELECT *
       FROM comment_tree t`
-    const values = [parentCommentId, authorizedId]
+    const values = [parentCommentId, authorizedId, postId]
 
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)
@@ -217,7 +245,6 @@ const commentQueries: QueryResolvers = {
       }
     }
 
-    console.log(result)
     if(!isCommentArray(result)) {
       throw new GraphQLError('Query response is not of type CommentArray', {
         extensions: {

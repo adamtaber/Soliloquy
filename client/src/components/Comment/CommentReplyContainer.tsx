@@ -17,7 +17,8 @@ const CommentReplyContainer =
             <div className="levelIndicator commentLevelIndicator"></div>
             <ChildCommentForm parentCommentId={comment.commentId} 
               postId={comment.postId} 
-              setShowReplyForm={setShowReplyForm}/>
+              setShowReplyForm={setShowReplyForm}
+            />
           </div>
         } 
       </div>

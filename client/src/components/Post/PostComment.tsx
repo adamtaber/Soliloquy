@@ -2,9 +2,9 @@ import { useLazyQuery, useQuery } from "@apollo/client"
 import { Comment } from "../../graphql/types/graphql"
 import { CURRENT_USER } from "../../graphql/users/queries"
 import { isUser } from "../../graphql/users/types"
-import { Navigate } from "react-router-dom"
+import { Navigate, useNavigate } from "react-router-dom"
 import ChildCommentList from "../Comment/ChildCommentList"
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import CommentLevelIndicator from "../Comment/CommentLevelIndicator"
 import ExpandThreadButton from "../Comment/ExpandThreadButton"
 import CommentHeader from "../Comment/CommentHeader"
@@ -16,28 +16,50 @@ import { GET_CHILD_COMMENTS } from "../../graphql/comments/queries"
 interface IProps {
   comment: Comment,
   initialLevel: boolean,
-  commentLevel: number
+  commentLevel: number,
+  commentPageId?: string,
+  setTestCommentId: (arg: string) => void,
 }
 
-const PostComment = ({ comment, initialLevel, commentLevel }: IProps) => {
+const PostComment = 
+  ({ comment, initialLevel, commentLevel, commentPageId, setTestCommentId }: IProps) => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [collapseThread, setCollapseThread] = useState(false)
   const { commentId, postId, comments } = comment
+  const navigate = useNavigate()
+
+  const myRef = useRef<null | HTMLDivElement>(null)
+
+  const executeScroll = () => {
+    if(myRef.current !== null) {
+      myRef.current.scrollIntoView()
+    }
+  }
+
+  useEffect(() => {
+    if(commentPageId && initialLevel) {
+      executeScroll()
+    }
+  }, [commentPageId])
 
   const {loading, error, data} = useQuery(CURRENT_USER)
   if(!data || !isUser(data.currentUser)) return <Navigate to='/'/>
   const currentUser = data.currentUser
+
+  const extendComments = () => {
+    navigate(`/posts/${postId}/comments/${comment.parentCommentId}`)
+  }
  
   const commentClass = 
     `${initialLevel ? 'postComment' : 'childComment'} 
      ${collapseThread ? 'collapsedThread' : ''}`
 
   
-  const validChildren = isCommentArray(comments)
+  const validChildren = (isCommentArray(comments) && comments.length > 0)
 
   return (
-    <div className={commentClass}>
+    <div ref={myRef} className={commentClass}>
       <CommentLevelIndicator 
         setCollapseThread={setCollapseThread} 
         collapseThread={collapseThread}
@@ -51,6 +73,7 @@ const PostComment = ({ comment, initialLevel, commentLevel }: IProps) => {
         comment={comment}
       />
       <div className={`commentBody ${collapseThread && 'collapsedThread'}`}>
+        {/* <p>{commentId}</p> */}
         <p>{comment.content}</p>
         <CommentButtons 
           setShowReplyForm={setShowReplyForm}
@@ -58,8 +81,13 @@ const PostComment = ({ comment, initialLevel, commentLevel }: IProps) => {
           showReplyForm={showReplyForm}
           showOptionsModal={showOptionsModal}
           comment={comment} currentUser={currentUser} 
+          commentPageId={commentPageId}
         />
-        {!validChildren && <button>Show More Comments</button>}
+        {validChildren && commentLevel === 9 && 
+          <button className="continueThreadButton" onClick={() => extendComments()}>
+            Continue Thread
+          </button>
+        }
         <CommentReplyContainer 
           setShowReplyForm={setShowReplyForm}
           showReplyForm={showReplyForm} comment={comment}
@@ -70,6 +98,8 @@ const PostComment = ({ comment, initialLevel, commentLevel }: IProps) => {
             childComments={comments} 
             postId={postId}
             parentCommentId={commentId}
+            commentPageId={commentPageId}
+            setTestCommentId={setTestCommentId}
           />
         }
       </div>

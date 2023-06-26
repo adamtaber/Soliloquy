@@ -1,4 +1,4 @@
-import { Navigate, Route, RouterProvider, createBrowserRouter, createRoutesFromElements } from "react-router-dom"
+import { Navigate, Route, RouterProvider, createBrowserRouter, createRoutesFromElements, useParams } from "react-router-dom"
 import Home from "./pages/home"
 import Login from "./pages/login"
 import User from "./pages/user"
@@ -18,6 +18,7 @@ const App = () => {
         <Route index element={<Home />} />
         <Route path="users/:userId" element={<User />} />
         <Route path="posts/:postId" element={<Post />} />
+        <Route path="posts/:postId/comments/:commentId" element={<Post />} />
         <Route path="users/:userId/followers" element={<Followers />} />
         <Route path="users/:userId/following" element={<Following />} />
         <Route path="messages" element={<Messages />} />
