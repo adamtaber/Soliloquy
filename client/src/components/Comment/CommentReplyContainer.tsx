@@ -5,19 +5,22 @@ import ChildCommentForm from "./ChildCommentForm"
 interface IProps {
   setShowReplyForm: Dispatch<SetStateAction<boolean>>,
   showReplyForm: boolean,
-  comment: Comment
+  comment: Comment,
+  commentLevel: number
 }
 
 const CommentReplyContainer = 
-  ({setShowReplyForm, showReplyForm, comment}: IProps) => {
+  ({setShowReplyForm, showReplyForm, comment, commentLevel}: IProps) => {
     return (
       <div>
         {showReplyForm && 
           <div className="replyFormContainer">
             <div className="levelIndicator commentLevelIndicator"></div>
-            <ChildCommentForm parentCommentId={comment.commentId} 
+            <ChildCommentForm 
+              parentCommentId={comment.commentId} 
               postId={comment.postId} 
               setShowReplyForm={setShowReplyForm}
+              commentLevel={commentLevel}
             />
           </div>
         } 

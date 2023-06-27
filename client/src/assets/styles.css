@@ -17,6 +17,19 @@
   --level-two-overlay: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.16);
 }
 
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(65, 65, 65); 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -875,4 +888,183 @@ h1 {
 .parentCommentsButton:hover {
   box-shadow: var(--level-two-overlay);
 }
+
+.highlightComment {
+  box-shadow: var(--level-one-overlay);
+  position: absolute;
+  height: 130px;
+}
+
+.postComment .highlightComment {
+  left: -10px;
+  top: -10px;
+  width: calc(100% + 20px);
+}
+
+.childComment .highlightComment {
+  width: calc(100% + 42px);
+  top: -5px;
+  left: -33px;
+}
+
+/* Messages */
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  width: 650px;
+  height: 100vh;
+  position: relative;
+}
+
+.messagesHeader {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: rgb(55, 55, 55);
+}
+
+.messagesHeader.messageConversation {
+  padding-left: 60px;
+}
+
+.messagesHeader__title {
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.messagesHeader .backButton {
+  position: absolute;
+  background-color: inherit;
+  color: var(--primary-color);
+  font-size: 20px;
+  border-radius: 100px;;
+  padding: 8px;
+  top: 20px;
+  left: 10px;
+}
+
+.messagesHeader .backButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.messagePartner {
+  padding: 10px 10px 30px 20px;
+}
+
+.messagePartner:hover {
+  box-shadow: var(--level-two-overlay);
+  cursor: pointer;
+}
+
+.messagePartner__name {
+  font-size: 19px;
+}
+
+.messagePartner__message {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+}
+
+.conversation {
+  height: 100vh;
+}
+
+.conversation_body {
+  height: calc(100% - 76px);
+  overflow: none;
+}
+
+.messageForm {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 650px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.messageInput {
+  position:absolute;
+  bottom: 15px;
+  width: 630px;
+  height: 35px;
+  /* border-radius: 9999px; */
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--secondary-text-color);
+  font-size: 17px;
+  padding: 0px;
+  padding-top: 7px;
+  padding-left: 10px;
+  padding-right: 70px;
+  font-family: 'Roboto', sans-serif;
+  resize: none;
+}
+
+.messageInputFiller {
+  position: absolute;
+  pointer-events: none;
+  left: 20px;
+  top: 8px;
+  color: var(--secondary-text-color);
+  z-index: 2;
+}
+
+.messageSubmit {
+  position: absolute;
+  right: 10px;
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+  height: 34px;
+  width: 70px;
+  /* border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px; */
+  font-size: 17px;
+}
+
+.messageSubmit:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.conversation_messages {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 15px;
+  padding: 15px;
+  height: calc(100% - 60px);
+  overflow-y: scroll;
+}
+
+.messageBubble {
+  height: 60px;
+  width: 300px;
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  border-bottom-right-radius: 5px;
+  padding: 15px;
+  color: var(--contrast-text-color);
+}
+
+.messageBubble.receiver {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--main-text-color);
+}
+
+.messageBubble.sender {
+  align-self: self-end;
+}
+
 

@@ -2,8 +2,10 @@ import { useMutation } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_COMMENT } from "../../graphql/comments/mutations"
 import { GET_CHILD_COMMENTS, GET_COMMENTS } from "../../graphql/comments/queries"
-import { Dispatch, SetStateAction, useRef } from "react"
-import { useParams } from "react-router-dom"
+import { Dispatch, SetStateAction, useContext, useRef } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import CommentContext from "../../CommentContext"
+import { isComment } from "../../graphql/comments/types"
 
 type Inputs = {
   content: string
@@ -13,14 +15,17 @@ interface IProps {
   postId: string,
   parentCommentId: string,
   setShowReplyForm: Dispatch<SetStateAction<boolean>>,
+  commentLevel: number
 }
 
 const ChildCommentForm = 
-  ({postId, parentCommentId, setShowReplyForm}: IProps) => {
+  ({postId, parentCommentId, setShowReplyForm, commentLevel}: IProps) => {
   const { commentId } = useParams()
   const { register, handleSubmit, watch } = useForm<Inputs>()
   const { ref } = register('content')
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+  const navigate = useNavigate()
+  const commentContext = useContext(CommentContext)
 
   const [comment, { data, loading, error }] = useMutation(CREATE_COMMENT, {
     refetchQueries: [
@@ -28,8 +33,17 @@ const ChildCommentForm =
       {query: GET_CHILD_COMMENTS, variables: {
         postId, 
         parentCommentId: commentId
+      }},
+      {query: GET_CHILD_COMMENTS, variables: {
+        postId,
+        parentCommentId: parentCommentId
       }}
-    ]
+    ],
+    onCompleted: (data) => {
+      if(commentContext?.setPreviousCommentId && isComment(data.createComment)) {
+        commentContext.setPreviousCommentId(data.createComment.commentId)
+      }
+    }
   })
 
   const handleChange = () => {
@@ -43,9 +57,12 @@ const ChildCommentForm =
   if (loading) console.log('loading...')
   if (error) console.log(error)
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    comment({ variables: {content: data.content, postId, parentCommentId} })
+  const onSubmit: SubmitHandler<Inputs> = (inputs) => {
+    comment({ variables: {content: inputs.content, postId, parentCommentId} })
     setShowReplyForm(false)
+    if(commentLevel === 9) {
+      navigate(`/posts/${postId}/comments/${parentCommentId}`)
+    } 
   }
 
   return (

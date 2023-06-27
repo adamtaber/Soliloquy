@@ -4,7 +4,7 @@ import { CURRENT_USER } from "../../graphql/users/queries"
 import { isUser } from "../../graphql/users/types"
 import { Navigate, useNavigate } from "react-router-dom"
 import ChildCommentList from "../Comment/ChildCommentList"
-import { useEffect, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import CommentLevelIndicator from "../Comment/CommentLevelIndicator"
 import ExpandThreadButton from "../Comment/ExpandThreadButton"
 import CommentHeader from "../Comment/CommentHeader"
@@ -12,6 +12,7 @@ import CommentButtons from "../Comment/CommentButtons"
 import CommentReplyContainer from "../Comment/CommentReplyContainer"
 import { isCommentArray } from "../../graphql/comments/types"
 import { GET_CHILD_COMMENTS } from "../../graphql/comments/queries"
+import CommentContext from "../../CommentContext"
 
 interface IProps {
   comment: Comment,
@@ -26,21 +27,37 @@ const PostComment =
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [collapseThread, setCollapseThread] = useState(false)
+  const [highlightComment, setHighlightComment] = useState(false)
   const { commentId, postId, comments } = comment
   const navigate = useNavigate()
+  const commentContext = useContext(CommentContext)
 
   const myRef = useRef<null | HTMLDivElement>(null)
 
-  const executeScroll = () => {
+  const executeScroll = async () => {
     if(myRef.current !== null) {
       myRef.current.scrollIntoView()
     }
   }
 
-  useEffect(() => {
-    if(commentPageId && initialLevel) {
-      executeScroll()
+  const clearContext = () => {
+    if(commentContext?.setPreviousCommentId) {
+      commentContext.setPreviousCommentId('')
     }
+  }
+
+  useEffect(() => {
+    if(commentContext?.previousCommentId 
+      && commentId === commentContext.previousCommentId) {
+      setHighlightComment(true)
+      executeScroll()
+      setTimeout(() => {
+        clearContext()
+      }, 100)
+    }
+    // if(commentContext) {
+    //   commentContext.setPreviousCommentId('')
+    // }
   }, [commentPageId])
 
   const {loading, error, data} = useQuery(CURRENT_USER)
@@ -48,7 +65,10 @@ const PostComment =
   const currentUser = data.currentUser
 
   const extendComments = () => {
-    navigate(`/posts/${postId}/comments/${comment.parentCommentId}`)
+    if(commentContext?.setPreviousCommentId) {
+      commentContext.setPreviousCommentId(commentId)
+    }
+    navigate(`/posts/${postId}/comments/${comment.commentId}`)
   }
  
   const commentClass = 
@@ -72,6 +92,7 @@ const PostComment =
         collapseThread={collapseThread} 
         comment={comment}
       />
+      <div className={highlightComment ? 'highlightComment' : ''}></div>
       <div className={`commentBody ${collapseThread && 'collapsedThread'}`}>
         {/* <p>{commentId}</p> */}
         <p>{comment.content}</p>
@@ -90,7 +111,9 @@ const PostComment =
         }
         <CommentReplyContainer 
           setShowReplyForm={setShowReplyForm}
-          showReplyForm={showReplyForm} comment={comment}
+          showReplyForm={showReplyForm} 
+          comment={comment}
+          commentLevel={commentLevel}
         />
         { validChildren &&
           <ChildCommentList

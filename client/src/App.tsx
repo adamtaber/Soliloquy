@@ -22,6 +22,7 @@ const App = () => {
         <Route path="users/:userId/followers" element={<Followers />} />
         <Route path="users/:userId/following" element={<Following />} />
         <Route path="messages" element={<Messages />} />
+        <Route path="messages/:userId" element={<Messages />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Route>

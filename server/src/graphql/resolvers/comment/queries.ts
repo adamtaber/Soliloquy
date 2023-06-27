@@ -15,7 +15,7 @@ const commentQueries: QueryResolvers = {
     //    WHERE comment_id = $1`
 
     const query =
-      `SELECT c9.comment_id
+      `SELECT c9.comment_id, c9.parent_comment_id
        FROM comments c1
        LEFT JOIN comments c2 ON c1.parent_comment_id = c2.comment_id
        LEFT JOIN comments c3 ON c2.parent_comment_id = c3.comment_id
@@ -34,8 +34,6 @@ const commentQueries: QueryResolvers = {
     const parentIdQuery = await pool.query(query, values)
     const parentId = humps.camelizeKeys(parentIdQuery.rows[0])
 
-    console.log(parentId)
-
     if(!(typeof(parentId.commentId) === 'string')) {
       throw new GraphQLError('Query response is not of type String', {
         extensions: {
@@ -44,7 +42,7 @@ const commentQueries: QueryResolvers = {
       })
     }
 
-    return parentId.commentId
+    return parentId.parentCommentId ? parentId.commentId : ''
   },
   getComments: async (_root, args, {authorizedId}) => {
     const { postId } = args
@@ -146,6 +144,26 @@ const commentQueries: QueryResolvers = {
       `SELECT user_id
        FROM likes l
        WHERE (l.comment_id = c.comment_id) AND (l.user_id = $2)`
+    
+    const root = 
+       `SELECT c.content,
+               c.comment_id,
+               c.parent_comment_id,
+               c.post_id,
+               u.displayname,
+               u.username,
+               u.email,
+               u.password,
+               u.user_id,
+               c.created_on AS comment_created_on,
+               u.created_on AS user_created_on,
+               (${likesCount}) AS likes_count,
+               (${likedByCurrentUser}) AS current_user_like
+         FROM comments c
+         JOIN users u
+           ON u.user_id = c.user_id
+         WHERE comment_id = $1`
+     const rootValues = [parentCommentId, authorizedId]
 
     const query = 
       `WITH RECURSIVE comment_tree AS (
@@ -194,6 +212,9 @@ const commentQueries: QueryResolvers = {
       FROM comment_tree t`
     const values = [parentCommentId, authorizedId, postId]
 
+    const rootQuery = await pool.query(root, rootValues)
+    const rootComment = humps.camelizeKeys(rootQuery.rows[0])
+
     const commentQuery = await pool.query(query, values)
     const comments = humps.camelizeKeys(commentQuery.rows)
 
@@ -204,6 +225,8 @@ const commentQueries: QueryResolvers = {
         }
       })
     }
+
+    comments.push(rootComment)
 
     const result = []
 
@@ -234,7 +257,7 @@ const commentQueries: QueryResolvers = {
         }
       }
 
-      if (comments[i].parentCommentId !== parentCommentId) {
+      if (comments[i].commentId !== parentCommentId) {
         const parentIndex = map.get(comments[i].parentCommentId)
         comments[parentIndex].comments =
           comments[parentIndex].comments.length
@@ -243,6 +266,16 @@ const commentQueries: QueryResolvers = {
       } else {
         result.push(comments[i])
       }
+
+      // if (comments[i].parentCommentId !== parentCommentId) {
+      //   const parentIndex = map.get(comments[i].parentCommentId)
+      //   comments[parentIndex].comments =
+      //     comments[parentIndex].comments.length
+      //     ? [...comments[parentIndex].comments, comments[i]]
+      //     : [comments[i]]
+      // } else {
+      //   result.push(comments[i])
+      // }
     }
 
     if(!isCommentArray(result)) {

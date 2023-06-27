@@ -8,9 +8,11 @@ import { MESSAGE_DELETED, MESSAGE_SENT } from "../../graphql/messages/subscripti
 //now that user data is combined with message data there is no reason to have
 //this convoluted data type, definitely refactor
 
-const MessageList = (props: {receiverId: string, openMessage: (partnerId: string) => void}) => {
+const MessageList = 
+  (props: {receiverId: string, openMessage: (partnerId: string) => void}) => {
   
-  const {subscribeToMore, loading, error, data, refetch} = useQuery(GET_MESSAGE_PARTNERS)
+  const {subscribeToMore, loading, error, data, refetch} = 
+    useQuery(GET_MESSAGE_PARTNERS)
   const {receiverId, openMessage} = props
 
   const subscribeToNewMessages = () => {
@@ -68,17 +70,24 @@ const MessageList = (props: {receiverId: string, openMessage: (partnerId: string
   }
 
   return (
-    <>
-      {data.getMessagePartners.map((user) => {
-        return (
-          <div onClick={() => openMessage(user.userId)} key={user.userId}>
-            <p>{user.displayname}</p>
-            <p>{user.recentMessage}</p>
-            <p>------------</p>
-          </div>
-        )
-      })}
-    </>
+    <div>
+      <div className="messagesHeader">
+          <h1 className="messagesHeader__title">Messages</h1>
+      </div>
+      <div className="messageList">
+        {data.getMessagePartners.map((user) => {
+          return (
+            <div 
+              onClick={() => openMessage(user.userId)} 
+              key={user.userId}
+              className="messagePartner">
+                <p className="messagePartner__name">{user.displayname}</p>
+                <p className="messagePartner__message">{user.recentMessage}</p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 

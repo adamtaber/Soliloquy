@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom"
 import PostCommentForm from "./PostCommentForm"
 import PostComment from "./PostComment"
 import { useEffect, useState } from "react"
+import { useContext } from "react"
+import CommentContext from "../../CommentContext"
 
 interface IProps {
   postId: string,
@@ -17,6 +19,7 @@ const PostCommentList = ({ postId, commentId }: IProps) => {
   const [getParentId, parentIdQuery] = useLazyQuery(GET_COMMENT_PARENT_ID)
   const getComments = useQuery(GET_COMMENTS, {variables: {postId}})
   const [testCommentId, setTestCommentId] = useState<string>("")
+  const commentContext = useContext(CommentContext)
   
   useEffect(() => {
     if(commentId) {
@@ -32,7 +35,11 @@ const PostCommentList = ({ postId, commentId }: IProps) => {
   }, [commentId])
 
   const returnToParent = () => {
+    if(commentContext?.setPreviousCommentId && commentId) {
+      commentContext.setPreviousCommentId(commentId)
+    }
     if(parentIdQuery.data?.getCommentParentId) {
+      console.log(parentIdQuery.data?.getCommentParentId)
       navigate(`/posts/${postId}/comments/${parentIdQuery.data?.getCommentParentId}`)
     } 
     else {
@@ -47,10 +54,6 @@ const PostCommentList = ({ postId, commentId }: IProps) => {
   return (
     <>
       <PostCommentForm postId={postId} />
-      {/* <button onClick={() => executeScroll()}>click</button> */}
-      {/* <div ref={myRef}>
-        test
-      </div> */}
       {commentId && 
         <button className="parentCommentsButton" onClick={() => returnToParent()}>
           Show parent comments

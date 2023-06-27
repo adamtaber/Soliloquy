@@ -7,6 +7,7 @@ import { onError } from "@apollo/client/link/error";
 import { GraphQLWsLink } from '@apollo/client/link/subscriptions'
 import { createClient } from 'graphql-ws'
 import { getMainDefinition } from '@apollo/client/utilities'
+import { CommentContextProvider } from './CommentContext';
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   // if (graphQLErrors)
@@ -60,6 +61,8 @@ const client = new ApolloClient({
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ApolloProvider client={client}>
-    <App />
+    <CommentContextProvider>
+      <App />
+    </CommentContextProvider>
   </ApolloProvider>
 )
