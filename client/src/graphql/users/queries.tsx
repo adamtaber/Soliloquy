@@ -16,6 +16,14 @@ export const FIND_USER = gql(`
   }
 `)
 
+export const SEARCH_USERS = gql(`
+  query searchUsers($searchInput: String!) {
+    searchUsers(searchInput: $searchInput) {
+      ...UserFields
+    }
+  }
+`)
+
 export const GET_FOLLOWERS = gql(`
   query getFollowers($userId: String!) {
     getFollowers(userId: $userId) {

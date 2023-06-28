@@ -45,6 +45,7 @@ const documents = {
     "\n  mutation createUser($displayname: String!, $username: String!,\n    $email: String!, $password: String!) {\n      createUser(displayname: $displayname, username: $username, \n        email: $email, password: $password) {\n          ...UserFields\n        }\n    }\n": types.CreateUserDocument,
     "\n  query currentUser {\n    currentUser {\n      ...UserFields\n    }\n  }\n": types.CurrentUserDocument,
     "\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.FindUserDocument,
+    "\n  query searchUsers($searchInput: String!) {\n    searchUsers(searchInput: $searchInput) {\n      ...UserFields\n    }\n  }\n": types.SearchUsersDocument,
     "\n  query getFollowers($userId: String!) {\n    getFollowers(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowersDocument,
     "\n  query getFollowerCount($userId: String!) {\n    getFollowerCount(userId: $userId)\n  }\n": types.GetFollowerCountDocument,
     "\n  query getFollowing($userId: String!) {\n    getFollowing(userId: $userId) {\n      ...UserFields\n    }\n  }\n": types.GetFollowingDocument,
@@ -193,6 +194,10 @@ export function gql(source: "\n  query currentUser {\n    currentUser {\n      .
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query findUser($userId: String!) {\n    findUser(userId: $userId) {\n      ...UserFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query searchUsers($searchInput: String!) {\n    searchUsers(searchInput: $searchInput) {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  query searchUsers($searchInput: String!) {\n    searchUsers(searchInput: $searchInput) {\n      ...UserFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

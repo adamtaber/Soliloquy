@@ -185,6 +185,7 @@ export type Query = {
   getMessages: Array<Maybe<Message>>;
   getPost?: Maybe<Post>;
   getUserPosts: Array<Maybe<Post>>;
+  searchUsers?: Maybe<Array<Maybe<User>>>;
 };
 
 
@@ -248,6 +249,11 @@ export type QueryGetPostArgs = {
 
 export type QueryGetUserPostsArgs = {
   userId: Scalars['String'];
+};
+
+
+export type QuerySearchUsersArgs = {
+  searchInput: Scalars['String'];
 };
 
 export type Subscription = {
@@ -473,6 +479,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getMessages?: Resolver<Array<Maybe<ResolversTypes['Message']>>, ParentType, ContextType, RequireFields<QueryGetMessagesArgs, 'messagePartnerId'>>;
   getPost?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<QueryGetPostArgs, 'postId'>>;
   getUserPosts?: Resolver<Array<Maybe<ResolversTypes['Post']>>, ParentType, ContextType, RequireFields<QueryGetUserPostsArgs, 'userId'>>;
+  searchUsers?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType, RequireFields<QuerySearchUsersArgs, 'searchInput'>>;
 }>;
 
 export type SubscriptionResolvers<ContextType = any, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{

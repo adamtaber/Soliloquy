@@ -24,11 +24,15 @@ const Conversation = ({partnerId, receiverId}: IProps) => {
   const userQuery = useQuery(FIND_USER, {
     variables: {userId: partnerId}
   })
-  let user
+  // let user
 
-  if(userQuery.data?.findUser && isUser(userQuery.data?.findUser)) {
-    user = userQuery.data?.findUser
-  } 
+  const user = userQuery.data?.findUser && isUser(userQuery.data?.findUser)
+    ? userQuery.data?.findUser
+    : ''
+
+  // if(userQuery.data?.findUser && isUser(userQuery.data?.findUser)) {
+  //   user = userQuery.data?.findUser
+  // } 
 
   const {subscribeToMore, ...result} = useQuery(GET_MESSAGES, {
     variables: {messagePartnerId: partnerId}
@@ -70,6 +74,8 @@ const Conversation = ({partnerId, receiverId}: IProps) => {
     subscribeToDeletedMessages()
   }, [])
 
+
+
   if(result.loading) return null
   if(result.error) console.log(result.error)
   if(!result.data || !isMessageArray(result.data.getMessages) || !user) {
@@ -85,7 +91,10 @@ const Conversation = ({partnerId, receiverId}: IProps) => {
               <MdOutlineArrowBackIosNew />
             </IconContext.Provider>        
         </button> 
-        <h1 className="messagesHeader__title">{user.displayname}</h1>
+        <h1 onClick={() => navigate(`/users/${user.userId}`)} 
+            className="messagesHeader__title">
+              {user.displayname}
+        </h1>
       </div>
       <div className="conversation_body">
         <div className="conversation_messages">

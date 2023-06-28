@@ -12,7 +12,6 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
     if(observer.current) observer.current.disconnect()
     observer.current = new IntersectionObserver(entries => {
       if(entries[0].isIntersecting) {
-        console.log('test test test')
         const lastPostId = postData[postData.length - 1].postId
         const lastCreatedOn = postData[postData.length - 1].createdOn
         onLoadMore(lastPostId, lastCreatedOn)

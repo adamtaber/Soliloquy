@@ -1,4 +1,4 @@
-import { Navigate, useParams } from "react-router-dom"
+import { Link, Navigate, useParams } from "react-router-dom"
 import UserInfo from "../components/User/UserInfo"
 import UserPosts from "../components/User/UserPosts"
 import UserFollows from "../components/User/UserFollows"
@@ -7,6 +7,9 @@ import { CURRENT_USER } from "../graphql/users/queries"
 import { isUser } from "../graphql/users/types"
 import PostForm from "../components/Post/PostForm"
 import FollowButton from "../components/User/FollowButton"
+import { IconContext } from "react-icons"
+import { CiChat2 } from "react-icons/ci"
+import { RxEnvelopeClosed } from "react-icons/rx"
 
 const User = () => {
   const { userId } = useParams()
@@ -23,8 +26,17 @@ const User = () => {
           <UserInfo userId={userId} />
           <UserFollows userId={userId} />
         </div>
-        <div className="user__topRight">
-          <FollowButton userId={userId} />
+        <div className="user__interactButtons">
+          {/* <div className="messageUserButtonContainer"> */}
+            <Link className="messageUserButton" to={`/messages/${userId}`}>
+              <IconContext.Provider value={{style: {display: 'block'}}}>
+                <RxEnvelopeClosed />
+              </IconContext.Provider>
+            </Link>
+          {/* </div> */}
+          <div className="user__topRight">
+            <FollowButton userId={userId} />
+          </div>
         </div>
       </div>
       {currentUser.userId === userId && <PostForm userId={userId}/>}

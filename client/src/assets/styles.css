@@ -73,11 +73,16 @@ h1 {
 }
 
 .nav_body_container {
-  width: 650px;
+  width: 730px;
   display: flex;
   flex-direction: row;
   gap: 10px;
   position: relative;
+}
+
+.body {
+  margin-left: 80px;
+  width: 100%;
 }
 
 .navbar {
@@ -87,7 +92,7 @@ h1 {
   height: 100vh;
   position: fixed;
   top: 0;
-  transform: translateX(-80px);
+  /* transform: translateX(-80px); */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -119,6 +124,10 @@ h1 {
 
 /* Home Page */
 
+.home {
+  width: 100%;
+}
+
 .home__postFeed {
   display: flex;
   flex-direction: column;
@@ -140,7 +149,7 @@ h1 {
   background-color: var(--main-background-color);
   box-shadow: var(--level-one-overlay);
   border-radius: 3px;
-  width: 650px;
+  width: 100%;
   margin-bottom: 5px;
 }
 
@@ -219,7 +228,7 @@ h1 {
   font-size: 16px;
   background-color: var(--main-background-color);
   box-shadow: var(--level-one-overlay);
-  width: 650px;
+  width: 100%;
   margin: 5px 0px 5px;
   border-radius: 3px;
   padding: 8px;
@@ -383,6 +392,33 @@ h1 {
   margin-bottom: 10px;
 }
 
+.user__interactButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 35px;
+  /* background-color: green; */
+  align-items: center;
+}
+
+.messageUserButton {
+  color: var(--main-text-color);
+  font-size: 18px;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-color:rgb(55, 55, 55);
+  border-width: 2px; 
+  border-radius: 9999px;
+}
+
+.messageUserButton:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
 .user__displayName {
   font-weight: 300;
   font-size: 30px;
@@ -421,7 +457,7 @@ h1 {
   border-radius: 9999px;
   width: 90px;
   height: 30px;
-  margin-top: 5px;
+  /* margin-top: 5px; */
   font-size: 16px;
 }
 
@@ -481,7 +517,7 @@ h1 {
 
 .followInfoSwitchContainer {
   border-radius: 3px;
-  width: 650px;
+  width: 100%;
   height: 50px;
   display: flex;
   justify-content: space-around;
@@ -493,7 +529,7 @@ h1 {
   font-size: 20px;
   font-weight: 300;
   font-family: 'Roboto', sans-serif;
-  width: 325px;
+  width: 50%;
   height: 50px;
   position: relative;
   display: flex;
@@ -516,7 +552,7 @@ h1 {
 
 .followList {
   border-radius: 3px;
-  width: 650px;
+  width: 100%;
   box-shadow: var(--level-one-overlay);
   font-size: 19px;
 }
@@ -543,7 +579,7 @@ h1 {
 .postPage {
   position: relative;
   box-shadow: var(--level-one-overlay);
-  width: 650px;
+  width: 100%;
   padding: 10px;
   margin-bottom: 10px;
 }
@@ -556,6 +592,12 @@ h1 {
 
 .postPage__displayname {
   font-size: 20px;;
+}
+
+.postPage__displayname:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
 }
 
 .postPage__username {
@@ -764,6 +806,11 @@ h1 {
   font-weight: 500;
 }
 
+.commentDisplayName:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 .commentUsername {
   color: var(--secondary-text-color);
   font-weight: 300;
@@ -914,7 +961,7 @@ h1 {
   flex-direction: column;
   background-color: var(--main-background-color);
   box-shadow: var(--level-one-overlay);
-  width: 650px;
+  width: 100%;
   height: 100vh;
   position: relative;
 }
@@ -936,6 +983,12 @@ h1 {
 .messagesHeader__title {
   font-size: 30px;
   font-weight: 300;
+}
+
+.messagesHeader__title:hover {
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
 }
 
 .messagesHeader .backButton {
@@ -990,7 +1043,7 @@ h1 {
   position: absolute;
   bottom: 0;
   height: 50px;
-  width: 650px;
+  width: 100%;
   padding-left: 10px;
   padding-right: 10px;
 }
@@ -998,7 +1051,8 @@ h1 {
 .messageInput {
   position:absolute;
   bottom: 15px;
-  width: 630px;
+  /* width: 630px; */
+  width: calc(100% - 20px);
   height: 35px;
   /* border-radius: 9999px; */
   background-color: var(--main-background-color);
@@ -1052,7 +1106,6 @@ h1 {
   width: 300px;
   background-color: var(--primary-color);
   border-radius: 20px;
-  border-bottom-right-radius: 5px;
   padding: 15px;
   color: var(--contrast-text-color);
 }
@@ -1061,10 +1114,98 @@ h1 {
   background-color: var(--main-background-color);
   box-shadow: var(--level-two-overlay);
   color: var(--main-text-color);
+  border-bottom-left-radius: 5px;
 }
 
 .messageBubble.sender {
   align-self: self-end;
+  border-bottom-right-radius: 5px;
 }
 
+/* search bar */
+
+.searchPage {
+  height: 100vh;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  width: 100%;
+  padding: 10px;
+  position: relative;
+}
+
+.searchBar {
+  width: 100%;
+}
+
+.searchLabel {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.searchBar_input {
+  /* height: 35px;
+  width: 95%;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  border-radius: 9999px; */
+  resize: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--secondary-text-color);
+  font-size: 18px;
+  padding: 5px;
+  padding-left: 10px;
+  height: 35px;
+  width: 100%;
+  border-radius: 9999px;
+}
+
+.searchBar_inputFiller {
+  position: absolute;
+  pointer-events: none;
+  left: 10px;
+  top: 7px;
+  font-size: 18px;
+  color: var(--secondary-text-color);
+}
+
+.tempSearchList {
+  margin-top: 5px;
+  width: calc(100% - 20px);
+  border-radius: 7px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  border-style: solid;
+  border-color: var(--secondary-text-color);
+  border-width: 1px;
+  position: absolute;
+}
+
+.tempSearchUser {
+  padding: 10px;
+}
+
+.tempSearchUser:hover {
+  cursor: pointer;
+  box-shadow: var(--level-two-overlay);
+}
+
+.searchList {
+  padding: 10px;
+}
+
+@media screen and (max-width: 835px) {
+  /* .navbar {
+    background-color: red;
+    position: absolute;
+    left: -80px;
+    transform: none;
+  } */
+
+  /* .searchPage {
+    margin-left: 40px;
+  } */
+}
 

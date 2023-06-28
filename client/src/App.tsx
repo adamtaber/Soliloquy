@@ -8,6 +8,7 @@ import Root from "./components/General/Root"
 import Authenticate from "./components/General/Authenticate"
 import Followers from "./components/User/Followers"
 import Following from "./components/User/Following"
+import Search from "./pages/search"
 
 const App = () => {
   const router = createBrowserRouter(
@@ -23,6 +24,7 @@ const App = () => {
         <Route path="users/:userId/following" element={<Following />} />
         <Route path="messages" element={<Messages />} />
         <Route path="messages/:userId" element={<Messages />} />
+        <Route path="search" element={<Search />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Route>

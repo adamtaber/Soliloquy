@@ -62,6 +62,30 @@ const userQueries: QueryResolvers = {
 
     return user
   },
+  searchUsers: async (_root, args) => {
+    const { searchInput } = args
+
+    const alteredInput = `%${searchInput}%`
+
+    const query = 
+      `SELECT *
+       FROM users
+       WHERE username ILIKE $1 OR displayname ILIKE $1`
+    const values = [alteredInput]
+
+    const searchQuery = await pool.query(query, values)
+    const searchRes = humps.camelizeKeys(searchQuery.rows)
+
+    if (!isUserArray(searchRes)) {
+      throw new GraphQLError('Query response is not of type UserArray', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
+
+    return searchRes
+  },
   getFollowers: async (_root, args ) => {
     const { userId } = args
 

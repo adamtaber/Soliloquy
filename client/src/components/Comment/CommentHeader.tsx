@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom"
 import { Comment } from "../../graphql/types/graphql"
 
 interface IProps {
@@ -6,7 +7,8 @@ interface IProps {
 }
 
 const CommentHeader = ({ collapseThread, comment }: IProps) => {
-  const { username, displayname } = comment.user
+  const navigate = useNavigate()
+  const { username, displayname, userId } = comment.user
   
   return (
     <div className="commentHeaderContainer">
@@ -14,7 +16,10 @@ const CommentHeader = ({ collapseThread, comment }: IProps) => {
           'collapsedThread'}`}></div>
       <div className={`commentHeader ${collapseThread && 
           'collapsedThread'}`}>
-        <p className="commentDisplayName">{displayname}</p>
+        <p onClick={() => navigate(`/users/${userId}`)} 
+           className="commentDisplayName">
+            {displayname}
+        </p>
         <p className="commentUsername">#{username}</p>
       </div>
     </div>
