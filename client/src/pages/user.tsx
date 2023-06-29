@@ -27,13 +27,13 @@ const User = () => {
           <UserFollows userId={userId} />
         </div>
         <div className="user__interactButtons">
-          {/* <div className="messageUserButtonContainer"> */}
+          {currentUser.userId !== userId &&
             <Link className="messageUserButton" to={`/messages/${userId}`}>
               <IconContext.Provider value={{style: {display: 'block'}}}>
                 <RxEnvelopeClosed />
               </IconContext.Provider>
             </Link>
-          {/* </div> */}
+          }
           <div className="user__topRight">
             <FollowButton userId={userId} />
           </div>

@@ -457,12 +457,16 @@ h1 {
   border-radius: 9999px;
   width: 90px;
   height: 30px;
-  /* margin-top: 5px; */
+  margin-top: 5px;
   font-size: 16px;
 }
 
 .unfollowButton:hover {
   box-shadow: var(--level-two-overlay);
+}
+
+.user__topRight .unfollowButton {
+  margin-top: 0;
 }
 
 .followButton {
@@ -478,6 +482,10 @@ h1 {
 
 .followButton:hover {
   box-shadow: var(--level-one-overlay);
+}
+
+.user__topRight .followButton {
+  margin-top: 0;
 }
 
 /* follow info pages */

@@ -8,6 +8,8 @@ import { useNavigate, useSearchParams } from "react-router-dom"
 import SearchList from "./SearchList"
 import DynamicSearchList from "./DynamicSearchList"
 
+// Still need to add pagination and handle scrolling
+
 type Inputs = {
   search: string
 }
