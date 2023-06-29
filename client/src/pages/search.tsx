@@ -1,4 +1,4 @@
-import SearchBar from "../components/General/SearchBar"
+import SearchBar from "../components/Search/SearchBar"
 
 const Search = () => {
 

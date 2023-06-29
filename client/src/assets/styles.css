@@ -1133,8 +1133,13 @@ h1 {
   position: relative;
 }
 
+.searchBarContainer {
+  display: flex;
+  justify-content: center;
+}
+
 .searchBar {
-  width: 100%;
+  width: 80%;
 }
 
 .searchLabel {
@@ -1171,9 +1176,15 @@ h1 {
   color: var(--secondary-text-color);
 }
 
+.dynamicSearchContainer {
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
 .tempSearchList {
   margin-top: 5px;
-  width: calc(100% - 20px);
+  width: calc(80% - 20px);
   border-radius: 7px;
   background-color: var(--main-background-color);
   box-shadow: var(--level-one-overlay);
@@ -1193,7 +1204,7 @@ h1 {
 }
 
 .searchList {
-  padding: 10px;
+  padding-top: 20px;
 }
 
 @media screen and (max-width: 835px) {

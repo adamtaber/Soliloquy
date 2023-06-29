@@ -4,7 +4,6 @@ import { GET_FOLLOWERS, GET_FOLLOWER_COUNT, GET_FOLLOWING, GET_FOLLOWING_COUNT }
 
 const UnfollowUser = (props: { userId: string, currentUserId: string }) => {
   const { userId, currentUserId } = props
-  console.log(currentUserId)
 
   const [unfollowUser, { data, loading, error }] = useMutation(UNFOLLOW_USER, {
     refetchQueries: [

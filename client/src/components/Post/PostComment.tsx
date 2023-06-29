@@ -36,7 +36,12 @@ const PostComment =
 
   const executeScroll = async () => {
     if(myRef.current !== null) {
-      myRef.current.scrollIntoView()
+      if(initialLevel) {
+        myRef.current.scrollIntoView()
+      } else {
+        myRef.current.scrollIntoView(false)
+      }
+      
     }
   }
 
@@ -55,9 +60,6 @@ const PostComment =
         clearContext()
       }, 100)
     }
-    // if(commentContext) {
-    //   commentContext.setPreviousCommentId('')
-    // }
   }, [commentPageId])
 
   const {loading, error, data} = useQuery(CURRENT_USER)

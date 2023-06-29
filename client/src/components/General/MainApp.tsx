@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 import { FragmentType, useFragment } from "../../graphql/types"
 import { UserFragment } from "../../graphql/users/fragments"
 import NavBar from "./NavBar"
-import SearchBar from "./SearchBar"
+import SearchBar from "../Search/SearchBar"
 
 const MainApp = (props: { userData: FragmentType<typeof UserFragment> }) => {
   const user = useFragment(UserFragment, props.userData)
