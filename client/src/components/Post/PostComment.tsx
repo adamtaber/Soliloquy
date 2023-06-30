@@ -19,11 +19,10 @@ interface IProps {
   initialLevel: boolean,
   commentLevel: number,
   commentPageId?: string,
-  setTestCommentId: (arg: string) => void,
 }
 
 const PostComment = 
-  ({ comment, initialLevel, commentLevel, commentPageId, setTestCommentId }: IProps) => {
+  ({ comment, initialLevel, commentLevel, commentPageId }: IProps) => {
   const [showOptionsModal, setShowOptionsModal] = useState(false)
   const [showReplyForm, setShowReplyForm] = useState(false)
   const [collapseThread, setCollapseThread] = useState(false)
@@ -96,7 +95,6 @@ const PostComment =
       />
       <div className={highlightComment ? 'highlightComment' : ''}></div>
       <div className={`commentBody ${collapseThread && 'collapsedThread'}`}>
-        {/* <p>{commentId}</p> */}
         <p>{comment.content}</p>
         <CommentButtons 
           setShowReplyForm={setShowReplyForm}
@@ -124,7 +122,6 @@ const PostComment =
             postId={postId}
             parentCommentId={commentId}
             commentPageId={commentPageId}
-            setTestCommentId={setTestCommentId}
           />
         }
       </div>

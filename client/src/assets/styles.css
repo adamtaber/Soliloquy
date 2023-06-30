@@ -715,6 +715,38 @@ h1 {
 
 /* Comments */
 
+.commentSortContainer {
+  position: relative;
+  width: 100px;
+}
+
+.commentSortButton {
+  height: 30px;
+  width: 110px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  color: var(--secondary-text-color);
+  font-size: 15px;
+}
+
+.commentSortButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.commentSortDropdown {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 110px;
+  background-color: var(--main-background-color);
+  box-shadow: 0px 0px 10px 3px rgb(65, 65, 65);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  overflow: hidden;
+}
+
 .postCommentList {
   box-shadow: var(--level-one-overlay);
   border-radius: 5px;
@@ -793,7 +825,7 @@ h1 {
 
 .commentHeader {
   display: flex;
-  gap: 15px;
+  gap: 5px;
   height: 35px;
   align-items: center;
   margin-bottom: 5px;
@@ -819,9 +851,13 @@ h1 {
   text-decoration: underline;
 }
 
-.commentUsername {
+.commentUsername, .commentDate, .dotSeparator {
   color: var(--secondary-text-color);
   font-weight: 300;
+}
+
+.dotSeparator {
+  font-weight: 500;
 }
 
 .comment__interactButtons {

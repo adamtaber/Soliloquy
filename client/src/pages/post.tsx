@@ -4,6 +4,7 @@ import PostContent from "../components/Post/PostContent"
 import { useQuery } from "@apollo/client"
 import { CURRENT_USER } from "../graphql/users/queries"
 import { isUser } from "../graphql/users/types"
+import PostCommentForm from "../components/Post/PostCommentForm"
 
 const Post = () => {
   const { postId, commentId } = useParams()
@@ -22,6 +23,7 @@ const Post = () => {
   return (
     <div>
       <PostContent postId={postId} currentUser={currentUser}/>
+      <PostCommentForm postId={postId} />
       <PostCommentList postId={postId} commentId={commentId}/>
     </div>
   )

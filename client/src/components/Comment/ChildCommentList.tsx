@@ -14,11 +14,10 @@ interface IProps {
   parentCommentId: string,
   postId: string,
   commentPageId?: string,
-  setTestCommentId: (arg: string) => void
 }
 
 const ChildCommentList = 
-  ({childComments, commentLevel, commentPageId, setTestCommentId }: IProps) => {
+  ({childComments, commentLevel, commentPageId }: IProps) => {
 
   let comments = childComments
   if(comments.length === 0 || !comments) return null
@@ -35,7 +34,6 @@ const ChildCommentList =
               initialLevel={false} 
               commentLevel={commentLevel}
               commentPageId={commentPageId}
-              setTestCommentId={setTestCommentId}
             />
           </div>
         )

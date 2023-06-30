@@ -31,9 +31,11 @@ const SearchBar = () => {
       if ((dynamicListRef.current && !dynamicListRef.current.contains(event.target)) 
         && (searchBarRef.current && !searchBarRef.current.contains(event.target))) {
         setShowDynamicList(false)
-      } else {
-        setShowDynamicList(true)
       }
+      // } else {
+      //   console.log(dynamicListRef.current)
+      //   setShowDynamicList(true)
+      // }
     }
     document.addEventListener("click", handleClickOutside)
     return () => {

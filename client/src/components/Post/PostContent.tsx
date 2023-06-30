@@ -30,6 +30,7 @@ const PostContent = ({ postId, currentUser }: IProps) => {
   const {content, likesCount, currentUserLike} = postData
 
   const createDate = () => {
+    console.log(postData.createdOn)
     const date = new Date(postData.createdOn)
     return date.toLocaleDateString()
   }
