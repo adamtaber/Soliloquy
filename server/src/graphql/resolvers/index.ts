@@ -13,14 +13,14 @@ const resolvers: Resolvers = {
     ...postQueries,
     ...commentQueries,
     ...messageQueries,
-    ...likeQueries
+    ...likeQueries,
   },
   Mutation: {
     ...userMutations,
     ...postMutations,
     ...commentMutations,
     ...messageMutations,
-    ...likeMutations
+    ...likeMutations,
   },
   Subscription: {
     ...messageSubscriptions

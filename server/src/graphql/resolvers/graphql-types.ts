@@ -13,6 +13,7 @@ export type Scalars = {
   Int: number;
   Float: number;
   Date: any;
+  Upload: any;
 };
 
 export type BasicUser = {
@@ -34,6 +35,12 @@ export type Comment = {
   parentCommentId?: Maybe<Scalars['ID']>;
   postId: Scalars['ID'];
   user: User;
+};
+
+export type ImageFile = {
+  __typename?: 'ImageFile';
+  filename: Scalars['String'];
+  id: Scalars['String'];
 };
 
 export type Like = {
@@ -74,6 +81,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   unfollowUser: Scalars['Boolean'];
   updateUser: User;
+  uploadImage: ImageFile;
 };
 
 
@@ -156,6 +164,11 @@ export type MutationUpdateUserArgs = {
   username: Scalars['String'];
 };
 
+
+export type MutationUploadImageArgs = {
+  image: Scalars['Upload'];
+};
+
 export type Post = {
   __typename?: 'Post';
   comments?: Maybe<Array<Maybe<Comment>>>;
@@ -180,6 +193,7 @@ export type Query = {
   getFollowers: Array<Maybe<User>>;
   getFollowing: Array<Maybe<User>>;
   getFollowingCount: Scalars['Int'];
+  getImages: Array<Maybe<ImageFile>>;
   getLikes?: Maybe<Array<Maybe<Like>>>;
   getMessagePartners: Array<Maybe<BasicUser>>;
   getMessages: Array<Maybe<Message>>;
@@ -351,6 +365,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 ) => TResult | Promise<TResult>;
 
 
+
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
   BasicUser: ResolverTypeWrapper<BasicUser>;
@@ -358,6 +373,7 @@ export type ResolversTypes = ResolversObject<{
   Comment: ResolverTypeWrapper<Comment>;
   Date: ResolverTypeWrapper<Scalars['Date']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
+  ImageFile: ResolverTypeWrapper<ImageFile>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Like: ResolverTypeWrapper<Like>;
   Message: ResolverTypeWrapper<Message>;
@@ -366,6 +382,7 @@ export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
+  Upload: ResolverTypeWrapper<Scalars['Upload']>;
   User: ResolverTypeWrapper<User>;
 }>;
 
@@ -376,6 +393,7 @@ export type ResolversParentTypes = ResolversObject<{
   Comment: Comment;
   Date: Scalars['Date'];
   ID: Scalars['ID'];
+  ImageFile: ImageFile;
   Int: Scalars['Int'];
   Like: Like;
   Message: Message;
@@ -384,6 +402,7 @@ export type ResolversParentTypes = ResolversObject<{
   Query: {};
   String: Scalars['String'];
   Subscription: {};
+  Upload: Scalars['Upload'];
   User: User;
 }>;
 
@@ -411,6 +430,12 @@ export type CommentResolvers<ContextType = any, ParentType extends ResolversPare
 export interface DateScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Date'], any> {
   name: 'Date';
 }
+
+export type ImageFileResolvers<ContextType = any, ParentType extends ResolversParentTypes['ImageFile'] = ResolversParentTypes['ImageFile']> = ResolversObject<{
+  filename?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export type LikeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Like'] = ResolversParentTypes['Like']> = ResolversObject<{
   commentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
@@ -449,6 +474,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   unfollowUser?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<MutationUnfollowUserArgs, 'userId'>>;
   updateUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationUpdateUserArgs, 'displayname' | 'username'>>;
+  uploadImage?: Resolver<ResolversTypes['ImageFile'], ParentType, ContextType, RequireFields<MutationUploadImageArgs, 'image'>>;
 }>;
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = ResolversObject<{
@@ -474,6 +500,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getFollowers?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowersArgs, 'userId'>>;
   getFollowing?: Resolver<Array<Maybe<ResolversTypes['User']>>, ParentType, ContextType, RequireFields<QueryGetFollowingArgs, 'userId'>>;
   getFollowingCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<QueryGetFollowingCountArgs, 'userId'>>;
+  getImages?: Resolver<Array<Maybe<ResolversTypes['ImageFile']>>, ParentType, ContextType>;
   getLikes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Like']>>>, ParentType, ContextType>;
   getMessagePartners?: Resolver<Array<Maybe<ResolversTypes['BasicUser']>>, ParentType, ContextType>;
   getMessages?: Resolver<Array<Maybe<ResolversTypes['Message']>>, ParentType, ContextType, RequireFields<QueryGetMessagesArgs, 'messagePartnerId'>>;
@@ -486,6 +513,10 @@ export type SubscriptionResolvers<ContextType = any, ParentType extends Resolver
   messageDeleted?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageDeleted", ParentType, ContextType, RequireFields<SubscriptionMessageDeletedArgs, 'receiverId'>>;
   messageSent?: SubscriptionResolver<Maybe<ResolversTypes['Message']>, "messageSent", ParentType, ContextType, RequireFields<SubscriptionMessageSentArgs, 'receiverId'>>;
 }>;
+
+export interface UploadScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+  name: 'Upload';
+}
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
   createdOn?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -501,12 +532,14 @@ export type Resolvers<ContextType = any> = ResolversObject<{
   BasicUser?: BasicUserResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
   Date?: GraphQLScalarType;
+  ImageFile?: ImageFileResolvers<ContextType>;
   Like?: LikeResolvers<ContextType>;
   Message?: MessageResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  Upload?: GraphQLScalarType;
   User?: UserResolvers<ContextType>;
 }>;
 
