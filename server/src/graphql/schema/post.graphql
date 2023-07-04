@@ -4,10 +4,16 @@ type Post {
   postId: ID!,
   poster: User!
   content: String!,
+  imageUrl: String,
   createdOn: Date!,
   likesCount: Int!,
   currentUserLike: String,
   comments: [Comment]
+}
+
+type PostImageSignature {
+  signature: String!,
+  timestamp: Int!
 }
 
 type Query {
@@ -22,11 +28,13 @@ type Query {
     lastCreatedOn: Date,
     limit: Int!
   ): [Post]!
+  getPostImageSignature: PostImageSignature
 }
 
 type Mutation {
   createPost(
     content: String!,
+    imageUrl: String
   ): Post!
   deletePost(
     postId: String!

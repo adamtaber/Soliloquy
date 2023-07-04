@@ -1,9 +1,10 @@
 import { pool } from "../../../db/config"
 import { QueryResolvers } from "../graphql-types"
 import humps from 'humps'
-import { isPostArray } from "./types"
+import { isPostArray, isPostimageSignature } from "./types"
 import { isPost } from "./types"
 import { GraphQLError } from "graphql"
+import { generateCloudinarySignature } from "../../../utils"
 
 const postQueries: QueryResolvers = {
   getPost: async(_root, args, {authorizedId}) => {
@@ -173,6 +174,8 @@ const postQueries: QueryResolvers = {
       : await pool.query(initialQuery, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
+    console.log(posts)
+
     if (!Array.isArray(posts)) {
       throw new GraphQLError('Query response is not of type Array', {
         extensions: {
@@ -185,6 +188,7 @@ const postQueries: QueryResolvers = {
       return {
         postId: post.postId,
         content: post.content,
+        imageUrl: post.imageUrl,
         createdOn: post.postCreatedOn,
         likesCount: post.likesCount,
         currentUserLike: post.currentUserLike,
@@ -207,6 +211,23 @@ const postQueries: QueryResolvers = {
     }
 
     return totalPosts
+  },
+  getPostImageSignature: async (_root, _args, { authorizedId }) => {
+    if(!authorizedId) {
+      throw new GraphQLError('Unauthorized')
+    }
+
+    const res = generateCloudinarySignature()
+    if(!isPostimageSignature(res)) {
+      throw new GraphQLError('Result is not of type Array', {
+        extensions: {
+          extensions: {
+            code: 'INVALID_TYPE'
+          }
+        }
+      })
+    }
+    return res
   }
 }
 

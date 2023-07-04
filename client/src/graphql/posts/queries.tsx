@@ -24,3 +24,11 @@ export const GET_POST = gql(`
     }
   }
 `)
+
+export const GET_POST_IMAGE_SIGNATURE = gql(`
+  query getPostImageSignature {
+    getPostImageSignature {
+      ...PostImageSignatureFields
+    }
+  }
+`)

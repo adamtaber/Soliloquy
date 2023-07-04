@@ -42,6 +42,9 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
                   <p className="post__date">{post.createdOn}</p>
                 </div>
                 <p className="post__content">{post.content}</p>
+                {post.imageUrl &&
+                  <img src={post.imageUrl} />
+                }
                 <LikeButton 
                   likes={post.likesCount}
                   contentId={post.postId} 

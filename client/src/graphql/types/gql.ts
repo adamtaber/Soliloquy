@@ -31,12 +31,14 @@ const documents = {
     "\n  query getMessagePartners {\n    getMessagePartners {\n      userId\n      username\n      displayname\n      recentMessage\n    }\n  }\n": types.GetMessagePartnersDocument,
     "\n  subscription messageSent($receiverId: String!){\n    messageSent(receiverId: $receiverId) {\n      ...MessageFields\n    }\n  }\n": types.MessageSentDocument,
     "\n  subscription messageDeleted($receiverId: String!){\n    messageDeleted(receiverId: $receiverId) {\n      ...MessageFields\n    }\n  }\n": types.MessageDeletedDocument,
-    "\n  fragment PostFields on Post {\n    postId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n    poster {\n      ...UserFields\n    }\n  }\n": types.PostFieldsFragmentDoc,
-    "\n  mutation createPost($content: String!) {\n    createPost(content: $content) {\n      ...PostFields\n    }\n  }\n": types.CreatePostDocument,
+    "\n  fragment PostFields on Post {\n    postId\n    content\n    imageUrl\n    createdOn\n    likesCount\n    currentUserLike\n    poster {\n      ...UserFields\n    }\n  }\n": types.PostFieldsFragmentDoc,
+    "\n  fragment PostImageSignatureFields on PostImageSignature {\n    signature\n    timestamp\n  }\n": types.PostImageSignatureFieldsFragmentDoc,
+    "\n  mutation createPost($content: String!, $imageUrl: String) {\n    createPost(content: $content, imageUrl: $imageUrl) {\n      ...PostFields\n    }\n  }\n": types.CreatePostDocument,
     "\n  mutation deletePost($postId: String!) {\n    deletePost(postId: $postId)\n  }\n": types.DeletePostDocument,
     "\n  query getUserPosts($userId: String!) {\n    getUserPosts(userId: $userId) {\n      ...PostFields\n    }\n  }\n": types.GetUserPostsDocument,
     "\n  query getFeedPosts($lastPostId: String, $lastCreatedOn: Date, $limit: Int!) {\n    getFeedPosts(lastPostId: $lastPostId, lastCreatedOn: $lastCreatedOn, limit: $limit) {\n      ...PostFields\n    }\n  }\n": types.GetFeedPostsDocument,
     "\n  query getPost($postId: String!) {\n    getPost(postId: $postId) {\n      ...PostFields\n    }\n  }\n": types.GetPostDocument,
+    "\n  query getPostImageSignature {\n    getPostImageSignature {\n      ...PostImageSignatureFields\n    }\n  }\n": types.GetPostImageSignatureDocument,
     "\n  fragment UserFields on User {\n    displayname\n    username\n    userId\n    email\n  }\n": types.UserFieldsFragmentDoc,
     "\n  mutation login($username: String!, $password: String!) {\n    login(username: $username, password: $password)\n  }\n": types.LoginDocument,
     "\n  mutation logout{\n    logout\n  }\n": types.LogoutDocument,
@@ -141,11 +143,15 @@ export function gql(source: "\n  subscription messageDeleted($receiverId: String
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  fragment PostFields on Post {\n    postId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n    poster {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  fragment PostFields on Post {\n    postId\n    content\n    createdOn\n    likesCount\n    currentUserLike\n    poster {\n      ...UserFields\n    }\n  }\n"];
+export function gql(source: "\n  fragment PostFields on Post {\n    postId\n    content\n    imageUrl\n    createdOn\n    likesCount\n    currentUserLike\n    poster {\n      ...UserFields\n    }\n  }\n"): (typeof documents)["\n  fragment PostFields on Post {\n    postId\n    content\n    imageUrl\n    createdOn\n    likesCount\n    currentUserLike\n    poster {\n      ...UserFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function gql(source: "\n  mutation createPost($content: String!) {\n    createPost(content: $content) {\n      ...PostFields\n    }\n  }\n"): (typeof documents)["\n  mutation createPost($content: String!) {\n    createPost(content: $content) {\n      ...PostFields\n    }\n  }\n"];
+export function gql(source: "\n  fragment PostImageSignatureFields on PostImageSignature {\n    signature\n    timestamp\n  }\n"): (typeof documents)["\n  fragment PostImageSignatureFields on PostImageSignature {\n    signature\n    timestamp\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation createPost($content: String!, $imageUrl: String) {\n    createPost(content: $content, imageUrl: $imageUrl) {\n      ...PostFields\n    }\n  }\n"): (typeof documents)["\n  mutation createPost($content: String!, $imageUrl: String) {\n    createPost(content: $content, imageUrl: $imageUrl) {\n      ...PostFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -162,6 +168,10 @@ export function gql(source: "\n  query getFeedPosts($lastPostId: String, $lastCr
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n  query getPost($postId: String!) {\n    getPost(postId: $postId) {\n      ...PostFields\n    }\n  }\n"): (typeof documents)["\n  query getPost($postId: String!) {\n    getPost(postId: $postId) {\n      ...PostFields\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  query getPostImageSignature {\n    getPostImageSignature {\n      ...PostImageSignatureFields\n    }\n  }\n"): (typeof documents)["\n  query getPostImageSignature {\n    getPostImageSignature {\n      ...PostImageSignatureFields\n    }\n  }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

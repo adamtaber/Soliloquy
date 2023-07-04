@@ -182,6 +182,11 @@ h1 {
   color: var(--secondary-text-color);
 }
 
+.postForm__bottomRow {
+  display: flex;
+  justify-content: space-between
+}
+
 .postForm__submit {
   background-color: var(--primary-color);
   color: var(--contrast-text-color);

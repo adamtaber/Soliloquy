@@ -40,6 +40,7 @@ CREATE TABLE posts (
   post_id uuid DEFAULT uuid_generate_v4 (),
   user_id uuid NOT NULL,
   content VARCHAR (500) NOT NULL,
+  image_url TEXT,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (post_id),
   FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE

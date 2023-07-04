@@ -7,14 +7,14 @@ import { GraphQLError } from "graphql"
 
 const postMutations: MutationResolvers = {
   createPost: async(_root, args, { authorizedId }) => {
-    const { content } = args
+    const { content, imageUrl } = args
     const createdOn = new Date()
   
     const query =
-      `INSERT INTO posts (user_id, content, created_on)
-       VALUES ($1, $2, $3)
+      `INSERT INTO posts (user_id, content, created_on, image_url)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`
-    const values = [authorizedId, content, createdOn]
+    const values = [authorizedId, content, createdOn, imageUrl]
 
     const query2 = 
       `SELECT *

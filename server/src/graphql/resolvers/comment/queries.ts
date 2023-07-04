@@ -3,7 +3,7 @@ import { QueryResolvers } from "../graphql-types"
 import humps from 'humps'
 import { isCommentArray } from "./types"
 import { GraphQLError } from "graphql"
-import * as _ from 'lodash'
+// import * as _ from 'lodash'
 
 const commentQueries: QueryResolvers = {
   getCommentParentId: async (_root, args) => {

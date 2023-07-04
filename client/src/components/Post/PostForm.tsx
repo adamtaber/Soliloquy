@@ -1,18 +1,26 @@
-import { useMutation } from "@apollo/client"
+import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_POST } from "../../graphql/posts/mutations"
-import { GET_FEED_POSTS, GET_USER_POSTS } from "../../graphql/posts/queries"
-import { useRef } from "react"
+import { GET_FEED_POSTS, GET_POST_IMAGE_SIGNATURE, GET_USER_POSTS } from "../../graphql/posts/queries"
+import { useRef, useState } from "react"
+import ImageForm from "./ImageForm"
+import { isPostImageSignature } from "../../graphql/posts/types"
 
 type Inputs = {
-  content: string
+  content: string,
+  imageFile: FileList
 }
 
 const PostForm = (props: {userId: string}) => {
   const { userId } = props
+  const [imageSignature, setImageSignature] = useState('')
+  const [imageTimestamp, setImageTimestamp] = useState<number>()
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>()
   const { ref } = register('content')
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
+  const chooseFileRef = useRef<HTMLInputElement | null>(null)
+  const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
   
   const handleChange = () => {
     if(textAreaRef.current) {
@@ -29,11 +37,44 @@ const PostForm = (props: {userId: string}) => {
     ]
   })
 
-  if (error) console.log(error)
+  const { refetch: refetchImageSignature } = useQuery(GET_POST_IMAGE_SIGNATURE, {
+    skip: true
+  })
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    createPost({ variables: {content: data.content} })
-    setValue('content', '')
+  const handleImageChange = async () => {
+    const { data } = await refetchImageSignature()
+    if(data.getPostImageSignature 
+      && isPostImageSignature(data.getPostImageSignature)) {
+        console.log(data.getPostImageSignature)
+        setImageSignature(data.getPostImageSignature.signature)
+        setImageTimestamp(data.getPostImageSignature.timestamp)
+      }
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data.imageFile[0])
+    const formData = new FormData()
+    formData.append('file', data.imageFile[0])
+    console.log(CLOUD_NAME, API_KEY, imageTimestamp, imageSignature)
+    const res = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload?api_key=${API_KEY}&timestamp=${imageTimestamp}&signature=${imageSignature}`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    )
+    const imageData = await res.json()
+    if(imageData.secure_url) {
+      console.log('test test test')
+      createPost({ variables: {content: data.content, imageUrl: imageData.secure_url} })
+      setValue('content', '')
+    }
+    // createPost({ variables: {content: data.content} })
+    // setValue('content', '')
+  }
+
+  const chooseFile = () => {
+    if(chooseFileRef.current) chooseFileRef.current.click()
   }
 
   return (
@@ -59,8 +100,24 @@ const PostForm = (props: {userId: string}) => {
             }}
           />
         </label>
-        <input className="postForm__submit" type="submit" />
+        <div className="postForm__bottomRow">
+          <input 
+            type='file' 
+            {...register('imageFile', {
+              onChange: () => handleImageChange()
+            })}
+            // style={{display: 'none'}}
+            // ref={chooseFileRef}
+            // ref={(e) => {
+            //   ref(e)
+            //   chooseFileRef.current = e
+            // }} 
+          />
+          {/* <button className="postForm__submit" onClick={() => chooseFile()}>Image</button> */}
+          <input className="postForm__submit" type="submit" />
+        </div>
       </form>
+      {/* <ImageForm /> */}
     </>
   )
 }
