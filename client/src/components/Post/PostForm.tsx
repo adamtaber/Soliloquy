@@ -67,10 +67,12 @@ const PostForm = ({ userId }: IProps) => {
     )
     const imageData = await res.json()
     if(imageData.secure_url) {
-      console.log('test test test')
+      console.log(imageData)
       createPost({ variables: {
         content: data.content, 
-        imageUrl: imageData.secure_url
+        // imageUrl: imageData.secure_url
+        // imageUrl: `https://res.cloudinary.com/ds5rgradj/image/upload/f_auto,q_auto/${imageData.public_id}`
+        imageUrl: imageData.public_id
       }})
       setValue('content', '')
     }
