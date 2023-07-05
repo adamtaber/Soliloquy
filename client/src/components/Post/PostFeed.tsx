@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Post } from "../../graphql/types/graphql"
 import { useRef } from "react"
 import LikeButton from "../Like/LikeButton"
+import PostImage from "./PostImage"
 
 const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: String, lastCreatedOn: Date) => void }) => {
   const {postData, onLoadMore} = props
@@ -33,25 +34,32 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
               onClick={() => navigate(`/posts/${post.postId}`)}
               ref={feed.length === i + 1 ? lastPostRef : null} 
               key={post.postId}>
-                <div className="post__topRow">
-                    <Link className="post__username" 
-                      onClick={(e) => e.stopPropagation()}
-                      to={`/users/${post.poster.userId}`}>
-                        {post.poster.displayname}
-                    </Link>
-                  <p className="post__date">{post.createdOn}</p>
+                <div className="postBodyContainer">
+                  <div>
+                    <div className={`postProfilePic`}></div>
+                  </div>
+                  <div>
+                    <div className="post__topRow">
+                      <Link className="post__username" 
+                        onClick={(e) => e.stopPropagation()}
+                        to={`/users/${post.poster.userId}`}>
+                          {post.poster.displayname}
+                      </Link>
+                      <p className="post__date">{post.createdOn}</p>
+                    </div>
+                    <p className="post__content">{post.content}</p>
+                    {post.imageUrl &&
+                      <PostImage imageUrl={post.imageUrl} />
+                    }
+                    <LikeButton 
+                      likes={post.likesCount}
+                      contentId={post.postId} 
+                      contentType="post"
+                      userLiked={post.currentUserLike ? true : false}
+                      postType="feed"
+                    />
+                  </div>
                 </div>
-                <p className="post__content">{post.content}</p>
-                {post.imageUrl &&
-                  <img src={post.imageUrl} />
-                }
-                <LikeButton 
-                  likes={post.likesCount}
-                  contentId={post.postId} 
-                  contentType="post"
-                  userLiked={post.currentUserLike ? true : false}
-                  postType="feed"
-                />
             </div>
           )
       })}

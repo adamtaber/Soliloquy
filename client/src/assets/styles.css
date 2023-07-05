@@ -247,6 +247,18 @@ h1 {
   cursor: pointer;
 }
 
+.postBodyContainer {
+  display: flex;
+}
+
+.postProfilePic {
+  border-radius: 9999px;
+  background-color: rgb(97, 94, 94);
+  width: 35px;
+  height: 35px;
+  margin-right: 8px;
+}
+
 .post__topRow {
   display: flex;
   flex-direction: row;
@@ -271,6 +283,29 @@ h1 {
 .post__content {
   margin-bottom: 15px;
 }
+
+.postImageContainer {
+  position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
+  max-height: 550px;
+  border-radius: 10px;
+}
+
+/* .expandImage {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0, .75);
+  height: 80px;
+  width: 100%;
+  bottom: 0;
+} */
+
+/* .postImage {
+  border-radius: 10px;
+} */
 
 /* Log In */
 

@@ -1,9 +1,8 @@
-import { useLazyQuery, useMutation, useQuery } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { CREATE_POST } from "../../graphql/posts/mutations"
 import { GET_FEED_POSTS, GET_POST_IMAGE_SIGNATURE, GET_USER_POSTS } from "../../graphql/posts/queries"
 import { useRef, useState } from "react"
-import ImageForm from "./ImageForm"
 import { isPostImageSignature } from "../../graphql/posts/types"
 
 type Inputs = {
@@ -11,16 +10,19 @@ type Inputs = {
   imageFile: FileList
 }
 
-const PostForm = (props: {userId: string}) => {
-  const { userId } = props
+interface IProps {
+  userId: string
+}
+
+const PostForm = ({ userId }: IProps) => {
+  const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY
+  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
   const [imageSignature, setImageSignature] = useState('')
   const [imageTimestamp, setImageTimestamp] = useState<number>()
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>()
   const { ref } = register('content')
   const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
   const chooseFileRef = useRef<HTMLInputElement | null>(null)
-  const API_KEY = import.meta.env.VITE_CLOUDINARY_API_KEY
-  const CLOUD_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME
   
   const handleChange = () => {
     if(textAreaRef.current) {
@@ -66,11 +68,12 @@ const PostForm = (props: {userId: string}) => {
     const imageData = await res.json()
     if(imageData.secure_url) {
       console.log('test test test')
-      createPost({ variables: {content: data.content, imageUrl: imageData.secure_url} })
+      createPost({ variables: {
+        content: data.content, 
+        imageUrl: imageData.secure_url
+      }})
       setValue('content', '')
     }
-    // createPost({ variables: {content: data.content} })
-    // setValue('content', '')
   }
 
   const chooseFile = () => {
@@ -117,7 +120,6 @@ const PostForm = (props: {userId: string}) => {
           <input className="postForm__submit" type="submit" />
         </div>
       </form>
-      {/* <ImageForm /> */}
     </>
   )
 }
