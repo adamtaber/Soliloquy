@@ -31,14 +31,13 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
   })
 
   useEffect(() => {
-    // setImageList(['mv4uuir63a2gcnhryfoq', 'tz5zd31xkbvnl2z6kqol'])
     const array: string[] = []
     feed.map((post, i) => {
       if(post.imageUrl) {
         array.push(post.imageUrl)
       }
     })
-    setImageList([...imageList, ...array])
+    setImageList([...array])
   }, [feed.length])
 
   useEffect(() => {
@@ -52,7 +51,6 @@ const PostFeed = (props: { postData: Array<Post>, onLoadMore: (lastPostId: Strin
           // setTimeout(() => {
           //   resolve(image)
           // }, 2000)
-          console.log('test test test')
         }
         loadImg.onerror = err => reject(err)
       })
