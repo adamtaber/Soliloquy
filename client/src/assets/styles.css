@@ -137,7 +137,9 @@ h1 {
 
 .home__postFormContainer {
   display: flex;
-  justify-content: center;
+  padding: 8px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
 }
 
 .home__postForm {
@@ -310,7 +312,15 @@ h1 {
 
 .postImage {
   min-width: 100%;
+  min-height: 300px;
   /* transition: 'filter 0.5s ease-out'; */
+}
+
+.postForm__imageContainer {
+  overflow: hidden;
+  max-height: 800px;
+  width: 100%;
+  border-radius: 10px;
 }
 
 /* Log In */
