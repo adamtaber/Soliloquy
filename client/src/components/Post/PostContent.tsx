@@ -8,6 +8,7 @@ import LikeButton from "../Like/LikeButton"
 import { RxDotsHorizontal } from 'react-icons/rx'
 import { IconContext } from "react-icons"
 import { useState } from "react"
+import PostImage from "./PostImage"
 
 interface IProps {
   postId: string,
@@ -28,12 +29,6 @@ const PostContent = ({ postId, currentUser }: IProps) => {
 
   const {displayname, username} = postData.poster
   const {content, likesCount, currentUserLike} = postData
-
-  const createDate = () => {
-    console.log(postData.createdOn)
-    const date = new Date(postData.createdOn)
-    return date.toLocaleDateString()
-  }
 
   return (
     <div className="postPage">
@@ -68,7 +63,19 @@ const PostContent = ({ postId, currentUser }: IProps) => {
         </div>
       }
       <p className="postPage__content">{content}</p>
-      <p className="postPage__date">{createDate()}</p>
+      {postData.imageUrl && <PostImage imageUrl={postData.imageUrl} />}
+      <div className="postPage__date">
+        <p>{new Intl.DateTimeFormat('default', {
+          hour: 'numeric',
+          minute: 'numeric'
+        }).format(postData.createdOn)}</p>
+        <span className="dotSeparator">·</span>
+        <p>{new Intl.DateTimeFormat('default', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric'
+        }).format(postData.createdOn)}</p>
+      </div>
       {likesCount > 0 &&
         <p className="postPage__likesInfo">
           {likesCount} {likesCount > 1 

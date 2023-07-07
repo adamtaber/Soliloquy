@@ -4,6 +4,9 @@ import { CREATE_POST } from "../../graphql/posts/mutations"
 import { GET_FEED_POSTS, GET_POST_IMAGE_SIGNATURE, GET_USER_POSTS } from "../../graphql/posts/queries"
 import { useRef, useState } from "react"
 import { fetchSignature, handleTextInputChange, submitImage } from "../../helpers/helper"
+import { IconContext } from "react-icons"
+import { IoCloseOutline } from 'react-icons/io5'
+import { BsCamera } from 'react-icons/bs'
 
 type Inputs = {
   content: string,
@@ -85,6 +88,15 @@ const PostForm = ({ userId }: IProps) => {
         </label>
         <div className="postForm__imageContainer">
           <img className="postForm__image" src={selectedImage} />
+          {selectedImage && 
+            <button 
+              className="postForm__cancelImage"
+              onClick={() => removeImage()}>
+                <IconContext.Provider value={{style: {display: 'block'}}}>
+                  <IoCloseOutline/>
+                </IconContext.Provider>
+            </button>
+          }
         </div>
         <div className="postForm__bottomRow">
           <input 
@@ -99,18 +111,13 @@ const PostForm = ({ userId }: IProps) => {
             }} 
           />
           <button 
-            className="postForm__submit" 
+            className="postForm__selectImage" 
             type='button' 
             onClick={() => chooseFile()}>
-              Image
+              <IconContext.Provider value={{style: {display: 'block'}}}>
+                <BsCamera/>
+              </IconContext.Provider>
           </button>
-          {selectedImage && 
-            <button 
-              className="postForm__submit"
-              onClick={() => removeImage()}>
-                Cancel
-            </button>
-          }
           <button className="postForm__submit" type="submit">Submit</button>
         </div>
         

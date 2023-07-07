@@ -3,6 +3,7 @@ import { GET_USER_POSTS } from "../../graphql/posts/queries"
 import { isPostArray } from "../../graphql/posts/types"
 import { Link, Navigate, useNavigate } from "react-router-dom"
 import LikeButton from "../Like/LikeButton"
+import PostImage from "../Post/PostImage"
 
 const UserPosts = (props: { userId: string } ) => {
   const { userId } = props
@@ -44,6 +45,7 @@ const UserPosts = (props: { userId: string } ) => {
                 <p className="post__date">{post.createdOn}</p>
               </div>
               <p className="post__content">{post.content}</p>
+              {post.imageUrl && <PostImage imageUrl={post.imageUrl} />}
               <LikeButton 
                 likes={post.likesCount}
                 contentId={post.postId} 

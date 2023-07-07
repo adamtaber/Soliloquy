@@ -25,7 +25,6 @@ const PostFeedContent = ({ post }: IProps) => {
             >
               {post.poster.displayname}
             </Link>
-            {/* <p className='post__date'>{post.createdOn}</p> */}
             <p className="commentUsername">@{post.poster.username}</p>
             <span className="dotSeparator">·</span>
             <p className="commentDate">{createDate(post.createdOn)}</p>
