@@ -10,8 +10,11 @@ type User {
 type Query {
   allUsers: [User]!
   findUser(userId: String!): User
+  searchUsers(searchInput: String!): [User]
   getFollowers(userId: String!): [User]!
+  getFollowerCount(userId: String!): Int!
   getFollowing(userId: String!): [User]!
+  getFollowingCount(userId: String!): Int!
   currentUser: User
 }
 
@@ -38,4 +41,8 @@ type Mutation {
   unfollowUser(
     userId: String!
   ): Boolean!
+  generateUsers(
+    quantity: Int!
+  ): [User]!
+  generateFollowers: Boolean
 }

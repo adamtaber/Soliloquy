@@ -2,17 +2,18 @@ import { pool } from "../../../db/config"
 import { MutationResolvers } from "../graphql-types"
 import humps from 'humps'
 import { isComment } from "./types"
+import { GraphQLError } from "graphql"
 
 const commentMutations: MutationResolvers = {
   createComment: async (_root, args, {authorizedId }) => {
     const { postId, parentCommentId, content } = args
 
     if (!authorizedId) {
-      throw new Error('user not authorized')
-    }
-
-    if (!postId) {
-      throw new Error('missing args')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const createdOn = new Date()
@@ -23,20 +24,48 @@ const commentMutations: MutationResolvers = {
        VALUES ($1, $2, $3, $4, $5)
        RETURNING *`
     const values = [authorizedId, postId, content, createdOn, parentCommentId]
+
+    const query2 =
+      `SELECT *
+       FROM users
+       WHERE user_id = $1`
+    const values2 = [authorizedId]
+
     const commentMutation = await pool.query(query, values)
     const comment = humps.camelizeKeys(commentMutation.rows[0])
 
-    if(!isComment(comment)) {
-      throw new Error('return value not of type comment')
+    const userQuery = await pool.query(query2, values2)
+    const user = humps.camelizeKeys(userQuery.rows[0])
+
+    const newComment = {
+      ...comment,
+      likesCount: 0,
+      currentUserLike: null,
+      user: {
+        ...user
+      },
+      comments: []
     }
 
-    return comment
+    if(!isComment(newComment)) {
+      throw new GraphQLError('Query response is not of type Comment', {
+        extensions: {
+          code: 'INVALID_TYPE'
+        }
+      })
+    }
+
+    return newComment
   },
   deleteComment: async (_root, args, { authorizedId }) => {
     const { commentId } = args
 
     if (!authorizedId) {
-      throw new Error('user not authorized')
+      throw new GraphQLError('User is not authorized', {
+        extensions: {
+          code: 'UNAUTHORIZED'
+        }
+      })
     }
 
     const query = 

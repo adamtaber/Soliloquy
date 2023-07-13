@@ -1,22 +1,31 @@
 type Comment {
   commentId: ID!,
-  userId: ID!,
-  postId: ID,
+  user: User!,
+  postId: ID!,
   parentCommentId: ID,
+  comments: [Comment]!,
   content: String!,
   createdOn: String!
+  likesCount: Int!
+  currentUserLike: String
 }
 
 type Query {
+  getCommentParentId(
+    commentId: String!
+  ): String!
   getComments(
-    postId: String,
-    parentCommentId: String
+    postId: String!,
+  ): [Comment]!
+  getChildComments(
+    postId: String!,
+    parentCommentId: String!
   ): [Comment]!
 }
 
 type Mutation {
   createComment(
-    postId: String,
+    postId: String!,
     parentCommentId: String,
     content: String!
   ): Comment!

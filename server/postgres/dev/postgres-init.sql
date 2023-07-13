@@ -23,14 +23,31 @@ CREATE TABLE user_followers (
     CHECK (user_id != follower_id)
 );
 
+CREATE TABLE messages (
+  message_id uuid DEFAULT uuid_generate_v4 (),
+  sender_id uuid NOT NULL,
+  receiver_id uuid NOT NULL,
+  content VARCHAR (500) NOT NULL,
+  created_on TIMESTAMP NOT NULL,
+  PRIMARY KEY (message_id),
+  FOREIGN KEY (sender_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  FOREIGN KEY (receiver_id) REFERENCES users (user_id) ON DELETE CASCADE,
+  CONSTRAINT sender_and_receiver_different
+    CHECK (sender_id != receiver_id)
+);
+
 CREATE TABLE posts (
   post_id uuid DEFAULT uuid_generate_v4 (),
   user_id uuid NOT NULL,
   content VARCHAR (500) NOT NULL,
+  image_url TEXT,
   created_on TIMESTAMP NOT NULL,
   PRIMARY KEY (post_id),
   FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
+
+CREATE INDEX posts_pagination
+ON posts (created_on DESC, post_id DESC);
 
 CREATE TABLE comments (
   comment_id uuid DEFAULT uuid_generate_v4 (),
@@ -56,7 +73,9 @@ CREATE TABLE likes (
   FOREIGN KEY (post_id) REFERENCES posts (post_id) ON DELETE CASCADE,
   FOREIGN KEY (comment_id) REFERENCES comments (comment_id) ON DELETE CASCADE,
   CONSTRAINT only_post_or_column
-    CHECK ((post_id IS NULL) != (comment_id IS NULL))
+    CHECK ((post_id IS NULL) != (comment_id IS NULL)),
+  UNIQUE (post_id, user_id),
+  UNIQUE (comment_id, user_id)
 );
 
 CREATE TABLE bookmarks (

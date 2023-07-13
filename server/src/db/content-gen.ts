@@ -1,0 +1,22 @@
+[
+  "Why did the tomato turn red? Because it saw the salad dressing!",
+  "Just burned my tongue on some coffee. My bad.",
+  "I love when people try to drive around a traffic jam instead of waiting patiently like everyone else. You're not better than anyone else, buddy.",
+  "Saw a duck walking down the street earlier. It was an odd sight but kinda cute.",
+  "My boss keeps sending me emails during lunch. Dude, give me at least one hour off in the day, come on.",
+  "This weather is great! I love waking up early and feeling fresh for work.",
+  "What do you call an okay factory, a satisfactory.",
+  "You know what they say: 'if at first you don't succeed, try trying again'. So true, even though it sounds silly.",
+  "French fries should always have ketchup available as a condiment option.",
+  "Tired of all these so called ‘experts’ telling us where we went wrong after all their predictions fall flat. Sorry, just had to get that off my chest. Thanks.",
+  "Got stuck behind someone driving painstakingly slow in a 50 mph zone. Why does anyone need to go that slowly anyway? Just pass them already.",
+  "Wish airplanes had seats that reclined fully horizontally so you could take naps during long flights.",
+  "If aliens visit Earth, please let them bring new pizza recipes.",
+  "That moment when you realize there are more hours spent sleeping each night than awake. How unfair. But hey, at least we dream.",
+  "Life would be easier if we could transport objects through time. Think about the possibilities.",
+  "Lost my favorite pen recently. Can't find anything that writes quite as smoothly now.",
+  "Why do cats love boxes so much? Mysteries of the universe unsolved still. Lol",
+  "Having one of those days where everything seems to be going right. Nice change of pace every once in a while.",
+  "Can’t believe summer break is almost here! Vacations incoming!",
+  "I wish ice cream truck music played outside my office window all day long."
+]

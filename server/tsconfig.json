@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES6",      
-    "module": "CommonJS",                                                                                
-    "moduleResolution": "node",  
+    "target": "ES6", 
+    "module": "CommonJS",                                                                               
+    "moduleResolution": "Node",  
     "rootDir": "./src",          
     "outDir": "./dist",                                 
     "esModuleInterop": true,                           
@@ -19,5 +19,11 @@
     "declaration": true,
     // "typeRoots": ["./node_modules/@types", "./environment.d.ts"]
   },
-  "exclude": ["node_modules", "./dist", "jest.config.ts", "src/**/*.test.ts"]
+  "exclude": [
+    "node_modules", 
+    "./dist", 
+    "jest.config.ts", 
+    "src/**/*.test.ts",
+    "coverage"
+  ]
 }

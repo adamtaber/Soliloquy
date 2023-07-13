@@ -1,0 +1,1385 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+
+/* alter defaults */
+* {
+  box-sizing: border-box;
+  border: none;
+}
+
+:root {
+  --main-background-color: rgba(0, 0, 0, 1);
+  --main-text-color: rgb(255, 255, 255, .87);
+  --secondary-text-color: rgb(255, 255, 255, .6);
+  --contrast-text-color: rgba(0, 0, 0, 1);
+  --error-color: rgba(211, 84, 107, 1);
+  --primary-color: rgba(187, 134, 252, 1);
+  --level-one-overlay: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.08);
+  --level-two-overlay: inset 0 0 1000px 1000px rgba(255, 255, 255, 0.16);
+}
+
+::-webkit-scrollbar {
+  width: 13px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(65, 65, 65); 
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-y: scroll;
+  /* overflow-x: hidden;
+  width: 100vw; */
+  scrollbar-gutter: stable;
+}
+
+body {
+  margin: 0px;
+  /* overflow-y: scroll; */
+  background-color: var(--main-background-color);
+}
+
+button {
+  padding: 0px;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+  appearance: inherit;
+}
+
+p {
+  margin: 0px;
+  white-space: pre-wrap;
+}
+
+h1 {
+  margin: 0;
+}
+
+.app {
+  font-family: 'Roboto', sans-serif;
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.nav_body_container {
+  width: 730px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  position: relative;
+}
+
+.body {
+  margin-left: 80px;
+  width: 100%;
+}
+
+.navbar {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  width: 70px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  /* transform: translateX(-80px); */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+  padding-top: 20px;
+} 
+
+.navbarIcon {
+  color: var(--main-text-color);
+  font-size: 35px;
+  padding: 10px;
+  border-radius: 100px;
+  transition-duration: 0.15s;
+}
+
+.logoutButton {
+  color: var(--main-text-color);
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  font-size: 35px;
+  padding: 10px;
+  border-radius: 100px;
+  transition-duration: 0.15s;
+}
+
+.navbarIcon:hover, .logoutButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+/* Home Page */
+
+.home {
+  width: 100%;
+}
+
+.home__postFeed {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: var(--main-background-color);
+}
+
+.home__postFormContainer {
+  display: flex;
+  padding: 8px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+}
+
+.home__postForm {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  border-radius: 3px;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+/* alter box size as lines increas */
+.postForm__input {
+  resize: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--secondary-text-color);
+  font-size: 18px;
+  padding: 5px;
+  height: 35px;
+  width: 100%;
+}
+
+.postForm__charCount {
+  position: absolute;
+  right: 80px;
+  bottom: 10px;
+  color: var(--secondary-text-color);
+}
+
+.postForm__inputFiller {
+  position: absolute;
+  pointer-events: none;
+  left: 13px;
+  top: 13px;
+  font-size: 18px;
+  color: var(--secondary-text-color);
+}
+
+.postForm__bottomRow {
+  display: flex;
+  justify-content: space-between
+}
+
+.postForm__submit {
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+  border-radius: 2px;
+  height: 25px;
+  width: 65px;
+  font-size: 14px;
+  align-self: flex-end;
+  cursor: pointer;
+  transition-duration: 0.1s;
+}
+
+.postForm__submit:hover {
+  box-shadow: var(--level-two-overlay)
+}
+
+.likeButton {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--secondary-text-color);
+  background-color: inherit;
+  /* background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay); */
+}
+
+.likeButton:hover {
+  color: var(--error-color);
+}
+
+.dislikeButton {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--error-color);
+  background-color: inherit;
+  /* background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay); */
+}
+
+.home__post {
+  font-size: 16px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  width: 100%;
+  margin: 5px 0px 5px;
+  border-radius: 3px;
+  padding: 8px;
+  padding-bottom: 6px;
+  transition-duration: 0.15s;
+  transition-property: box-shadow;
+}
+
+.home__post:hover {
+  box-shadow: var(--level-two-overlay);
+  cursor: pointer;
+}
+
+.postBodyContainer {
+  display: flex;
+}
+
+.postRightBody {
+  width: 100%;
+}
+
+.postProfilePic {
+  border-radius: 9999px;
+  background-color: rgb(97, 94, 94);
+  width: 35px;
+  height: 35px;
+  margin-right: 8px;
+}
+
+.post__topRow {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+
+.post__username {
+  font-weight: 500;
+  font-size: 17px;
+  color: var(--main-text-color);
+  text-decoration: none;
+}
+.post__username:hover {
+  text-decoration: underline;
+}
+
+.post__date {
+  color: var(--secondary-text-color);
+}
+
+.post__content {
+  margin-bottom: 15px;
+}
+
+.postImageContainer {
+  position: relative;
+  margin-bottom: 10px;
+  overflow: hidden;
+  max-height: 550px;
+  border-radius: 10px;
+  width: 100%;
+}
+
+.fullSizeImageContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: rgb(0, 0, 0, .9);
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor:auto;
+}
+
+.fullSizePostImage {
+  max-height: 90%;
+  max-width: 90%;
+  cursor:auto;
+}
+
+.cancelFullSizeImage {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgb(0, 0, 0, .75);
+  color: var(--main-text-color);
+  font-size: 30px;
+  border-radius: 9999px;
+  padding: 8px;
+}
+
+.cancelFullSizeImage:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+/* .expandImage {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0, .75);
+  height: 80px;
+  width: 100%;
+  bottom: 0;
+} */
+
+.postForm__selectImage {
+  background: inherit;
+  color: var(--primary-color);
+  font-size: 25px;
+}
+
+.postImage {
+  min-width: 100%;
+  min-height: 300px;
+  /* transition: 'filter 0.5s ease-out'; */
+}
+
+.postForm__imageContainer {
+  overflow: hidden;
+  max-height: 800px;
+  width: 100%;
+  border-radius: 10px;
+  position: relative;
+}
+
+.postForm__cancelImage {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: white;
+  background-color: rgb(0, 0, 0, .5);
+  font-size: 30px;
+  border-radius: 9999px;
+  padding: 7px;
+}
+
+.postForm__cancelImage:hover {
+  background-color: rgb(0, 0, 0, .75);
+}
+
+/* Log In */
+
+.login, .signup {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__container, .signup__container {
+  position: relative;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  height: 700px;
+  width: 500px;
+  padding: 30px 75px 30px 75px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.login__container h1, .signup__container h1 {
+  margin: 0;
+  text-align: center;
+  font-weight: 300;
+}
+
+.loginForm, .signupForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.loginForm input, .signupForm input {
+  height: 30px;
+  width: 100%;
+  padding-left: 10px;
+  font-size: 17px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--main-text-color);
+}
+
+.loginForm label, .signupForm label {
+  height: 70px;
+  position: relative;
+}
+
+.loginForm .inputType, .signupForm .inputType {
+  position: absolute;
+  color: var(--secondary-text-color);
+  font-size: 17px;
+  left: 10px;
+  top: 5px;
+  pointer-events: none;
+}
+
+/* .focusedInput {
+  /* transform: scale(calc(5 / 12)) translateY(-10px); */
+/* 
+} */
+
+.loginForm .inputError, .signupForm .inputError {
+  display: inline-block;
+  margin-top: 5px;
+  color: var(--error-color);
+}
+
+.loginForm .login__submit, .signupForm .signup__submit {
+  margin-bottom: 0;
+  box-shadow: none;
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+}
+
+.loginForm .login__submit:hover, .signupForm .signup__submit:hover {
+  cursor: pointer;
+  box-shadow: var(--level-two-overlay);
+}
+
+.login__container p {
+  align-self: center;
+}
+
+.login__container button {
+  height: 30px;
+  font-size: 17px;
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+}
+
+.login__container button:hover {
+  cursor: pointer;
+  box-shadow: var(--level-two-overlay);
+}
+
+.signup__container .backButton {
+  position: absolute;
+  background-color:rgba(0, 0, 0, 1);
+  box-shadow: var(--level-one-overlay);
+  color: var(--primary-color);
+  font-size: 20px;
+  border-radius: 100px;
+  padding: 15px;
+  top: 27px;
+  left: 15px;
+}
+
+.signup__container .backButton:hover {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+}
+
+/* user styles */
+
+.user__top {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  border-radius: 3px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.user__interactButtons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  height: 35px;
+  /* background-color: green; */
+  align-items: center;
+}
+
+.messageUserButton {
+  color: var(--main-text-color);
+  font-size: 18px;
+  height: 35px;
+  width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-style: solid;
+  border-color:rgb(55, 55, 55);
+  border-width: 2px; 
+  border-radius: 9999px;
+}
+
+.messageUserButton:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.user__displayName {
+  font-weight: 300;
+  font-size: 30px;
+}
+
+.user__username{
+  color: var(--secondary-text-color);
+  font-size: 18px;
+}
+
+.user__basicInfo {
+  margin-bottom: 20px;
+}
+
+.user__followerInfo {
+  display: flex;
+  gap: 10px;
+  font-weight: 300;
+  color: var(--secondary-text-color);
+}
+
+.followNumber {
+  font-weight: 500;
+  color: var(--main-text-color);
+}
+
+.followLink:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.unfollowButton {
+  background-color: var(--secondary-text-color);
+  color: var(--contrast-text-color);
+  padding: 5px;
+  border-radius: 9999px;
+  width: 90px;
+  height: 30px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.unfollowButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.user__topRight .unfollowButton {
+  margin-top: 0;
+}
+
+.followButton {
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+  padding: 5px;
+  border-radius: 20px;
+  width: 90px;
+  height: 30px;
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+.followButton:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.user__topRight .followButton {
+  margin-top: 0;
+}
+
+/* follow info pages */
+
+.followHeaderContainer {
+  background-color: rgb(0, 0, 0, .75);
+  box-shadow: var(--level-one-overlay);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+  border-bottom: solid;
+  border-color: rgb(55, 55, 55);
+  border-width: 1px;
+}
+
+.followHeader {
+  position: relative;
+  /* box-shadow: var(--level-one-overlay); */
+  padding: 20px 0px 20px 60px;
+}
+
+.followHeader .backButton {
+  position: absolute;
+  background-color: inherit;
+  color: var(--primary-color);
+  font-size: 20px;
+  border-radius: 100px;;
+  padding: 8px;
+  top: 20px;
+  left: 10px;
+}
+
+.followHeader .backButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.followInfoSwitchContainer {
+  border-radius: 3px;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.followInfoSwitch {
+  background-color: inherit;
+  color: var(--main-text-color);
+  font-size: 20px;
+  font-weight: 300;
+  font-family: 'Roboto', sans-serif;
+  width: 50%;
+  height: 50px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.followInfoSwitch:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.selectedInfoSwitch {
+  height: 3px;
+  width: 150px;
+  position: absolute;
+  background-color: var(--primary-color);
+  bottom: 1px;
+}
+
+.followList {
+  border-radius: 3px;
+  width: 100%;
+  box-shadow: var(--level-one-overlay);
+  font-size: 19px;
+}
+
+.followList__user {
+  padding: 10px;
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.followList__user:hover {
+  cursor: pointer;
+  box-shadow: var(--level-one-overlay);
+}
+
+.followList__username {
+  color: var(--secondary-text-color);
+  font-weight: 400;
+}
+
+/* post page */
+
+.postPage {
+  position: relative;
+  box-shadow: var(--level-one-overlay);
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.postPage__topContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.postPage__displayname {
+  font-size: 20px;;
+}
+
+.postPage__displayname:hover {
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+
+.postPage__username {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+}
+
+.postPage__content {
+  margin-bottom: 15px;
+}
+
+.postPage__date {
+  font-size: 14px;
+  color: var(--secondary-text-color);
+  font-weight: 300;
+  padding-bottom: 10px;
+  border-bottom: solid;
+  border-color: rgb(55, 55, 55);
+  border-width: 1px;
+  display: flex;
+  gap: 5px;
+}
+
+.postPage__likesInfo {
+  font-size: 14px;
+  padding: 10px 0px 10px;
+  border-bottom: solid;
+  border-color: rgb(55, 55, 55);
+  border-width: 1px;
+}
+
+.postPage__likeWord {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+}
+
+.openModalButton {
+  align-self: baseline;
+  border-radius: 9999px;
+  padding: 7px;
+  right: 10px;
+  top: 10px;
+  background-color: inherit;
+  color: var(--secondary-text-color);
+  font-size: 20px;
+}
+
+.openModalButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.postOptionsButton {
+  background-color: inherit;
+  color: var(--main-text-color);
+  box-shadow: var(--level-one-overlay);
+  font-size: 16px;
+  text-align: left;
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.postOptionsButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.deletePostButton {
+  color:rgba(211, 84, 107, 1)
+}
+
+.modalWrapper {
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
+  position: fixed;
+  z-index: 1;
+}
+
+.optionsModal {
+  position: absolute;
+  width: 150px;
+  background-color: var(--main-background-color);
+  top: 16px;
+  right: 16px;
+  box-shadow: 0px 0px 5px var(--secondary-text-color);
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 2;
+}
+
+.postPage__interactButtons {
+  padding-top: 10px;
+}
+
+.likeButtonPage {
+  font-size: 25px;
+  background-color: inherit;
+  color: var(--secondary-text-color);
+}
+
+.dislikeButtonPage {
+  font-size: 25px;
+  background-color: inherit;
+  color: var(--error-color);
+}
+
+/* Comments */
+
+.commentSortContainer {
+  position: relative;
+  width: 100px;
+}
+
+.commentSortButton {
+  height: 30px;
+  width: 110px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  color: var(--secondary-text-color);
+  font-size: 15px;
+}
+
+.commentSortButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.commentSortDropdown {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 110px;
+  background-color: var(--main-background-color);
+  box-shadow: 0px 0px 10px 3px rgb(65, 65, 65);
+  border-radius: 7px;
+  display: flex;
+  flex-direction: column;
+  z-index: 3;
+  overflow: hidden;
+}
+
+.postCommentList {
+  box-shadow: var(--level-one-overlay);
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+.postComment {
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 10px;
+  /* transition-duration: 0.1s; */
+}
+
+/* .postComment.collapsedThread {
+  padding-left: 90px;
+} */
+
+.postComment.collapsedThread .levelIndicator {
+  height: 0px;
+}
+
+.expandThreadButton {
+  background-color: inherit;
+  color: var(--main-text-color);
+  font-size: 20px;
+  position: absolute;
+  height: 35px;
+  width: 35px;
+  border-radius: 9999px;
+  left: 0;
+  text-align: center;
+}
+
+.levelIndicatorContainer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  height: calc(100% - 45px);
+  width: 18px;
+  top: 45px;
+  left: 8px;
+}
+
+.levelIndicatorContainer:hover {
+  cursor: pointer;
+}
+
+.levelIndicatorContainer:hover .levelIndicator {
+  background-color: rgb(145, 145, 145, 1);
+}
+
+.levelIndicator {
+  height: 100%;
+  width: 2px;
+  background-color: rgb(55, 55, 55, 1);
+}
+
+.profilePicSub {
+  position: absolute;
+  border-radius: 9999px;
+  background-color: rgb(97, 94, 94);
+  width: 35px;
+  height: 35px;
+  left: 0px;
+  transition-duration: 0.15s;
+}
+
+.profilePicSub.collapsedThread {
+  left: 40px;
+}
+
+.commentHeaderContainer {
+  transition: none;
+}
+
+.commentHeader {
+  display: flex;
+  gap: 5px;
+  height: 35px;
+  align-items: center;
+  margin-bottom: 5px;
+  transition: 0.15s ease;
+}
+
+.commentHeader.collapsedThread {
+  margin-left: 40px;
+}
+
+.commentBody.collapsedThread {
+  height: 0;
+  width: 0;
+  overflow: hidden;
+}
+
+.commentDisplayName {
+  font-weight: 500;
+}
+
+.commentDisplayName:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.commentUsername, .commentDate, .dotSeparator {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+}
+
+.dotSeparator {
+  font-weight: 500;
+}
+
+.comment__interactButtons {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+}
+
+.replyButton {
+  background-color: inherit;
+  color: var(--secondary-text-color);
+  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  border-radius: 9999px;
+  padding: 5px;
+}
+
+.replyButton:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.replyFormContainer {
+  position: relative;
+}
+
+.commentReplyForm {
+  width: auto;
+  margin-left: 30px;
+}
+
+.commentLevelIndicator {
+  left: 0;
+  top: 0;
+  height: 100%;
+}
+
+.commentOptionsModal {
+  position: absolute;
+  background-color: var(--main-background-color);
+  width: 180px;
+  left: 60px;
+  top: 18px;
+  border-style: solid;
+  border-width: 1px;
+  border-color:rgb(55, 55, 55);
+  display: flex;
+  flex-direction: column;
+  z-index: 2;
+}
+
+.childComment {
+  position: relative;
+  padding-left: 34px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  /* transition-duration: 0.1s; */
+}
+
+/* .childComment.collapsedThread {
+  padding-left: 74px;
+} */
+
+.childComment .expandThreadButton {
+  left: -16px;
+}
+
+.childComment .levelIndicatorContainer {
+  left: -8px;
+}
+
+.childComment .profilePicSub {
+  left: -16px;
+}
+
+.childComment .profilePicSub.collapsedThread {
+  left: 25px;
+}
+
+/* .extendedComments {
+  position: fixed;
+  height: 50px;
+  width: 50px;
+  top: 0px;
+  background-color: black;
+  box-shadow: var(--level-one-overlay);
+} */
+
+.continueThreadButton {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  color: var(--main-text-color);
+  border-color: var(--secondary-text-color);
+  border-style: solid;
+  border-width: 1px;
+  padding: 7px;
+  border-radius: 9999px;
+}
+
+.continueThreadButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.parentCommentsButton {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  color: var(--main-text-color);
+  border-color: var(--secondary-text-color);
+  border-style: solid;
+  border-width: 1px;
+  padding: 7px;
+  border-radius: 9999px;
+  margin-top: 5px;
+}
+
+.parentCommentsButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.highlightComment {
+  box-shadow: var(--level-one-overlay);
+  position: absolute;
+  height: 130px;
+}
+
+.postComment .highlightComment {
+  left: -10px;
+  top: -10px;
+  width: calc(100% + 20px);
+}
+
+.childComment .highlightComment {
+  width: calc(100% + 42px);
+  top: -5px;
+  left: -33px;
+}
+
+/* Messages */
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.messagesHeader {
+  display: flex;
+  padding-top: 20px;
+  padding-left: 20px;
+  padding-bottom: 20px;
+  border-bottom: solid;
+  border-width: 1px;
+  border-color: rgb(55, 55, 55);
+}
+
+.messagesHeader.messageConversation {
+  padding-left: 60px;
+}
+
+.messagesHeader__title {
+  font-size: 30px;
+  font-weight: 300;
+}
+
+.messagesHeader__title:hover {
+  cursor: pointer;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+}
+
+.messagesHeader .backButton {
+  position: absolute;
+  background-color: inherit;
+  color: var(--primary-color);
+  font-size: 20px;
+  border-radius: 100px;;
+  padding: 8px;
+  top: 20px;
+  left: 10px;
+}
+
+.messagesHeader .backButton:hover {
+  box-shadow: var(--level-two-overlay);
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.messagePartner {
+  padding: 10px 10px 30px 20px;
+}
+
+.messagePartner:hover {
+  box-shadow: var(--level-two-overlay);
+  cursor: pointer;
+}
+
+.messagePartner__name {
+  font-size: 19px;
+}
+
+.messagePartner__message {
+  color: var(--secondary-text-color);
+  font-weight: 300;
+}
+
+.conversation {
+  height: 100vh;
+}
+
+.conversation_body {
+  height: calc(100% - 76px);
+  overflow: none;
+}
+
+.messageForm {
+  position: absolute;
+  bottom: 0;
+  height: 50px;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.messageInput {
+  position:absolute;
+  bottom: 15px;
+  /* width: 630px; */
+  width: calc(100% - 20px);
+  height: 35px;
+  /* border-radius: 9999px; */
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--secondary-text-color);
+  font-size: 17px;
+  padding: 0px;
+  padding-top: 7px;
+  padding-left: 10px;
+  padding-right: 70px;
+  font-family: 'Roboto', sans-serif;
+  resize: none;
+}
+
+.messageInputFiller {
+  position: absolute;
+  pointer-events: none;
+  left: 20px;
+  top: 8px;
+  color: var(--secondary-text-color);
+  z-index: 2;
+}
+
+.messageSubmit {
+  position: absolute;
+  right: 10px;
+  background-color: var(--primary-color);
+  color: var(--contrast-text-color);
+  height: 34px;
+  width: 70px;
+  /* border-top-right-radius: 9999px;
+  border-bottom-right-radius: 9999px; */
+  font-size: 17px;
+}
+
+.messageSubmit:hover {
+  box-shadow: var(--level-one-overlay);
+}
+
+.conversation_messages {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 15px;
+  padding: 15px;
+  height: calc(100% - 60px);
+  overflow-y: scroll;
+}
+
+.messageBubble {
+  height: 60px;
+  width: 300px;
+  background-color: var(--primary-color);
+  border-radius: 20px;
+  padding: 15px;
+  color: var(--contrast-text-color);
+}
+
+.messageBubble.receiver {
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--main-text-color);
+  border-bottom-left-radius: 5px;
+}
+
+.messageBubble.sender {
+  align-self: self-end;
+  border-bottom-right-radius: 5px;
+}
+
+/* search bar */
+
+.searchPage {
+  height: 100vh;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  width: 100%;
+  padding: 10px;
+  position: relative;
+}
+
+.searchBarContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.searchBar {
+  width: 80%;
+}
+
+.searchLabel {
+  position: relative;
+  display: flex;
+  justify-content: center;
+}
+
+.searchBar_input {
+  /* height: 35px;
+  width: 95%;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  border-radius: 9999px; */
+  resize: none;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-two-overlay);
+  color: var(--secondary-text-color);
+  font-size: 18px;
+  padding: 5px;
+  padding-left: 10px;
+  height: 35px;
+  width: 100%;
+  border-radius: 9999px;
+}
+
+.searchBar_inputFiller {
+  position: absolute;
+  pointer-events: none;
+  left: 10px;
+  top: 7px;
+  font-size: 18px;
+  color: var(--secondary-text-color);
+}
+
+.dynamicSearchContainer {
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.tempSearchList {
+  margin-top: 5px;
+  width: calc(80% - 20px);
+  border-radius: 7px;
+  background-color: var(--main-background-color);
+  box-shadow: var(--level-one-overlay);
+  border-style: solid;
+  border-color: var(--secondary-text-color);
+  border-width: 1px;
+  position: absolute;
+}
+
+.tempSearchUser {
+  padding: 10px;
+}
+
+.tempSearchUser:hover {
+  cursor: pointer;
+  box-shadow: var(--level-two-overlay);
+}
+
+.searchList {
+  padding-top: 20px;
+}
+
+@media screen and (max-width: 835px) {
+  /* .navbar {
+    background-color: red;
+    position: absolute;
+    left: -80px;
+    transform: none;
+  } */
+
+  /* .searchPage {
+    margin-left: 40px;
+  } */
+}
+
