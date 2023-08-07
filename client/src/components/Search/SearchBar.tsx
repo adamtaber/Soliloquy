@@ -93,7 +93,7 @@ const SearchBar = () => {
   }
 
   return (
-    <div>
+    <div style={{height: '100%'}}>
       <div>
         <div className="searchBarContainer">
           <form ref={searchBarRef} className="searchBar" onSubmit={handleSubmit(onSubmit)}>

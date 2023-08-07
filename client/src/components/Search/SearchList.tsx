@@ -8,16 +8,10 @@ interface IProps {
 
 const SearchList = ({users, navToUser}: IProps) => {
   return (
-    <div>
+    // <div>
       <div className="searchList">
         {users.map((user) => {
           return (
-            // <div 
-            //   onClick={() => navToUser(user.userId)} 
-            //   className="tempSearchUser" key={user.userId}>
-            //     <p>{user.displayname}</p>
-            //     <p>{user.username}</p>
-            // </div>
             <div 
               className="followList__user" 
               onClick={() => navToUser(user.userId)} 
@@ -31,7 +25,7 @@ const SearchList = ({users, navToUser}: IProps) => {
           )
         })}
       </div>
-    </div>
+    // </div>
   )
 }
 
