@@ -4,7 +4,7 @@
   "description": "",
   "main": "./dist/app.js",
   "scripts": {
-    "compile": "tsc",
+    "compile": "rm -rf dist && tsc && cp ./src/graphql/schema/*.graphql ./dist/graphql/schema",
     "start": "npm run compile && node ./dist/app.js",
     "alt-dev": "ts-node-dev ./src/app.ts",
     "dev": "nodemon ./src/app.ts",

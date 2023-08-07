@@ -1,5 +1,3 @@
-scalar Date
-
 type Like {
   likeId: ID!,
   userId: ID!,

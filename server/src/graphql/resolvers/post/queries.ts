@@ -174,8 +174,6 @@ const postQueries: QueryResolvers = {
       : await pool.query(initialQuery, values)
     const posts = humps.camelizeKeys(postsQuery.rows)
 
-    console.log(posts)
-
     if (!Array.isArray(posts)) {
       throw new GraphQLError('Query response is not of type Array', {
         extensions: {
@@ -218,6 +216,7 @@ const postQueries: QueryResolvers = {
     }
 
     const res = generateCloudinarySignature()
+
     if(!isPostimageSignature(res)) {
       throw new GraphQLError('Result is not of type Array', {
         extensions: {

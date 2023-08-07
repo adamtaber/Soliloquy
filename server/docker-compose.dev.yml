@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   server:
-    image: twit-dev-server
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     ports:
       - ${PORT}:${PORT}
     depends_on:

@@ -17,11 +17,15 @@
     "allowSyntheticDefaultImports": true,
     // "isolatedModules": true,
     "declaration": true,
-    // "typeRoots": ["./node_modules/@types", "./environment.d.ts"]
+    // "typeRoots": ["node_modules/@types", "src/@types"]
   },
+  // "file": ["src/@types/graphql.d.ts"],
+  "include": [
+    "./**/*"
+  ],
   "exclude": [
     "node_modules", 
-    "./dist", 
+    "./dist/**/*", 
     "jest.config.ts", 
     "src/**/*.test.ts",
     "coverage"
