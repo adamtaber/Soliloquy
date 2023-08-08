@@ -1,6 +1,7 @@
 databases:
   - name: postgres-db
     databaseName: postgres-db
+    user: postgres
 
 services:
   - type: web
