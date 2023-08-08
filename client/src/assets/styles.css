@@ -135,7 +135,7 @@ h1 {
 .home__postFeed {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
   background-color: var(--main-background-color);
 }
 

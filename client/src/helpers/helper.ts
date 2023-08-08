@@ -67,6 +67,7 @@ export const handleTextInputChange = (textAreaRef: textAreaRef) => {
 
 type refetchImgSig = 
   () => Promise<ApolloQueryResult<GetPostImageSignatureQuery>>
+
 interface fetchSigArgs {
   refetchImgSig: refetchImgSig, 
   setImageSignature: (arg: string) => void,
@@ -103,6 +104,7 @@ export const submitImage = async ({
 }: submitImageArgs) => {
     if (file && imageTimestamp && imageSignature) {
       const formData = new FormData()
+      console.log(formData)
       formData.append('file', file)
       const res = await fetch(
         `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload?api_key=${API_KEY}&timestamp=${imageTimestamp}&signature=${imageSignature}`,

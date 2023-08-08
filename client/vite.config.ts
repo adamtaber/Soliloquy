@@ -6,5 +6,13 @@ export default defineConfig({
   plugins: [react()],
   define: {
     'process.env': {}
+  },
+  server: {
+    watch: {
+      usePolling: true
+    },
+    host: true,
+    strictPort: true,
+    port: 4173
   }
 })

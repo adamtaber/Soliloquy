@@ -61,6 +61,7 @@ const PostForm = ({ userId }: IProps) => {
       await submitImage({file, content, imageTimestamp, imageSignature})
     createPost({ variables })
     setValue('content', '')
+    setSelectedImage('')
   }
 
   return (

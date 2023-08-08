@@ -13,6 +13,7 @@ import { useServer } from 'graphql-ws/lib/use/ws'
 import { PubSub } from 'graphql-subscriptions'
 import { PORT, isProduction } from './config'
 import { checkToken } from './utils'
+import { seedContent } from './db/seed'
 
 const app = express()
 const httpServer = http.createServer(app)
@@ -57,11 +58,19 @@ const startServer = async () => {
     cookieParser(),
     cors({
       origin: isProduction() 
-        ? false 
+        // ? false 
+        ? [
+          'http://localhost:3000',
+          'http://172.20.0.4:3000',
+          'https://sandbox.embed.apollographql.com', 
+          'http://172.20.0.4:4173',
+          'http://localhost:4173'
+          ]
         : [
             'https://sandbox.embed.apollographql.com', 
             'http://localhost:5173',
-            'http://localhost:4173'
+            'http://localhost:4173',
+            'http://172.20.0.4:4173',
           ],
       credentials: true
     }),
@@ -83,4 +92,6 @@ const startServer = async () => {
 }
 
 startServer()
+
+seedContent()
 
