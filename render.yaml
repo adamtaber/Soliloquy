@@ -1,0 +1,16 @@
+databases:
+  - name: postgres-db
+    databaseName: postgres-db
+
+services:
+  - type: web
+    name: app-server
+    env: docker
+    dockerfilePath: ./server/Dockerfile
+    envVars:
+      - key: NODE_ENV
+        value: production
+  - type: web
+    name: app-client
+    env: docker
+    dockerfilePath: ./client/Dockerfile
