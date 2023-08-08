@@ -1,7 +1,12 @@
+# databases:
+#   - name: postgres-db
+#     databaseName: postgres-db
+#     user: postgres
+
 databases:
-  - name: postgres-db
-    databaseName: postgres-db
-    user: postgres
+  - name: mysite
+    databaseName: mysite
+    user: mysite
 
 services:
   - type: web
