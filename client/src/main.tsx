@@ -27,7 +27,7 @@ const httpLink = createHttpLink({
 
 const wsLink = new GraphQLWsLink(
   // createClient({ url: 'ws://localhost:3000' })
-  createClient({ url: 'https://social-app-twitter-clone.fly.dev/' })
+  createClient({ url: 'ws://social-app-twitter-clone.fly.dev/' })
 )
 
 const splitLink = split(
