@@ -20,12 +20,14 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 })
 
 const httpLink = createHttpLink({
-  uri: 'http://localhost:3000',
+  // uri: 'http://localhost:3000',
+  uri: 'https://social-app-twitter-clone.fly.dev/',
   credentials: 'include'
 })
 
 const wsLink = new GraphQLWsLink(
-  createClient({ url: 'ws://localhost:3000' })
+  // createClient({ url: 'ws://localhost:3000' })
+  createClient({ url: 'https://social-app-twitter-clone.fly.dev/' })
 )
 
 const splitLink = split(
