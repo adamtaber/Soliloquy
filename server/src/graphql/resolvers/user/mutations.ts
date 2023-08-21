@@ -157,8 +157,8 @@ const userMutations: MutationResolvers = {
     res.cookie("id", token, {
       httpOnly: true,
       secure: true,
-      // sameSite: isProduction() ? 'none' : 'none',
-      sameSite: isProduction() ? 'lax' : 'none',
+      sameSite: isProduction() ? 'none' : 'none',
+      // sameSite: isProduction() ? 'lax' : 'none',
       expires: new Date(Date.now() + 8 * 3600000)
     })
 

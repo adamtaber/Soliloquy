@@ -1,7 +1,7 @@
 node_modules/
-dist/
 .git
 npm-debug.log
 .env
 .env.development
 .env.production
+postgres-dev-data

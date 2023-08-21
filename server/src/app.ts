@@ -1,4 +1,5 @@
 import express from 'express'
+// import process from 'process'
 import http from 'http'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -60,17 +61,16 @@ const startServer = async () => {
       origin: isProduction() 
         // ? false 
         ? [
-          'http://localhost:3000',
-          'http://172.20.0.4:3000',
+          'https://main--moonlit-crumble-e0d8c0.netlify.app',
           'https://sandbox.embed.apollographql.com', 
           'http://172.20.0.4:4173',
           'http://localhost:4173'
           ]
         : [
-            'https://sandbox.embed.apollographql.com', 
-            'http://localhost:5173',
-            'http://localhost:4173',
-            'http://172.20.0.4:4173',
+          'https://main--moonlit-crumble-e0d8c0.netlify.app',
+          'https://sandbox.embed.apollographql.com', 
+          'http://localhost:4173',
+          'http://172.20.0.4:4173',
           ],
       credentials: true
     }),
@@ -89,7 +89,26 @@ const startServer = async () => {
   httpServer.listen(PORT, () =>
     console.log(`Server is listening on port ${PORT}`)
   )
-}
+
+  // console.log(process.memoryUsage())
+
+  // setInterval(logMemoryUsage, 5000);
+
+  // function logMemoryUsage() {
+  //   const formatMemoryUsage = (data: any) => `${Math.round((data / 1024 / 1024) * 100) / 100} MB`;
+  //   const memoryData = process.memoryUsage();
+  //   console.log({
+  //     rss: `${formatMemoryUsage(memoryData.rss)}`,
+  //     heapTotal: `${formatMemoryUsage(memoryData.heapTotal)}`,
+  //     heapUsed: `${formatMemoryUsage(memoryData.heapUsed)}`,
+  //     external: `${formatMemoryUsage(memoryData.external)}`,
+  //   });
+  // }
+
+    // httpServer.listen(Number(PORT), '0.0.0.0', () => 
+    //   console.log(`Server is listening on port ${PORT}`)
+    // )
+  }
 
 startServer()
 
